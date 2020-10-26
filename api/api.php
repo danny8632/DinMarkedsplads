@@ -61,6 +61,16 @@ class Api extends DB {
         
     }
 
+
+    public function formatResponse($success = true, $data)
+    {
+        echo json_encode(array(
+            "success" => success,
+            "data" => $data
+        ));
+        return;
+    }
+
 }
 
 

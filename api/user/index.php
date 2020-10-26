@@ -18,49 +18,50 @@ class User extends Api {
 
     function signUp() {
 
-        $req = $this->getRequest();
+        $req = $this->getRequest()[1];
 
-        $name = $req[1]['name'];
-        $username = $req[1]['username'];
-        $password = $req[1]['password'];
+        $email = false;
+        foreach (['email', 'e_mail', 'mail'] as $key) {
+            if(isset($req[$key])) $email = $req[$key];
+        }
+
+        $password = false;
+        foreach (['password', 'pwd'] as $key) {
+            if(isset($req[$key])) $password = $req[$key];
+        }
+
+        $username = false;
+        foreach (['username', 'uname', 'name'] as $key) {
+            if(isset($req[$key])) $username = $req[$key];
+        }
+
+        if($email == false || $password == false || $username == false)
+            return $this->formatResponse(false, ['msg' => "email, password, username is not set"]);
+
 
         $password = password_hash($password, PASSWORD_DEFAULT);
 
-        if(empty($username) || empty($password) || empty($name))
-            return;
 
         $this->conn = $this->getDbConn();
-        $stmt = $this->conn->prepare("SELECT * FROM `users` WHERE `username` = :username OR `name` = :name");
+        $stmt = $this->conn->prepare("SELECT * FROM `users` WHERE `username` = :username OR `email` = :email");
         $stmt->bindParam(':username', $username);
-        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':email', $email);
         
         $stmt->execute();
 
-        if($stmt->rowCount() > 0)
-        {
-            echo json_encode(array(
-                "success" => false,
-                "msg" => "Username or Name already in use"
-            ));
-            return;
-        }
+        if($stmt->rowCount() > 0) return $this->formatResponse(false, ['msg' => "email, password, username is not set"]);
+
+
+        $stmt = $this->conn->prepare("INSERT INTO `Users`(`email`, `password`, `username`) VALUES (:email, :password, :username)");
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':password', $password);
+        $stmt->bindParam(':username', $username);
+        $stmt->execute();
+
+        if($stmt->rowCount() > 0) 
+            return $this->formatResponse(true, ['msg' => "user has ben created"]);
         else
-        {
-            $stmt = $this->conn->prepare("INSERT INTO `users`(`name`, `username`, `password`) VALUES (:name, :username, :password)");
-            $stmt->bindParam(':name', $name);
-            $stmt->bindParam(':username', $username);
-            $stmt->bindParam(':password', $password);
-            $stmt->execute();
-
-            if($stmt->rowCount() > 0)
-            {
-                echo json_encode(array(
-                    "success" => true,
-                    "msg" => "User has ben created"
-                ));
-            }
-
-        }
+            return $this->formatResponse(false, ['msg' => "something went wrong with adding user", 'stmt' => $stmt]);
     }
 
 
