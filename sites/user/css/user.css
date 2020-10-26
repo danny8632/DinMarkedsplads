@@ -1,0 +1,89 @@
+.navbar {
+    display: flex;
+    width: 100%;
+    box-shadow: 0px 4px 2px -2px #333333;
+}
+.postsButtonCon, .upvotedButtonCon, .commentButtonCon {
+    width: 33.33%;
+    margin: auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.postsButtonCon:hover, .upvotedButtonCon:hover, .commentButtonCon:hover {
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.082);
+}
+.userHeader {
+    display: flex;
+    width: 100%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    border-bottom: 3px solid #666666;
+}
+.profileImgCon {
+    margin: 1%;
+    margin-right: 3%;
+}
+.profileImg {
+    border-radius: 50%;
+    height: 20vh;
+    width: 20vh;
+}
+.username {
+    font-size: 35px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    color: #e6e6e6;
+    margin-top: 10%;
+}
+.userDescriptionCon {
+    margin-top: 15%;
+}
+.upvotedButton, .postsButton, .commentButton {
+    display: block;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    width: -moz-fit-content;
+    width: fit-content;
+    margin: auto;
+    color: #e6e6e6;
+    font-size: 20px;
+}
+
+/*Post container*/
+.postCon {
+    border: solid 10px #262626;
+}
+
+
+/*Title container*/
+.titleCon {
+    padding: 5px;
+    background-color: #262626;
+}
+.titleText {
+    font-size: 30px;
+    text-decoration-line: none;
+    color: white;
+}
+.opCon {
+    display: flex;
+}
+
+.voteCon {
+    width: 30%;
+    margin: auto;
+}
+.voteCon2 {
+    display: flex;
+    width: 80%;
+    margin: auto;
+}
+.upvote, .totalVotes, .downvote {
+    display: block;
+    margin: auto;
+}
+
+.hidden {
+    display: none;
+}
