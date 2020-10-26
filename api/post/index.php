@@ -1,5 +1,7 @@
 <?php
 
+// TODO: This should be 'product' insted of 'post'
+
 require __DIR__."/../api.php";
 
 session_start();
@@ -14,8 +16,10 @@ class Post extends Api {
 
     }
 
+    // TODO: Get product - should support product id, category, price, name etc.
     function _GET() 
     {
+        /*
         $user_id;
 
         $post_id;
@@ -80,9 +84,10 @@ class Post extends Api {
         }
 
         echo json_encode($data);
+        */
     }
 
-    
+    // POST product - should require a name, price, description & one or more pictures attatched 
     function _POST()
     {
         $req = $this->getRequest()[1];
@@ -129,28 +134,5 @@ class Post extends Api {
             echo "Sorry, there was an error uploading your file.";
         }
         
-    }
-
-
-    function getTrending()
-    {
-        $this->conn = $this->getDbConn();
-        $stmt = $this->conn->prepare("SELECT * FROM trending_posts");
-        $stmt->execute();
-
-        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-
-        echo json_encode($result);
-    }
-
-    function getTop()
-    {
-        $this->conn = $this->getDbConn();
-        $stmt = $this->conn->prepare("SELECT posts.id, posts.title, posts.description, posts.file, posts.userID, users.name as name, users.username as username, posts.created, SUM(postvotes.vote = 'Upvote' AND postvotes.vote IS NOT NULL) AS 'UpVotes', SUM(postvotes.vote = 'Downvote' AND postvotes.vote IS NOT NULL) AS 'DownVotes', SUM(CASE WHEN postvotes.vote IS NOT NULL THEN IF(postvotes.vote = 'Upvote', 1, -1) END) AS `TotalVotes` FROM posts LEFT JOIN postvotes on posts.id = postvotes.postID LEFT JOIN users on posts.userID = users.id GROUP BY posts.id, postvotes.postID ORDER BY `TotalVotes` DESC LIMIT 10");
-        $stmt->execute();
-
-        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-
-        echo json_encode($result);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+// TODO: Add email functionality
+
 session_start();
 
 require __DIR__."/../api.php";
