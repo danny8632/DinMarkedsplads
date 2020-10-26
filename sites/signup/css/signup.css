@@ -55,6 +55,7 @@
 .content .form-wrapper .input-wrapper input {
     width: 100%;
     float: left;
+    box-sizing: border-box;
 }
 
 .content .form-wrapper form .btn {
