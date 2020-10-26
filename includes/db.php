@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__."../php_env.php";
+require __DIR__."/../php_env.php";
 
 class DB {
     private $connection;
