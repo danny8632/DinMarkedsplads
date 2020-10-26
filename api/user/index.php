@@ -21,7 +21,6 @@ class User extends Api {
         $req = $this->getRequest();
 
         $name = $req[1]['name'];
-        $username = $req[1]['username'];
         $password = $req[1]['password'];
 
         $password = password_hash($password, PASSWORD_DEFAULT);
