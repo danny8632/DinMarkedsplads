@@ -1,13 +1,15 @@
 <?php
 
+require '../php_env.php';
+
 class DB {
     private $connection;
     private static $_instance;
 
-    private $dbhost = "db"; // Ip Address of database if external connection.
-    private $dbuser = "root"; // Username for DB
-    private $dbpass = "root"; // Password for DB
-    private $dbname = "gemmegag"; // DB Name
+    private $dbhost = "localhost"; // Ip Address of database if external connection.
+    private $dbuser = db_uname; // Username for DB
+    private $dbpass = db_password; // Password for DB
+    private $dbname = "dinmarkedsplads"; // DB Name
 
 
 
