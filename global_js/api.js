@@ -31,6 +31,8 @@ function api_post(end_point, data, cb) {
     if(typeof end_point !== "string" || end_point.length <= 0 || typeof data !== "object") 
         return console.error("you need to specify an endpoint");
 
+    data['method'] = "_POST";
+
     $.ajax({
         type: "POST",
         url: `/api_v1/${end_point}`,

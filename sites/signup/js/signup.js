@@ -13,35 +13,24 @@ $( document ).ready(function() {
             data[elm['name']] = elm['value'];
         }
 
+        $(".content").find(".error-wrapper").remove();
+
         if(data['password'] !== data['confirmPassword'])
         {
-            return alert("password dosn't match");
+            $(`<p class="error-text">Adgangskode og gentag adgangskode er ikke ens.</p>`).insertAfter(".content .title-wrapper");
+            return;
+        }
+        else if(data['email'].length < 6 || data['username'].length < 6 || data['password'] < 6)
+        {
+            $(`<p class="error-text">Email, Brugernavn og password kræver minimum 6 karakter.</p>`).insertAfter(".content .title-wrapper");
+            return;
         }
 
-        api_ajax("user")
-        
-        $.ajax({
-            type: "POST",
-            url: "/api_v1/user",
-            data: data,
-            success: (resp) => {
-                console.log(resp);
 
-                var resp = JSON.parse(resp);
+        api_ajax("user", data, (resp) => {
 
-                if(resp['success'] == false)
-                {
-                    alert("Signup failed " + resp['msg'])
-                }
-                else
-                {
-                    window.location.replace("./");
-                }
-            },
-            error: () => {
-                alert("signup failed")
-            }
+            console.log(resp);
+
         });
-
     });
 });

@@ -13,6 +13,8 @@
         <script type="text/javascript" src="/sites/templates/js/navbar.js" defer></script>
         <script type="text/javascript" src="/sites/templates/js/fontAwesome.js" defer></script>
         <script type="text/javascript" src="/sites/templates/js/jquery.min.js"></script>
+        <script type="text/javascript" src="/global_js/global.js"></script>
+        <script type="text/javascript" src="/global_js/api.js"></script>
         <script type="text/javascript" src="/sites/templates/js/posts_global.js"></script>
         <script type="text/javascript" src="/sites/templates/js/vote_global.js"></script>
 

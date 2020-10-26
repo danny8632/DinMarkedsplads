@@ -21,9 +21,15 @@
     font-size: 20px;
 }
 
+.content .error-text {
+    color: red;
+    padding: 20px 0px 0px 0px;
+    text-align: center;
+}
+
 .content .form-wrapper {
     padding: 0px 100px;
-    margin-top: 40px;
+    margin-top: 30px;
 }
 
 .content .form-wrapper form {
@@ -61,6 +67,7 @@
     border-radius: 2px;
     border: none;
     padding: 6px 8px;
+    font-size: 14px;
 }
 
 .content .form-wrapper form .btn:hover {
