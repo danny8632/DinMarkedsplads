@@ -1,43 +1,36 @@
 $( document ).ready(function() {
     
-    var form = $(".content").find(`form.signupForm`);
+    $(".content").on('click', 'form.signupForm #submit', (e) => {
+        e.preventDefault()
 
-    form.on( "submit", function( event ) {
-        event.preventDefault();
-        var data = $( this ).serializeArray();
+        let form_data = $(e.currentTarget).parents('form').serializeArray();
 
-        if(data[2]['value'] != data[3]['value']) return alert("password dosn't match");
+        let data = { "method": "signUp" };
 
-        var data = {
-            "method": "signUp",
-            "name": data[0]['value'], 
-            "username": data[1]['value'], 
-            "password": data[2]['value'] 
+        for (let i = 0, length = form_data.length; i < length; i++) {
+            const elm = form_data[i];
+            
+            data[elm['name']] = elm['value'];
+        }
+
+        $(".content").find(".error-text").remove();
+
+        if(data['password'] !== data['confirmPassword'])
+        {
+            $(`<p class="error-text">Adgangskode og gentag adgangskode er ikke ens.</p>`).insertAfter(".content .title-wrapper");
+            return;
+        }
+        else if(data['email'].length < 6 || data['username'].length < 6 || data['password'] < 6)
+        {
+            $(`<p class="error-text">Email, Brugernavn og password kræver minimum 6 karakter.</p>`).insertAfter(".content .title-wrapper");
+            return;
         }
 
 
-        $.ajax({
-            type: "POST",
-            url: "/api_v1/user",
-            data: data,
-            success: (resp) => {
-                console.log(resp);
+        api_ajax("user", data, (resp) => {
 
-                var resp = JSON.parse(resp);
+            console.log(resp);
 
-                if(resp['success'] == false)
-                {
-                    alert("Signup failed " + resp['msg'])
-                }
-                else
-                {
-                    window.location.replace("./");
-                }
-            },
-            error: () => {
-                alert("signup failed")
-            }
         });
     });
-
 });

@@ -1,13 +1,29 @@
 <div class="content">
-    <form class="loginForm">
-        <input placeholder="Username..." name="username" required>
-        <input placeholder="Password..." type="password" name="password" required>
-        <input value="Login" type="submit" id="submit">
-    </form>
+
+    <div class="title-wrapper">
+        <h1 class="title">Login</h1>
+    </div>
+
+    <div class="form-wrapper">
+        <form class="loginForm">
+
+            <div class="email-wrapper input-wrapper">
+                <label for="username">Brugernavn:</label>
+                <input placeholder="Brugernavn" name="username" required>
+            </div>
+
+            <div class="password-wrapper input-wrapper">
+                <label for="password">Adgangskode:</label>
+                <input placeholder="Adgangskode" type="password" name="password" required>
+            </div>
+
+            <input class="btn" value="Login" type="submit" id="submit">
+        </form>
+    </div>
+
+    <div class="line-seperator"></div>
 
     <div class="signupCon">
-        <p>Dont have an account?</p>
-        <p>Create one here</p>
-        <a class="signupButton" href="/signup">SignUp</a>
+        <div class="btn signupButton">SignUp</div>
     </div>
 </div>
