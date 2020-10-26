@@ -17,6 +17,8 @@ $( document ).ready(function() {
         {
             return alert("password dosn't match");
         }
+
+        api_ajax("user")
         
         $.ajax({
             type: "POST",
