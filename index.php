@@ -10,6 +10,8 @@ $redirect = explode('?',$_SERVER['REQUEST_URI']); // You can also use $_SERVER['
 
 $redirect_exploded = explode("/", $redirect[0]);
 
+var_dump($redirect_exploded);
+
 if($redirect_exploded[1] != "" && $redirect_exploded[1] == "api_v1")
 {
     switch ($redirect_exploded[2]) {
