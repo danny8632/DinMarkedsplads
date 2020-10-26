@@ -1,21 +1,23 @@
 $( document ).ready(function() {
     
-    var form = $(".content").find(`form.signupForm`);
+    $(".content").on('click', 'form.signupForm #submit', (e) => {
+        e.preventDefault()
 
-    form.on( "submit", function( event ) {
-        event.preventDefault();
-        var data = $( this ).serializeArray();
+        let form_data = $(e.currentTarget).parents('form').serializeArray();
 
-        if(data[2]['value'] != data[3]['value']) return alert("password dosn't match");
+        let data = { "method": "signUp" };
 
-        var data = {
-            "method": "signUp",
-            "name": data[0]['value'], 
-            "username": data[1]['value'], 
-            "password": data[2]['value'] 
+        for (let i = 0, length = form_data.length; i < length; i++) {
+            const elm = form_data[i];
+            
+            data[elm['name']] = elm['value'];
         }
 
-
+        if(data['password'] !== data['confirmPassword'])
+        {
+            return alert("password dosn't match");
+        }
+        
         $.ajax({
             type: "POST",
             url: "/api_v1/user",
@@ -38,6 +40,6 @@ $( document ).ready(function() {
                 alert("signup failed")
             }
         });
-    });
 
+    });
 });

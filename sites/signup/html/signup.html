@@ -1,9 +1,32 @@
 <div class="content">
-    <form class="signupForm">
-        <input placeholder="Name..." name="name" required>
-        <input placeholder="Username..." name="username" required>
-        <input placeholder="Password..." type="password" name="password" required>
-        <input placeholder="Confirm password..." type="password" name="confirmPassword" required>
-        <input value="Login" type="submit" id="submit"> 
-    </form>
+    <div class="title-wrapper">
+        <h1 class="title">Registrer bruger</h1>
+    </div>
+
+    <div class="form-wrapper">
+        <form class="signupForm">
+
+            <div class="email-wrapper input-wrapper">
+                <label for="email">Email:</label>
+                <input placeholder="Email" name="email" required>
+            </div>
+
+            <div class="username-wrapper input-wrapper">
+                <label for="username">Brugernavn:</label>
+                <input placeholder="Brugernavn" name="username" required>
+            </div>
+
+            <div class="password-wrapper input-wrapper">
+                <label for="password">Adgangskode:</label>
+                <input placeholder="Password" type="password" name="password" required>
+            </div>
+
+            <div class="confirmPassword-wrapper input-wrapper">
+                <label for="confirmPassword">Gentag adgangskode:</label>
+                <input placeholder="Confirm password" type="password" name="confirmPassword" required>
+            </div>
+
+            <input class="btn" value="Registrer" type="submit" id="submit"> 
+        </form>
+    </div>
 </div>

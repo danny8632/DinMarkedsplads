@@ -1,7 +1,5 @@
 <?php
 
-// TODO: Add email functionality
-
 session_start();
 
 require __DIR__."/../api.php";
@@ -16,46 +14,36 @@ class User extends Api {
 
     }
 
+    //  TODO: Add email functionality
     function signUp() {
 
         $req = $this->getRequest()[1];
 
-        $email = false;
-        foreach (['email', 'e_mail', 'mail'] as $key) {
-            if(isset($req[$key])) $email = $req[$key];
-        }
-
-        $password = false;
-        foreach (['password', 'pwd'] as $key) {
-            if(isset($req[$key])) $password = $req[$key];
-        }
-
-        $username = false;
-        foreach (['username', 'uname', 'name'] as $key) {
-            if(isset($req[$key])) $username = $req[$key];
-        }
+        $email    = $this->getRequestValues(['email', 'e_mail', 'mail'], $req);
+        $password = $this->getRequestValues(['password', 'pwd'], $req);
+        $username = $this->getRequestValues(['username', 'uname', 'name'], $req);
+        $verify   = 1;
 
         if($email == false || $password == false || $username == false)
             return $this->formatResponse(false, ['msg' => "email, password, username is not set"]);
-
 
         $password = password_hash($password, PASSWORD_DEFAULT);
 
 
         $this->conn = $this->getDbConn();
-        $stmt = $this->conn->prepare("SELECT * FROM `users` WHERE `username` = :username OR `email` = :email");
+        $stmt = $this->conn->prepare("SELECT * FROM `Users` WHERE `username` = :username OR `email` = :email;");
         $stmt->bindParam(':username', $username);
         $stmt->bindParam(':email', $email);
-        
         $stmt->execute();
 
         if($stmt->rowCount() > 0) return $this->formatResponse(false, ['msg' => "email, password, username is not set"]);
 
 
-        $stmt = $this->conn->prepare("INSERT INTO `Users`(`email`, `password`, `username`) VALUES (:email, :password, :username)");
+        $stmt = $this->conn->prepare("INSERT INTO `Users`(`email`, `password`, `username`, `isVerified`) VALUES (:email, :password, :username, :isVerified);");
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':password', $password);
         $stmt->bindParam(':username', $username);
+        $stmt->bindParam(':isVerified', $verify);
         $stmt->execute();
 
         if($stmt->rowCount() > 0) 
@@ -69,86 +57,58 @@ class User extends Api {
 
         $req = $this->getRequest()[1];
 
-        if(empty($req))
-        {
-            echo "Req empty";
-            return;
-        }
+        $username = $this->getRequestValues(['username', 'uname', 'name'], $req);
+        $password = $this->getRequestValues(['password', 'pwd'], $req);
 
-        $username = $req['username'];
-        $password = $req['password'];
+        if($password == false || $username == false) return $this->formatResponse(false, ['msg' => "password or username is not set"]);
 
-        if(empty($username) || empty($password))
-        {
-            echo json_encode($req);
-            return;
-        }
-
+            
         $this->conn = $this->getDbConn();
-        $stmt = $this->conn->prepare("SELECT * FROM `users` WHERE `username` = :username LIMIT 1");
+        $stmt = $this->conn->prepare("SELECT `id`, `email`, `password`, `username`, `isVerified` FROM `Users` WHERE `username` = :username LIMIT 1");
         $stmt->bindParam(':username', $username);
         $stmt->execute();
 
-        if($stmt->rowCount() == 0)
+        if($stmt->rowCount() == 0) $this->formatResponse(false, ['msg' => "User does not exists"]);
+
+
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC)[0];
+        if(password_verify($password, $result['password']))
         {
-            echo json_encode(array(
-                "success" => false,
-                "msg" => "User dosn't exists"
-            ));
+            if($result['isVerified'] == 0) return $this->formatResponse(false, ['msg' => "User not activated"]);
+
+            $_SESSION["user_id"] = $result['id'];
+            $_SESSION['username'] = $result['username'];
+            $_SESSION['useremail'] = $result['email'];
+
+            return $this->formatResponse(true);
         }
         else
         {
-            $result = $stmt->fetchAll(\PDO::FETCH_ASSOC)[0];
-            if(password_verify($password, $result['password']))
-            {
-                $_SESSION["user_id"] = $result['id'];
-                $_SESSION["user_name"] = $result['name'];
-                $_SESSION['username'] = $result['username'];
-
-                echo json_encode(array(
-                    "id" => $result['id'],
-                    'name' => $result['name']
-                    )
-                );
-            }
-            else
-            {
-                echo "wong";
-            }
+            return $this->formatResponse(false, ['msg' => "User details not correct"]);
         }
     }
 
-    function logout()
-    {
+    function logout() {
         session_start();
         session_destroy();
-        echo json_encode(array(
-            "success" => true
-        ));
-        header("Location: ./../");
+        return $this->formatResponse(true, ['msg' => "logout"]);
     }
 
-    function getUserInfo()
-    {
-        $req = $this->getRequest();
+    function getUserInfo() {
+        
+        $req = $this->getRequest()[1];
 
-        $user_id;
+        $userid = $this->getRequestValues(['id', 'user_id', 'uid', 'userid', 'userId', 'userID'], $req);
 
-        if(isset($req[1]) && !empty($req[1]))
-        {
-            $req = $req[1];
-
-            if(isset($req['user_id'])) $user_id = $req['user_id'];
-        }
-
+        if($userid == false) return $this->formatResponse(false, ['msg' => "userid is not set"]);
 
         $this->conn = $this->getDbConn();
-        $stmt = $this->conn->prepare("SELECT `users`.`id`, `users`.`username`, `users`.`created` FROM `users` WHERE `users`.`id` = :id");
-        $stmt->bindParam(':id', $user_id);
+        $stmt = $this->conn->prepare("SELECT `fname`, `lname`, `phone`, `address`, `zipcode`, `region` FROM `UserDetails` WHERE `userId` = :userid;");
+        $stmt->bindParam(':userid', $userid);
         $stmt->execute();
         
-        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC)[0];
 
-        echo json_encode($result);
+        return $this->formatResponse(true, $result);
     }
 }

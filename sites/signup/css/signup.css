@@ -1,11 +1,68 @@
+/* * {
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif;
+} */
+
 .content {
-    margin-left: 5%;
-    margin-right: 5%;
-}
-.signupForm {
-    display: grid;
+    background-color: #fff;
+    width: 600px;
     margin: auto;
-    margin-top: 3%;
-    width: -moz-fit-content;
-    width: fit-content;
+    position: relative;
+    border-radius: 6px;
+}
+
+.content .title-wrapper {
+    margin: 0px;
+    padding: 20px;
+    background-color: #437FC7;
+    color: #fff;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 6px 6px 0px 0px;
+    font-size: 20px;
+}
+
+.content .form-wrapper {
+    padding: 0px 100px;
+    margin-top: 40px;
+}
+
+.content .form-wrapper form {
+    position: relative;
+    text-align: center;
+}
+
+.content .form-wrapper .input-wrapper {
+    width: 100%;
+    display: block;
+    position: relative;
+    text-align: left;
+    box-sizing: border-box;
+}
+
+.content .form-wrapper .input-wrapper label {
+    width: 100%;
+    display: block;
+    float: left;
+    padding-top: 8px;
+}
+
+.content .form-wrapper .input-wrapper input {
+    width: 100%;
+    float: left;
+}
+
+.content .form-wrapper form .btn {
+    width: 160px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    background-color: #437FC7;
+    font-weight: bold;
+    color: #fff;
+    border-radius: 2px;
+    border: none;
+    padding: 6px 8px;
+}
+
+.content .form-wrapper form .btn:hover {
+    background-color: #6DAFFE;
 }

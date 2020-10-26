@@ -61,14 +61,36 @@ class Api extends DB {
         
     }
 
-
-    public function formatResponse($success = true, $data)
+    public function formatResponse($success = true, $data = "")
     {
         echo json_encode(array(
-            "success" => success,
+            "success" => $success,
             "data" => $data
         ));
         return;
+    }
+
+    
+    /**
+     * Gets value from request by keys in array
+     */
+    public function getRequestValues($arr = [], $req = "")
+    {
+        $val = false;
+
+        if(!empty($arr) && !empty($req))
+        {
+            for ($i=0; $i < count($arr); $i++) { 
+             
+                if(isset($req[$arr[$i]]))
+                {
+                    $val = $req[$arr[$i]];
+                    break;
+                }
+            }
+        }
+
+        return $val;
     }
 
 }
