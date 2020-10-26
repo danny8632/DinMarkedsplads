@@ -68,7 +68,7 @@ class User extends Api {
         $stmt->bindParam(':username', $username);
         $stmt->execute();
 
-        if($stmt->rowCount() == 0) $this->formatResponse(false, ['msg' => "User does not exists"]);
+        if($stmt->rowCount() == 0) return $this->formatResponse(false, ['msg' => "User does not exists"]);
 
 
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC)[0];
@@ -89,9 +89,11 @@ class User extends Api {
     }
 
     function logout() {
-        session_start();
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
         session_destroy();
-        return $this->formatResponse(true, ['msg' => "logout"]);
+        header("Location: ./../");
     }
 
     function getUserInfo() {

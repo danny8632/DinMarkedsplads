@@ -1,37 +1,31 @@
 $( document ).ready(function() {
-    
-    var form = $(".content").find(`form.loginForm`);
 
-    form.on( "submit", function( event ) {
-        event.preventDefault();
-        var data = $( this ).serializeArray();
+    $(".content").on('click', 'form.loginForm #submit', (e) => {
+        e.preventDefault()
 
-        var data = {
-            "method": "login",
-            "username": data[0]['value'], 
-            "password": data[1]['value'] 
+        let form_data = $(e.currentTarget).parents('form.loginForm').serializeArray(),
+            data      = { "method": "login" };
+
+        for (let i = 0, length = form_data.length; i < length; i++) {
+            const elm = form_data[i];
+            
+            data[elm['name']] = elm['value'];
         }
 
-        $.ajax({
-            type: "POST",
-            url: "/api_v1/user",
-            data: data,
-            success: (resp) => {
-                var resp = JSON.parse(resp);
+        $(".content").find(".error-text").remove();
 
-                if(resp['success'] == false)
-                {
-                    alert("Login failed")
-                }
-                else
-                {
-                    window.location.replace("./");
-                }
-            },
-            error: () => {
-                alert("Login failed")
+        api_ajax("user", data, (resp) => {
+
+            if(resp.success === false)
+            {
+                $(`<p class="error-text">${resp.data.msg}</p>`).insertAfter(".content .title-wrapper");
+                return;
+            }
+            else
+            {
+                window.location.replace("./");
             }
         });
-    });
 
+    })
 });

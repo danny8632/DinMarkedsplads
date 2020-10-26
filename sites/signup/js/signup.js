@@ -13,7 +13,7 @@ $( document ).ready(function() {
             data[elm['name']] = elm['value'];
         }
 
-        $(".content").find(".error-wrapper").remove();
+        $(".content").find(".error-text").remove();
 
         if(data['password'] !== data['confirmPassword'])
         {
