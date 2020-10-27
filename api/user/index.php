@@ -109,6 +109,8 @@ class User extends Api {
         $stmt->bindParam(':userid', $userid);
         $stmt->execute();
         
+        if($stmt->rowCount() == 0) return $this->formatResponse(false, ["msg" => "User does not exists"]);
+
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC)[0];
 
         return $this->formatResponse(true, $result);

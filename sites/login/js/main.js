@@ -1,5 +1,9 @@
 $( document ).ready(function() {
 
+    $(".content").on('click', '.btn.signupButton', () => {
+        window.location.href = './signup';
+    })
+
     $(".content").on('click', 'form.loginForm #submit', (e) => {
         e.preventDefault()
 
