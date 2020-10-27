@@ -21,17 +21,18 @@ class Categories extends Api {
 
         $req = $this->getRequest();
 
+        if(empty($req)) return $this->formatResponse(false, ['msg' => "No data was parsed"]);
+
+
         $this->conn = $this->getDbConn();
 
-        if(isset($req[1]) && !empty($req[1]))
-        {
-            $req = $req[1];
-            if(isset($req['id'])) $id = $req['id'];
-            if(isset($req['category_id'])) $id = $req['category_id'];
-            if(isset($req['category'])) $category = $req['category'];
-            if(isset($req['name'])) $category = $req['name'];
-            if(isset($req['category_name'])) $category = $req['category_name'];
-        }
+
+        if(isset($req['id'])) $id = $req['id'];
+        if(isset($req['category_id'])) $id = $req['category_id'];
+        if(isset($req['category'])) $category = $req['category'];
+        if(isset($req['name'])) $category = $req['name'];
+        if(isset($req['category_name'])) $category = $req['category_name'];
+
 
         if(isset($id) && !empty($id))
         {

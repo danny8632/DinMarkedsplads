@@ -17,15 +17,12 @@ class Message extends Api {
     // Get message(s). Should get message based on productId(buyer) or userId & productId (seller) 
     function _GET() 
     {
-        $product_id;
-        $user_id;
+        /* $product_id;
+        $user_id; */
         
         $req = $this->getRequest();
 
-        if (isset$req[1]))
-            $req = $req[1];
-        else 
-        {
+        if (empty($req)) {
             echo json_encode(array(
                 "success" => false,
                 "message" => "U need to specify ether user_id or product_id",
