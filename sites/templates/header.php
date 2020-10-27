@@ -49,7 +49,7 @@
     <body>
 
     <div class="topnav" id="navbar">
-        <a class="logo" href="/home"><img src="../../../favicon.ico"></a>
+        <a class="logo" href="/home"><img src="/assets/LOGO/logo_white.png"></a>
         <div class="nav-btn-wrapper">
             <div class="search">
                 <form>

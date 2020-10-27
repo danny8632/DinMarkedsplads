@@ -21,18 +21,18 @@ time, mark, audio, video {
 }
 
 p {
-    color: white;
+    color:black;
 }
 body {
     height: 100vh;
-    background-color: #404040;
+    background-color:#e9ebee;
 }
 
 
 #navbar {
     overflow: hidden;
     /* background-color: #1f6696; */
-    background-image: linear-gradient(260deg, #185177 0%, #9e2a2a 100%);
+    background-color: #437FC7;
     margin-bottom: 15px;
     border-bottom: solid 1px #262626;
 }
@@ -44,17 +44,18 @@ body {
 #navbar a {
     float: left;
     display: block;
-    color: #f2f2f2;
+    color: black;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
-    font-size: 17px;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 #navbar .search {
     float: left;
     display: block;
-    padding: 7px 8px;
+    padding: 10px 16px;
 }
 
 #navbar .search input {
