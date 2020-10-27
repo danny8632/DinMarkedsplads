@@ -16,34 +16,29 @@ class Categories extends Api {
 
     function _GET() 
     {
-        $id;
-        $category;
-
         $req = $this->getRequest();
 
         if(empty($req)) return $this->formatResponse(false, ['msg' => "No data was parsed"]);
 
-
         $this->conn = $this->getDbConn();
 
-
-        if(isset($req['id'])) $id = $req['id'];
-        if(isset($req['category_id'])) $id = $req['category_id'];
-        if(isset($req['category'])) $category = $req['category'];
-        if(isset($req['name'])) $category = $req['name'];
-        if(isset($req['category_name'])) $category = $req['category_name'];
-
-
-        if(isset($id) && !empty($id))
+        $product_id = $this->getRequestValues([''], $req);
+        $product_name = $this->getRequestValues([''], $req);
+        $category_id = $this->getRequestValues([''], $req);
+        $category_name = $this->getRequestValues([''], $req);
+        $price = $this->getRequestValues([''], $req);
+        
+        if(isset($product_id) && !empty($product_id) && isset($category_id) && !empty($category_id))
         {
-            $stmt = $this->conn->prepare("SELECT * FROM categories WHERE id = :id");
-            $stmt->bindParam(":id", $id);
+            // Base SQL statement - can add WHERE statements based on search parameter
+            $stmt = $this->conn->prepare("SELECT userId, title, description, address, price, status FROM products INNER JOIN productcategories ON products.id = productcategories.id INNER JOIN categories ON productcategories.categoryId = categories.id");
+            $stmt->bindParam(":id", $category_id);
             $stmt->execute();
         }
-        else if(isset($category) && !empty($category))
+        else if(isset($category_name) && !empty($category_name))
         {
-            $stmt = $this->conn->prepare("SELECT * FROM categories WHERE category = :category");
-            $stmt->bindParam(":category", $category);
+            $stmt = $this->conn->prepare("SELECT * FROM categories WHERE name = :name");
+            $stmt->bindParam(":category", $category_name);
             $stmt->execute();
         }
         else
