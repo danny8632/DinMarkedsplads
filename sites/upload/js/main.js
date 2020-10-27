@@ -1,4 +1,20 @@
 $( document ).ready(function() {
+
+    const form = $(`.container .form-wrapper`);
+
+    const modal = $(`.modal`);
+
+    form.on('click', '.image-wrapper .upload-img', () => {
+
+        modal.css("display", "block")
+
+    })
+
+
+
+
+/* 
+
     
     var form = $(`form.uploadPost`);
 
@@ -104,5 +120,5 @@ $( document ).ready(function() {
         if (event.target == modal) {
             modal.style.display = "none";
         }
-    }
+    } */
 });

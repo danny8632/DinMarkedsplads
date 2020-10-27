@@ -7,6 +7,9 @@
     padding: 6px 8px;
     font-size: 14px;
     cursor: pointer;
+    text-align: center;
+    box-sizing: border-box;
+    width: max-content;
 }
 
 .btn:hover {
