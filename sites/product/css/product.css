@@ -1,0 +1,48 @@
+.wrapper {
+    margin-left: 10%;
+    margin-right: 10%;
+}
+.content {
+    background-color: white;
+    padding: 15px;
+}
+
+.title {
+    font-size: 25px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.pictureCon {
+    margin-bottom: 7px;
+}
+.pictures {
+    width: 700px;
+    height: 450px;
+    margin: auto;
+}
+
+.buttonsCon {
+    width: fit-content;
+    margin-right: 0%;
+    margin-left: auto;
+    padding: 7px;
+}
+
+.descriptionTitleCon {
+    display: flex;
+}
+.descriptionTitle {
+    font-size: 25px;
+    margin-bottom: 10px;
+}
+.description {
+    padding: 15px;
+    border: black solid 1px;
+    border-radius: 10px;
+    min-height: 200px;
+}
+
+.backButtonCon {
+    padding-top: 7px;
+}
