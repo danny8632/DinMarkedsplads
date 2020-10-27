@@ -8,13 +8,19 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <!-- CSS -->
         <link rel="stylesheet" type="text/css" href="/sites/templates/header.css">
         <link rel="stylesheet" type="text/css" href="/sites/templates/css/fontsRoboto.css">
+        <link rel="stylesheet" type="text/css" href="/assets/global_css/button.css">
+
+
+        <!-- JS -->
         <script type="text/javascript" src="/sites/templates/js/navbar.js" defer></script>
         <script type="text/javascript" src="/sites/templates/js/fontAwesome.js" defer></script>
         <script type="text/javascript" src="/sites/templates/js/jquery.min.js"></script>
-        <script type="text/javascript" src="/global_js/global.js"></script>
-        <script type="text/javascript" src="/global_js/api.js"></script>
+        <script type="text/javascript" src="/assets/global_js/global.js"></script>
+        <script type="text/javascript" src="/assets/global_js/api.js"></script>
         <script type="text/javascript" src="/sites/templates/js/posts_global.js"></script>
         <script type="text/javascript" src="/sites/templates/js/vote_global.js"></script>
 
