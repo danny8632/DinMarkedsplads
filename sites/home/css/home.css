@@ -1,15 +1,21 @@
 .homeWrapper {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.wrapperWrapper {
     display: flex;
-    height: 100%;
-    padding-left: 5px;
-    padding-right: 5px;
 }
 
 .categories {
     width: 15%;
-    display: inline-flex;
+    padding: 10px;
+    border-right: solid black 2px;
 }
 .content {
-    display: inline-flex;
+    padding-top: 10px;
+    padding-left: 10px;
     width: 85%;
+}
+.titlebar {
+    margin-bottom: 10px;
 }

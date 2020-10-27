@@ -21,18 +21,18 @@ time, mark, audio, video {
 }
 
 p {
-    color: white;
+    color:black;
 }
 body {
     height: 100vh;
-    background-color: #404040;
+    background-color:#e9ebee;
 }
 
 
 #navbar {
     overflow: hidden;
     /* background-color: #1f6696; */
-    background-color: cadetblue;
+    background-color: #437FC7;
     margin-bottom: 15px;
     border-bottom: solid 1px #262626;
 }
