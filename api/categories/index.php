@@ -36,17 +36,21 @@ class Categories extends Api {
         }
         else if(isset($product_name) && !empty($product_name))
         {
-            // Get products by name (should be moved)
+            // Get products by name (should be moved?)
             $stmt = $this->conn->prepare("SELECT userId, title, description, address, price, status FROM products INNER JOIN productcategories ON products.id = productcategories.id INNER JOIN categories ON productcategories.categoryId = categories.id WHERE products.title LIKE ':name%'");
             $stmt->bindParam(":name", $product_name);
             $stmt->execute();
+
+            
+            if($stmt->rowCount() <= 0) // If no products found with this name?
+                return $this->formatResponse(true, ['msg' => "no products found"]);
         }
         else
         {
             $stmt = $this->conn->prepare("SELECT * FROM categories");
             $stmt->execute();
         }
-
+        
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
         echo json_encode($result);
