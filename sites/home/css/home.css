@@ -14,8 +14,89 @@
 .content {
     padding-top: 10px;
     padding-left: 10px;
+    margin-right: 10%;
     width: 85%;
 }
+
 .titlebar {
+    margin-bottom: 20px;
+    display: flex;
+}
+.titleTextCon {
+    display: flex;
+}
+.titleText {
+    color: black;
+    font-size: 23px;
+    font-weight: bold;
+}
+.titleResults {
+    margin-left: 10px;
+    font-size: 23px;
+    color: gray;
+    opacity: 0.5;
+}
+.titlebar .btn {
+    width: fit-content;
+    margin-right: 5%;
+    margin-left: auto;
+}
+
+/* Items */
+.itemsWrapper {
+    margin: auto;
+}
+.items {
+    display: inline-block;
+}
+.item {
+    float: left;
+    padding: 8px;
+    max-width: 400px;
+    border: black solid 2px;
+    background-color: #93BAE8;
+}
+.itemTitleCon {
+    padding-bottom: 8px;
+}
+.itemTitle {
+    padding: 5px;
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration: none;
+    color: black;
+}
+.itemPrice {
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+.itemInfoCon {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: flex;
+}
+.itemImgCon img, .itemImgCon {
+    max-width: 390px;
+}
+.itemImgCon img {
+    transition: transform .2s;
+}
+.itemImgCon{
+    overflow: hidden;
+}
+.itemImgCon img:hover{
+    transform: scale(1.2);
+}
+.itemDescriptionCon {
+    padding: 5px;
+    min-height: 200px;
+    width: 400px;
     margin-bottom: 10px;
+    background-color: #e9ebee;
+}
+.itemButtons {
+    width: fit-content;
+    padding-left: 10px;
+    margin-right: 0;
+    margin-left: auto;
 }
