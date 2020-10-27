@@ -1,4 +1,12 @@
 $( document ).ready(function() {
+
+
+
+
+
+
+/* 
+
     
     var form = $(`form.uploadPost`);
 
@@ -104,5 +112,5 @@ $( document ).ready(function() {
         if (event.target == modal) {
             modal.style.display = "none";
         }
-    }
+    } */
 });
