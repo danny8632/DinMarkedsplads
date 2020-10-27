@@ -22,7 +22,7 @@ $( document ).ready(function() {
             success: function (data) {
 
                 data = JSON.parse(data);
-
+                console.log(data);
                 console.log("SUCCESS : ", data);
 
 
@@ -58,8 +58,15 @@ $( document ).ready(function() {
 
     $("[type=file]").change(function() {
 
+
+        if (window.File && window.FileReader && window.Blob)
+        {
+            console.log("hej")
+        }
+
         $.extend(new FileReader(), {
             onload: function(e) {
+                console.log(img.attr("src"))
                 img.attr("src", URL.createObjectURL(new Blob([e.target.result])))
             }
         }).readAsArrayBuffer(this.files[0])
