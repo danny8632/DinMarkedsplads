@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.6deb5
+-- version 5.0.3
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Oct 26, 2020 at 12:58 PM
--- Server version: 10.3.25-MariaDB-0+deb10u1
--- PHP Version: 7.3.19-1~deb10u1
+-- Host: 127.0.0.1
+-- Generation Time: Oct 27, 2020 at 11:32 AM
+-- Server version: 10.4.14-MariaDB
+-- PHP Version: 7.2.34
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -23,10 +24,23 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Comments`
+-- Table structure for table `categories`
 --
 
-CREATE TABLE `Comments` (
+CREATE TABLE `categories` (
+  `id` int(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `created` timestamp NOT NULL DEFAULT current_timestamp(),
+  `modified` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `comments`
+--
+
+CREATE TABLE `comments` (
   `id` int(255) NOT NULL,
   `productId` int(255) NOT NULL,
   `userId` int(255) NOT NULL,
@@ -39,10 +53,10 @@ CREATE TABLE `Comments` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `DirectMessages`
+-- Table structure for table `directmessages`
 --
 
-CREATE TABLE `DirectMessages` (
+CREATE TABLE `directmessages` (
   `id` int(255) NOT NULL,
   `userId` int(255) NOT NULL,
   `productId` int(255) NOT NULL,
@@ -56,10 +70,10 @@ CREATE TABLE `DirectMessages` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ProductAssets`
+-- Table structure for table `productassets`
 --
 
-CREATE TABLE `ProductAssets` (
+CREATE TABLE `productassets` (
   `id` int(255) NOT NULL,
   `productId` int(255) NOT NULL,
   `location` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -71,10 +85,22 @@ CREATE TABLE `ProductAssets` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Products`
+-- Table structure for table `productcategories`
 --
 
-CREATE TABLE `Products` (
+CREATE TABLE `productcategories` (
+  `id` int(255) NOT NULL,
+  `productId` int(255) NOT NULL,
+  `categoryId` int(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `products`
+--
+
+CREATE TABLE `products` (
   `id` int(255) NOT NULL,
   `userId` int(255) NOT NULL,
   `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -89,20 +115,20 @@ CREATE TABLE `Products` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Triggers `Products`
+-- Triggers `products`
 --
 DELIMITER $$
-CREATE TRIGGER `Product_Assets_status_update` AFTER UPDATE ON `Products` FOR EACH ROW UPDATE ProductAssets SET ProductAssets.status = NEW.status WHERE ProductAssets.productId = NEW.id
+CREATE TRIGGER `Product_Assets_status_update` AFTER UPDATE ON `products` FOR EACH ROW UPDATE ProductAssets SET ProductAssets.status = NEW.status WHERE ProductAssets.productId = NEW.id
 $$
 DELIMITER ;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `UserDetails`
+-- Table structure for table `userdetails`
 --
 
-CREATE TABLE `UserDetails` (
+CREATE TABLE `userdetails` (
   `id` int(255) NOT NULL,
   `userId` int(255) NOT NULL,
   `fname` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -118,10 +144,10 @@ CREATE TABLE `UserDetails` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Users`
+-- Table structure for table `users`
 --
 
-CREATE TABLE `Users` (
+CREATE TABLE `users` (
   `id` int(255) NOT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -136,48 +162,62 @@ CREATE TABLE `Users` (
 --
 
 --
--- Indexes for table `Comments`
+-- Indexes for table `categories`
 --
-ALTER TABLE `Comments`
+ALTER TABLE `categories`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `comments`
+--
+ALTER TABLE `comments`
   ADD PRIMARY KEY (`id`),
   ADD KEY `product_comment_relation` (`productId`),
   ADD KEY `user_comment_relation` (`userId`),
   ADD KEY `subcomment_comment_relation` (`subComment`);
 
 --
--- Indexes for table `DirectMessages`
+-- Indexes for table `directmessages`
 --
-ALTER TABLE `DirectMessages`
+ALTER TABLE `directmessages`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_reciver_relation` (`reciverId`),
   ADD KEY `product_relation` (`productId`),
   ADD KEY `user_message_relation` (`userId`);
 
 --
--- Indexes for table `ProductAssets`
+-- Indexes for table `productassets`
 --
-ALTER TABLE `ProductAssets`
+ALTER TABLE `productassets`
   ADD PRIMARY KEY (`id`),
   ADD KEY `product_asset_relation` (`productId`);
 
 --
--- Indexes for table `Products`
+-- Indexes for table `productcategories`
 --
-ALTER TABLE `Products`
+ALTER TABLE `productcategories`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `product_category_relation` (`productId`),
+  ADD KEY `category_id_relation` (`categoryId`);
+
+--
+-- Indexes for table `products`
+--
+ALTER TABLE `products`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_product_relation` (`userId`);
 
 --
--- Indexes for table `UserDetails`
+-- Indexes for table `userdetails`
 --
-ALTER TABLE `UserDetails`
+ALTER TABLE `userdetails`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_relation` (`userId`);
 
 --
--- Indexes for table `Users`
+-- Indexes for table `users`
 --
-ALTER TABLE `Users`
+ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -185,72 +225,98 @@ ALTER TABLE `Users`
 --
 
 --
--- AUTO_INCREMENT for table `Comments`
+-- AUTO_INCREMENT for table `categories`
 --
-ALTER TABLE `Comments`
+ALTER TABLE `categories`
   MODIFY `id` int(255) NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT for table `DirectMessages`
+-- AUTO_INCREMENT for table `comments`
 --
-ALTER TABLE `DirectMessages`
+ALTER TABLE `comments`
   MODIFY `id` int(255) NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT for table `ProductAssets`
+-- AUTO_INCREMENT for table `directmessages`
 --
-ALTER TABLE `ProductAssets`
+ALTER TABLE `directmessages`
   MODIFY `id` int(255) NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT for table `Products`
+-- AUTO_INCREMENT for table `productassets`
 --
-ALTER TABLE `Products`
+ALTER TABLE `productassets`
   MODIFY `id` int(255) NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT for table `UserDetails`
+-- AUTO_INCREMENT for table `productcategories`
 --
-ALTER TABLE `UserDetails`
+ALTER TABLE `productcategories`
   MODIFY `id` int(255) NOT NULL AUTO_INCREMENT;
+
 --
--- AUTO_INCREMENT for table `Users`
+-- AUTO_INCREMENT for table `products`
 --
-ALTER TABLE `Users`
+ALTER TABLE `products`
   MODIFY `id` int(255) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `userdetails`
+--
+ALTER TABLE `userdetails`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT;
+
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `Comments`
+-- Constraints for table `comments`
 --
-ALTER TABLE `Comments`
-  ADD CONSTRAINT `product_comment_relation` FOREIGN KEY (`productId`) REFERENCES `Products` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `subcomment_comment_relation` FOREIGN KEY (`subComment`) REFERENCES `Comments` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `user_comment_relation` FOREIGN KEY (`userId`) REFERENCES `Users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `comments`
+  ADD CONSTRAINT `product_comment_relation` FOREIGN KEY (`productId`) REFERENCES `products` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `subcomment_comment_relation` FOREIGN KEY (`subComment`) REFERENCES `comments` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `user_comment_relation` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `DirectMessages`
+-- Constraints for table `directmessages`
 --
-ALTER TABLE `DirectMessages`
-  ADD CONSTRAINT `product_relation` FOREIGN KEY (`productId`) REFERENCES `Products` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `user_message_relation` FOREIGN KEY (`userId`) REFERENCES `Users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `user_reciver_relation` FOREIGN KEY (`reciverId`) REFERENCES `Users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `directmessages`
+  ADD CONSTRAINT `product_relation` FOREIGN KEY (`productId`) REFERENCES `products` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `user_message_relation` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `user_reciver_relation` FOREIGN KEY (`reciverId`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `ProductAssets`
+-- Constraints for table `productassets`
 --
-ALTER TABLE `ProductAssets`
-  ADD CONSTRAINT `product_asset_relation` FOREIGN KEY (`productId`) REFERENCES `Products` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `productassets`
+  ADD CONSTRAINT `product_asset_relation` FOREIGN KEY (`productId`) REFERENCES `products` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `Products`
+-- Constraints for table `productcategories`
 --
-ALTER TABLE `Products`
-  ADD CONSTRAINT `user_product_relation` FOREIGN KEY (`userId`) REFERENCES `Users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+ALTER TABLE `productcategories`
+  ADD CONSTRAINT `category_id_relation` FOREIGN KEY (`categoryId`) REFERENCES `categories` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  ADD CONSTRAINT `product_category_relation` FOREIGN KEY (`productId`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
--- Constraints for table `UserDetails`
+-- Constraints for table `products`
 --
-ALTER TABLE `UserDetails`
-  ADD CONSTRAINT `user_relation` FOREIGN KEY (`userId`) REFERENCES `Users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+ALTER TABLE `products`
+  ADD CONSTRAINT `user_product_relation` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `userdetails`
+--
+ALTER TABLE `userdetails`
+  ADD CONSTRAINT `user_relation` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
