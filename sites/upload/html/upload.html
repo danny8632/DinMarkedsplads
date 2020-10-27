@@ -1,7 +1,7 @@
 <div class="container">
 
     <div class="title-wrapper-header">
-        <h1 class="title">Registrer bruger</h1>
+        <h1 class="title">Opret produkt</h1>
     </div>
 
     <div class="form-wrapper">
@@ -11,16 +11,17 @@
             <input placeholder="Titel" name="title" minlength="6" required>
         </div>
 
-        <div class="description-wrapper input-wrapper">
-            <label for="description">Beskrivelse:</label>
-            <textarea placeholder="Beskrivelse" name="description" minlength="6" required></textarea>
-        </div>
-
         <div class="price-wrapper input-wrapper">
             <label for="price">Beløb:</label>
             <input placeholder="Beløb" name="price" minlength="6" required>
         </div>
 
+        <div class="description-wrapper input-wrapper">
+            <label for="description">Beskrivelse:</label>
+            <textarea placeholder="Beskrivelse" name="description" minlength="6" required></textarea>
+        </div>
+
+        
 
         <div class="address-wrapper input-wrapper">
             <label for="address">Addresse:</label>
@@ -38,8 +39,13 @@
         </div>
 
         <div class="image-wrapper input-wrapper">
-            <div class="btn uploadFileBtn">Upload your file here</div>
-            <input type="file" name="images" multiple required>
+
+            <div class="img-viewer">Ingen billeder valgt</div>
+
+            <div class="btn upload-img">Tilføj billeder</div>
+
+            <!-- <div class="btn uploadFileBtn">Upload your file here</div> -->
+            <!-- <input type="file" name="images" multiple required> -->
         </div>
 
     </div>
