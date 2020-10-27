@@ -78,7 +78,8 @@ class Categories extends Api {
 
         if(isset($id) && !empty($id))
         {
-            $stmt = $this->conn->prepare("SELECT posts.id, posts.title, posts.description, posts.file, posts.userID, users.name as name, users.username as username, posts.created, SUM(postvotes.vote = 'Upvote' AND postvotes.vote IS NOT NULL) AS 'UpVotes', SUM(postvotes.vote = 'Downvote' AND postvotes.vote IS NOT NULL) AS 'DownVotes', SUM(CASE WHEN postvotes.vote IS NOT NULL THEN IF(postvotes.vote = 'Upvote', 1, -1) END) AS `TotalVotes` FROM posts LEFT JOIN postvotes on posts.id = postvotes.postID LEFT JOIN users on posts.userID = users.id WHERE posts.id IN (SELECT postID FROM `postCategoryRelation` WHERE `categoryID` = :id) GROUP BY posts.id, postvotes.postID");
+            //$stmt = $this->conn->prepare("SELECT posts.id, posts.title, posts.description, posts.file, posts.userID, users.name as name, users.username as username, posts.created, SUM(postvotes.vote = 'Upvote' AND postvotes.vote IS NOT NULL) AS 'UpVotes', SUM(postvotes.vote = 'Downvote' AND postvotes.vote IS NOT NULL) AS 'DownVotes', SUM(CASE WHEN postvotes.vote IS NOT NULL THEN IF(postvotes.vote = 'Upvote', 1, -1) END) AS `TotalVotes` FROM posts LEFT JOIN postvotes on posts.id = postvotes.postID LEFT JOIN users on posts.userID = users.id WHERE posts.id IN (SELECT postID FROM `postCategoryRelation` WHERE `categoryID` = :id) GROUP BY posts.id, postvotes.postID");
+            $stmt = $this->conn->prepare("SELECT products.id, products.userId, products.title, products.description, products.price, products.address, products.zipcode, products.region");
             $stmt->bindParam(":id", $id);
             $stmt->execute();
         }

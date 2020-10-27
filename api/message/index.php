@@ -1,10 +1,10 @@
 <?php
-
+// TODO: Comments api - specification of user_id is no longer needed. Sum of upvotes/downvotes are also no longer required.
 require __DIR__."/../api.php";
 
 session_start();
 
-class Comment extends Api {
+class Message extends Api {
 
     private $conn;
 
@@ -14,9 +14,35 @@ class Comment extends Api {
 
     }
 
+    // Get message(s). Should get message based on productId(buyer) or userId & productId (seller) 
     function _GET() 
     {
+        $product_id;
+        $user_id;
+        
+        $req = $this->getRequest();
 
+        if (isset$req[1]))
+            $req = $req[1];
+        else 
+        {
+            echo json_encode(array(
+                "success" => false,
+                "message" => "U need to specify ether user_id or product_id",
+                "req" => json_encode($req)
+            ));
+            return true;
+        }
+
+        $this->conn = $this->getDbConn();
+
+        
+        if(isset($req) && !empty($req))
+        {
+
+        }
+
+        /*
         $post_id;
         $user_id;
         $comment_id;
@@ -102,9 +128,10 @@ class Comment extends Api {
         }
 
         echo json_encode($data);
+        */
     }
 
-
+    // Post comment. Much of the code can stay intact
     function _POST()
     {
         $post_id;
@@ -209,7 +236,7 @@ class Comment extends Api {
 
     }
 
-
+    // Delete comment. Much of the code can stay intact. 
     function deleteComment() {
 
         $comment_id;
