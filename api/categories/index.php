@@ -22,23 +22,23 @@ class Categories extends Api {
 
         $this->conn = $this->getDbConn();
 
-        $product_id = $this->getRequestValues([''], $req);
-        $product_name = $this->getRequestValues([''], $req);
-        $category_id = $this->getRequestValues([''], $req);
-        $category_name = $this->getRequestValues([''], $req);
-        $price = $this->getRequestValues([''], $req);
-        
+        $product_id    = $this->getRequestValues(['product_id', 'product-id', 'productId'], $req);
+        $product_name  = $this->getRequestValues(['product_name', 'product-name', 'productName'], $req);
+        $category_id   = $this->getRequestValues(['category_id', 'category-id', 'categoryId'], $req);
+        $category_name = $this->getRequestValues(['category_name', 'category-name', 'categoryName'], $req);
+       
         if(isset($product_id) && !empty($product_id) && isset($category_id) && !empty($category_id))
         {
-            // Base SQL statement - can add WHERE statements based on search parameter
-            $stmt = $this->conn->prepare("SELECT userId, title, description, address, price, status FROM products INNER JOIN productcategories ON products.id = productcategories.id INNER JOIN categories ON productcategories.categoryId = categories.id");
+            // Get products by category id
+            $stmt = $this->conn->prepare("SELECT userId, title, description, address, price, status FROM products INNER JOIN productcategories ON products.id = productcategories.id INNER JOIN categories ON productcategories.categoryId = categories.id WHERE productcategories.categoryId = :id");
             $stmt->bindParam(":id", $category_id);
             $stmt->execute();
         }
-        else if(isset($category_name) && !empty($category_name))
+        else if(isset($product_name) && !empty($product_name))
         {
-            $stmt = $this->conn->prepare("SELECT * FROM categories WHERE name = :name");
-            $stmt->bindParam(":category", $category_name);
+            // Get products by name (should be moved)
+            $stmt = $this->conn->prepare("SELECT userId, title, description, address, price, status FROM products INNER JOIN productcategories ON products.id = productcategories.id INNER JOIN categories ON productcategories.categoryId = categories.id WHERE products.title LIKE ':name%'");
+            $stmt->bindParam(":name", $product_name);
             $stmt->execute();
         }
         else
