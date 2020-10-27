@@ -17,7 +17,7 @@ class User extends Api {
     //  TODO: Add email functionality
     function signUp() {
 
-        $req = $this->getRequest()[1];
+        $req = $this->getRequest();
 
         $email    = $this->getRequestValues(['email', 'e_mail', 'mail'], $req);
         $password = $this->getRequestValues(['password', 'pwd'], $req);
@@ -55,7 +55,7 @@ class User extends Api {
 
     function login() {
 
-        $req = $this->getRequest()[1];
+        $req = $this->getRequest();
 
         $username = $this->getRequestValues(['username', 'uname', 'name'], $req);
         $password = $this->getRequestValues(['password', 'pwd'], $req);
@@ -98,7 +98,7 @@ class User extends Api {
 
     function getUserInfo() {
         
-        $req = $this->getRequest()[1];
+        $req = $this->getRequest();
 
         $userid = $this->getRequestValues(['id', 'user_id', 'uid', 'userid', 'userId', 'userID'], $req);
 

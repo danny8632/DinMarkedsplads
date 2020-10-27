@@ -51,7 +51,7 @@ class Api extends DB {
 
     public function getRequest()
     {
-        return $this->req;
+        return isset($this->req[1]) ? $this->req[1] : $this->req;
     }
 
     public function getDbConn()

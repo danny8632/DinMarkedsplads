@@ -90,7 +90,7 @@ class Post extends Api {
     // POST product - should require a name, price, description & one or more pictures attatched 
     function _POST()
     {
-        $req = $this->getRequest()[1];
+        $req = $this->getRequest();
 
         if(empty($req) || !isset($req['title']) || empty($req['title']) || !isset($req['description']) || empty($req['description']) || !isset($_SESSION["user_id"]))
             return true;
