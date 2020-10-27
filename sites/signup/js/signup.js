@@ -29,7 +29,18 @@ $( document ).ready(function() {
 
         api_ajax("user", data, (resp) => {
 
-            console.log(resp);
+            $(".content").find(".error-text").remove();
+
+            if(resp.success === false)
+            {
+                $(`<p class="error-text">${resp.data.msg}</p>`).insertAfter(".content .title-wrapper");
+                return;
+            }
+            else
+            {
+                $(".content").find('.form-wrapper').toggleClass("hidden", true);
+                $(".content").find('.confirm-email').toggleClass("hidden", false);
+            }
 
         });
     });

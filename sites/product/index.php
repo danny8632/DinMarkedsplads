@@ -1,25 +1,26 @@
 <?php
-
 require __DIR__ . '/../sites.php';
 
-class Top Extends Sites {
+class Product Extends Sites {
 
     public $includeFiles = array(
         "css" => array(
-            "/sites/top/css/post.css",
-            "/sites/top/css/navbar.css"
-        ),
-        "js" => array(
-            "/sites/top/js/top.js"
+            "/sites/product/css/product.css"
         ),
         "html" => array(
-            "top/html/top.html"
+            "product/html/product.html"
+        ),
+        "js" => array(
+            "/sites/product/js/product.js"
         )
     );
 
     function __construct() {
 
         parent::__construct($this->includeFiles);
+
+
+        //echo '';
     }
 
 }
