@@ -1,0 +1,56 @@
+<?php
+
+require __DIR__."/../api.php";
+
+class Products extends Api {
+
+    private $conn;
+
+    function __construct() {
+
+        parent::__construct();
+
+    }
+
+    function _GET() 
+    {
+        $this->conn = $this->getDbConn();
+        $stmt = $this->conn->prepare("SELECT * FROM posts");
+        $stmt->execute();
+
+        $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+
+
+        echo json_encode($stmt->fetchAll());
+
+    }
+
+
+    function orderProductsBy()
+    {
+        $this->conn = $this->getDbConn();
+
+        if(empty($req)) return $this->formatResponse(false, ['msg' => "No data was parsed"]);
+        
+        $order_type = $this->getRequestValues(['order_by', 'order-by', 'orderBy'], $req); // order by created/price - should this be handled client side??
+        $asc_desc = $this->getRequestValues(['type']); // order by ascending/desc
+
+        if(isset($order_by) && !empty($order_by))
+        {
+            $stmt = $this->conn->prepare("SELECT userId, title, description, address, price, status, created FROM products INNER JOIN productcategories ON products.id = productcategories.id INNER JOIN categories ON productcategories.categoryId = categories.id ORDER BY :order_type :asc_desc");
+            $stmt->bindParam(":order_by", $order_by);
+            $stmt->bindParam(":asc_desc", $asc_desc);
+            $stmt->execute();
+        } 
+    
+        $stmt->execute();
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        if($stmt->rowCount() > 0)
+            return $this->formatResponse(true, $result); 
+        else
+            return $this->formatResponse(false, ['msg' => "No products found"]);
+            
+    }
+
+}
