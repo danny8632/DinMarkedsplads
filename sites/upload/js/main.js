@@ -1,6 +1,14 @@
 $( document ).ready(function() {
 
+    const form = $(`.container .form-wrapper`);
 
+    const modal = $(`.modal`);
+
+    form.on('click', '.image-wrapper .upload-img', () => {
+
+        modal.css("display", "block")
+
+    })
 
 
 

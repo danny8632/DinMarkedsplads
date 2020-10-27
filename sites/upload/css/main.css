@@ -81,7 +81,7 @@
 
 .container .form-wrapper .input-wrapper.image-wrapper .img-viewer {
     width: 100%;
-    border: 1px dotted black;
+    border: 1px dashed black;
     height: 130px;
     overflow-x: auto;
     text-align: center;
@@ -89,7 +89,7 @@
 }
 
 .container .form-wrapper .input-wrapper.image-wrapper .upload-img {
-    width: 120px;
+    width: 130px;
 }
 
 
