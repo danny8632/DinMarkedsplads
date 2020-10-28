@@ -32,6 +32,7 @@ class Get extends Api {
         }
         else
         {
+            // SELECT products.id, products.userId, products.title, products.description, products.address, products.price, products.status, products.created FROM products INNER JOIN productassets ON products.id = productassets.productId WHERE products.status = 'A'
             $stmt = $this->conn->prepare("SELECT id, userId, title, description, address, price, status, created FROM products WHERE status = 'A'");
             $stmt->execute();
         }
