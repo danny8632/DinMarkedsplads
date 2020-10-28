@@ -2,7 +2,7 @@
 
 require __DIR__."/../api.php";
 
-class Products extends Api {
+class Get extends Api {
 
     private $conn;
 
@@ -28,6 +28,11 @@ class Products extends Api {
             // Get specific product
             $stmt = $this->conn->prepare("SELECT userId, title, description, address, price, status, created FROM products WHERE products.id = :id AND status = 'A'");
             $stmt->bindParam(":id", $post_id);
+            $stmt->execute();
+        }
+        else
+        {
+            $stmt = $this->conn->prepare("SELECT userId, title, description, address, price, status, created FROM products WHERE status = 'A'");
             $stmt->execute();
         }
 
