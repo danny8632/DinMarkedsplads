@@ -13,7 +13,7 @@
         <link rel="stylesheet" type="text/css" href="/sites/templates/header.css">
         <link rel="stylesheet" type="text/css" href="/sites/templates/css/fontsRoboto.css">
         <link rel="stylesheet" type="text/css" href="/assets/global_css/button.css">
-
+        <link rel="stylesheet" type="text/css" href="/assets/global_css/modal.css">
 
         <!-- JS -->
         <script type="text/javascript" src="/sites/templates/js/navbar.js" defer></script>
