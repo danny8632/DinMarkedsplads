@@ -34,7 +34,7 @@ class Categories extends Api {
             $stmt->bindParam(":id", $category_id);
             $stmt->execute();
 
-            if($stmt->rowCount() <= 0) // If no products found with in this category (?)
+            if($stmt->rowCount() <= 0)
                 return $this->formatResponse(true, ['msg' => "no products found in this category"]);
         }
         else if(isset($product_name) && !empty($product_name))
