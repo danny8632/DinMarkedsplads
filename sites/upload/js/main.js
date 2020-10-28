@@ -78,7 +78,7 @@ class CreateProduct {
         image_wrapper.html("");
 
         if(files.length === 0)
-        {
+        {resp.data.id
             this.modal.find('.modal-body .warning-text').toggleClass("hidden", false);
             return;
         }
@@ -172,13 +172,13 @@ class CreateProduct {
 
         api_ajax("products/create", this.data, (resp) => {
 
-            if(resp.success === false)
+            if(resp.success === false || typeof resp.data.id === "undefined")
             {
                 alert("Der skete en fejl i upload...");
                 return false;
             }
 
-            window.location.replace("./product");
+            window.location.replace(`./product?id=${resp.data.id}`);
 
         })
     }

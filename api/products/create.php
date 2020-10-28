@@ -66,6 +66,6 @@ class Create extends Api {
             $stmt->execute();
         }
 
-        $this->formatResponse(true, ['msg' => "product is now created"]);
+        $this->formatResponse(true, ['msg' => "product is now created", "id" => $id]);
     }
 }   
