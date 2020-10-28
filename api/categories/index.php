@@ -16,42 +16,44 @@ class Categories extends Api {
 
     function _GET() 
     {
-        $id;
-        $category;
-
         $req = $this->getRequest();
 
         if(empty($req)) return $this->formatResponse(false, ['msg' => "No data was parsed"]);
 
-
         $this->conn = $this->getDbConn();
 
-
-        if(isset($req['id'])) $id = $req['id'];
-        if(isset($req['category_id'])) $id = $req['category_id'];
-        if(isset($req['category'])) $category = $req['category'];
-        if(isset($req['name'])) $category = $req['name'];
-        if(isset($req['category_name'])) $category = $req['category_name'];
-
-
-        if(isset($id) && !empty($id))
+        $product_id    = $this->getRequestValues(['product_id', 'product-id', 'productId'], $req);
+        $product_name  = $this->getRequestValues(['product_name', 'product-name', 'productName'], $req);
+        $category_id   = $this->getRequestValues(['category_id', 'category-id', 'categoryId'], $req);
+        $category_name = $this->getRequestValues(['category_name', 'category-name', 'categoryName'], $req);
+       
+        if(isset($product_id) && !empty($product_id) && isset($category_id) && !empty($category_id))
         {
-            $stmt = $this->conn->prepare("SELECT * FROM categories WHERE id = :id");
-            $stmt->bindParam(":id", $id);
+            // Get products by category id
+            $stmt = $this->conn->prepare("SELECT userId, title, description, address, price, status FROM products INNER JOIN productcategories ON products.id = productcategories.id INNER JOIN categories ON productcategories.categoryId = categories.id WHERE productcategories.categoryId = :id");
+            $stmt->bindParam(":id", $category_id);
             $stmt->execute();
+
+            if($stmt->rowCount() <= 0) // If no products found with in this category (?)
+                return $this->formatResponse(true, ['msg' => "no products found in this category"]);
         }
-        else if(isset($category) && !empty($category))
+        else if(isset($product_name) && !empty($product_name))
         {
-            $stmt = $this->conn->prepare("SELECT * FROM categories WHERE category = :category");
-            $stmt->bindParam(":category", $category);
+            // Get products by name (should be moved?)
+            $stmt = $this->conn->prepare("SELECT userId, title, description, address, price, status FROM products INNER JOIN productcategories ON products.id = productcategories.id INNER JOIN categories ON productcategories.categoryId = categories.id WHERE products.title LIKE ':name%'");
+            $stmt->bindParam(":name", $product_name);
             $stmt->execute();
+
+            
+            if($stmt->rowCount() <= 0)
+                return $this->formatResponse(true, ['msg' => "no products found with this name"]);
         }
         else
         {
             $stmt = $this->conn->prepare("SELECT * FROM categories");
             $stmt->execute();
         }
-
+        
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
         echo json_encode($result);
