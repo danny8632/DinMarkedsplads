@@ -37,8 +37,7 @@ class Get extends Api {
         }
 
         $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
-
-        echo json_encode($stmt->fetchAll());
+        $this->formatResponse(true, $result);
 
     }
 
