@@ -1,5 +1,4 @@
 .modal {
-    display: none;
     position: fixed;
     z-index: 1;
     padding-top: 100px;
@@ -55,6 +54,12 @@
     padding: 16px 20px;
 }
 
-.modal-footer div {
-    margin: 0px 0px 0px auto;
+.modal-footer .btn-wrapper {
+    width: 100%;
+    display: inline-block;
+}
+
+.modal-footer .btn-wrapper div {
+    float: right;
+    margin-left: 20px;
 }

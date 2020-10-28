@@ -1,15 +1,121 @@
+class CreateProduct {
+
+    constructor() {
+
+        this.container = $(`.container`);
+
+        this.modal = $(`.modal.upload-images-modal`);
+
+        this.images = [];
+
+        this.images_html = [];
+
+        this.is_bound = false;
+
+        this.show_upload_warning = false;
+    }
+
+
+    init() {
+
+        this.modal.find('.modal-footer .upload-images').toggleClass("disabled", true);
+
+        
+
+        this.bind_event_handlers();
+    }
+
+
+    bind_event_handlers() {
+
+        if(this.is_bound) return;
+
+        this.container.on('click', '.form-wrapper .images-input-wrapper .upload-img', () => {
+            this.modal.toggleClass("hidden", false);
+        })
+
+        this.modal.on('change', ".modal-body .upload-wrapper input", (e) => {
+            this.handle_modal_image_upload(e.currentTarget);
+        });
+
+        this.modal.on("click", ".modal-footer .close-upload", () => {
+            this.modal.toggleClass("hidden", true);
+        })
+
+        this.is_bound = true;
+    }
+
+
+    handle_modal_image_upload(input) {
+
+        let files = input.files;
+        const ALLOWED_FILE_TYPES = ["gif", "png", "jpg", "jpeg", "bmp", "webp"];
+
+        let image_wrapper = this.modal.find('.modal-body div.images');
+
+        image_wrapper.html("");
+
+        if(files.length === 0)
+        {
+            this.modal.find('.modal-body .warning-text').toggleClass("hidden", false);
+            return;
+        }
+
+        for (let i = 0, length = files.length; i < length; i++) {
+            const file = files[i];
+            
+            let types = file.type.split("/"),
+                extension = typeof types[1] == "undefined" ? types[0] : types[1];
+
+            if(ALLOWED_FILE_TYPES.indexOf(extension) === -1)
+            {
+                this.show_upload_warning = true;
+                continue;
+            }
+
+            try {
+                let reader = new FileReader();
+
+                reader.onload = (readerEvent) => {
+                    let image_html = document.createElement("div");
+
+                    image_html.classList.add("image-wrapper");
+                    image_html.innerHTML = `<img src="${readerEvent.target.result}" />`;
+                    
+                    this.images_html.push(image_html);
+
+                    this.modal.find('.modal-footer .upload-images').removeClass("disabled");
+
+                    image_wrapper.append(image_html);
+                }
+                reader.readAsDataURL(file);
+
+                this.images.push(file);
+            
+            } catch (error) {
+                this.show_upload_warning = true;
+            }
+        }
+
+        this.modal.find('.modal-body .warning-text').toggleClass("hidden", !this.show_upload_warning);
+    }
+
+
+}
+
+
+
 $( document ).ready(function() {
 
-    const form = $(`.container .form-wrapper`);
-
-    const modal = $(`.modal`);
-
-    form.on('click', '.image-wrapper .upload-img', () => {
-
-        modal.css("display", "block")
-
-    })
-
+    if(window.File && window.FileList && window.FileReader)
+    {
+        let cp = new CreateProduct;
+        cp.init();
+    }
+    else
+    {
+        alert("Din browser er desværre for gammel");
+    }
 
 
 

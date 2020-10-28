@@ -9,7 +9,6 @@
     cursor: pointer;
     text-align: center;
     box-sizing: border-box;
-    width: max-content;
 }
 
 .btn:hover {
