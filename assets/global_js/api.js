@@ -35,7 +35,9 @@ function api_post(end_point, data, cb) {
 
     $.ajax({
         type: "POST",
+        enctype: 'multipart/form-data',
         url: `/api_v1/${end_point}`,
+        processData: false,
         data : data,
         timeout: 600000,
         success: function (data) {
@@ -62,13 +64,17 @@ function api_ajax(end_point, data, cb) {
     if(typeof end_point !== "string" || end_point.length <= 0 || typeof data !== "object") 
         return console.error("you need to specify an endpoint");
 
-    if(typeof data['method'] === "undefined" || typeof data['method'] !== "string")
-        return console.error("Method needs to be specified in data");
+    /* if(typeof data['method'] === "undefined" || typeof data['method'] !== "string")
+        return console.error("Method needs to be specified in data"); */
 
     $.ajax({
         type: "POST",
+        enctype: 'multipart/form-data',
         url: `/api_v1/${end_point}`,
         data : data,
+        processData: false,
+        contentType: false,
+        dataType : 'json',
         timeout: 600000,
         success: function (data) {
 

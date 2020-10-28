@@ -13,6 +13,8 @@ class CreateProduct {
         this.is_bound = false;
 
         this.show_upload_warning = false;
+
+        this.data = {};
     }
 
 
@@ -20,7 +22,7 @@ class CreateProduct {
 
         this.modal.find('.modal-footer .upload-images').toggleClass("disabled", true);
 
-        
+        this.data = new FormData();
 
         this.bind_event_handlers();
     }
@@ -44,6 +46,9 @@ class CreateProduct {
             }
         });
 
+        this.container.on("click", ".footer .create-product", () => {
+            this.create_product();
+        })
 
 
         this.modal.on('change', ".modal-body .upload-wrapper input", (e) => {
@@ -138,9 +143,13 @@ class CreateProduct {
 
         let form = this.container.find('.form-wrapper');
 
-        form.each("input, textarea", (i, elm) => {
+        form.find('input, textarea').each((i, elm) => {
 
             let val = $(elm).val();
+
+            //this.data[$(elm).attr("name")] = val;
+
+            this.data.append($(elm).attr("name"), val);
 
             if(val === "") { $(elm).toggleClass("invalid", true); }
         })
@@ -156,7 +165,25 @@ class CreateProduct {
 
         if(this.images.length <= 0) return false;
 
+        this.data.append("method", "_POST")
+
+        for (let i = 0, length = this.images.length; i < length; i++) {
+            const file = this.images[i];
+            this.data.append("files[]", this.images[i]);
+        }
+
+
+        console.log(this.images)
+
+        console.log(this.data, this.data.values())
+
+
+        api_ajax("products/create", this.data, (resp) => {
+            console.log(resp);
+        })
         
+
+
     }
 }
 
