@@ -9,7 +9,7 @@ $(document).ready(function () {
 
     $("#products").on("click", ".item", (product) => {
 
-        let id = $(product).attr("data-id");
+        let id = $(product.currentTarget).attr("data-id");
 
         window.location.replace(`./product?id=${id}`);
     })
