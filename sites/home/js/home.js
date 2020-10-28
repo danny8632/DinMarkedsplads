@@ -17,13 +17,13 @@ $(document).ready(function () {
 
     api_get("products/get", (resp) => {
 
-        /*if(typeof resp.success === "undefined" || resp.success === false || typeof resp.data === undefined || resp.data.length <= 0)
+        if(typeof resp.success === "undefined" || resp === false || typeof resp.data === undefined || resp.data.length <= 0)
         {
             return; //  Fejl
-        }*/
+        }
 
-		console.log(resp);
-        let data = resp;
+		console.log(resp.data);
+        let data = resp.data;
 
         for (var i = 0; i < data.length; ++i) {
             var product = data[i];
