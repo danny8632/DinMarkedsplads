@@ -29,6 +29,13 @@
     padding: 7px;
 }
 
+.infoCon {
+    display: flex;
+}
+.descriptionCon {
+    width: 45%;
+    margin: auto;
+}
 .descriptionTitleCon {
     display: flex;
 }
@@ -45,4 +52,31 @@
 
 .backButtonCon {
     padding-top: 7px;
+}
+
+.commentsCon {
+    width: 45%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.commentsTitle {
+    font-size: 25px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+.commentBox {
+    border: solid black 2px;
+    margin-bottom: 10px;
+}
+.comments {
+    width: fit-content;
+}
+.commentName {
+    padding: 5px 0px 5px 5px;
+}
+.commentsTitleCon {
+    display: flex;
+}
+.commentText {
+    padding: 0px 0px 5px 5px;
 }
