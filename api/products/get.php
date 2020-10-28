@@ -32,7 +32,7 @@ class Get extends Api {
         }
         else
         {
-            $stmt = $this->conn->prepare("SELECT userId, title, description, address, price, status, created FROM products WHERE status = 'A'");
+            $stmt = $this->conn->prepare("SELECT id, userId, title, description, address, price, status, created FROM products WHERE status = 'A'");
             $stmt->execute();
         }
 
