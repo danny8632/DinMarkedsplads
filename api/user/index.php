@@ -125,7 +125,7 @@ class User extends Api {
 
         $subject = "Verificer DinMarkedsplads bruger";
         $message = "Du har registreret dig på DinMarkedsplads.dk - for at kunne tilgå din bruger, skal du følge nedenstående link: http://localhost/api_v1/user?method=verifyUser&email=" . $email;
-        $headers = "From: dinmarkedspladsnoply";
+        $headers = "From: dinmarkedspladsnoreply";
 
         mail($email,$subject,$message,[$headers]);
 
