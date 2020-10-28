@@ -10,6 +10,10 @@
     border-radius: 6px;
 }
 
+.hidden {
+    display: none;
+}
+
 .container .title-wrapper-header {
     margin: 0px;
     padding: 20px;
@@ -19,6 +23,11 @@
     font-weight: bold;
     border-radius: 6px 6px 0px 0px;
     font-size: 20px;
+}
+
+
+.container .invalid {
+    border: 1px solid red;
 }
 
 .container .form-wrapper {
@@ -88,7 +97,7 @@
     margin-bottom: 10px;
 }
 
-.container .form-wrapper .input-wrapper.image-wrapper .upload-img {
+.container .form-wrapper .input-wrapper.images-input-wrapper .upload-img {
     width: 130px;
 }
 
@@ -102,4 +111,55 @@
     text-align: center;
     width: 160px;
     margin: auto;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.images-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: 160px;
+    box-sizing: border-box;
+    margin-bottom: 16px;
+    border: 1px dashed black;
+}
+
+.images {
+    text-align: center;
+    white-space: nowrap;
+    display: inline-flex;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+
+.images .image-wrapper {
+    height: 146px;
+    margin-right: 10px;
+    box-sizing: border-box;
+    padding: 8px;
+    border: 1px solid #000;
+}
+
+.images .image-wrapper img {
+    height: 130px;
+    box-sizing: border-box;
+}
+
+.upload-images-modal .warning-text {
+    font-weight: bold;
+    color: red;
+
+    padding-bottom: 14px;
 }

@@ -38,37 +38,52 @@
             <input placeholder="område" name="region" minlength="1" required>
         </div>
 
-        <div class="image-wrapper input-wrapper">
+        <div class="images-input-wrapper input-wrapper">
 
-            <div class="img-viewer">Ingen billeder valgt</div>
+            <div class="images-wrapper">
+                <div class="images">Ingen billeder uploaded</div>
+            </div>
 
             <div class="btn upload-img">Tilføj billeder</div>
-
-            <!-- <div class="btn uploadFileBtn">Upload your file here</div> -->
-            <!-- <input type="file" name="images" multiple required> -->
         </div>
 
     </div>
 
 
     <div class="footer">
-        <div class="btn create-product">Opret produkt</div>
+        <div class="btn create-product disabled">Opret produkt</div>
     </div>
 
 </div>
 
-<div class="modal">
+<div class="modal upload-images-modal hidden">
 
     <div class="modal-content">
         <div class="modal-header">
-            <h2>Modal Header</h2>
+            <h2>Upload billeder</h2>
         </div>
         <div class="modal-body">
-            <p>Some text in the Modal Body</p>
-            <p>Some other text...</p>
+
+            <div class="warning-text hidden">En eller flere filer er ikke understøttet. Gyldige filer: gif, png, jpg, jpeg, bmp, webp</div>
+            
+            <div class="description">Her kan du nemt og hurtigt uploade dine billeder til dit produkt!</div>
+
+            <div class="images-wrapper">
+                <div class="images"></div>
+            </div>
+
+            <div class="upload-wrapper">
+
+                <input type="file" name="images" multiple required> 
+
+            </div>
+
         </div>
         <div class="modal-footer">
-            <div class="btn">Close</div>
+            <div class="btn-wrapper">
+                <div class="btn upload-images">OK - Fortset</div>
+                <div class="btn close-upload">Close</div>
+            </div>
         </div>
     </div>
   
