@@ -37,7 +37,7 @@ class Get extends Api {
             $stmt->execute();
         }
 
-        $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         $this->formatResponse(true, $result);
 
     }
