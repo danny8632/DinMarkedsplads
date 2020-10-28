@@ -124,11 +124,26 @@ class User extends Api {
             return $this->formatResponse(false, ['msg' => "email is not set"]);
 
         $subject = "Verificer DinMarkedsplads bruger";
-        $message = "Du har registreret dig på DinMarkedsplads.dk - for at kunne tilgå din bruger, skal du følgende nedenstående link: ";
+        $message = "Du har registreret dig på DinMarkedsplads.dk - for at kunne tilgå din bruger, skal du følge nedenstående link: http://localhost/api_v1/user?method=verifyUser&email=" . $email;
         $headers = "From: dinmarkedspladsnoply";
 
         mail($email,$subject,$message,[$headers]);
 
         return $this->formatResponse(true);
+    }
+
+    function verifyUser() {
+        $req = $this->getRequest();
+        $email = $this->getRequestValues(['email', 'e_mail', 'mail'], $req);
+
+        if($email == false)
+            return $this->formatResponse(false, ['msg' => "email is not set"]);
+        else 
+        {
+            $this->conn = $this->getDbConn();
+            $stmt = $this->conn->prepare("UPDATE `users` SET `isVerified` = 1 WHERE `users`.`email` = :email");
+            $stmt->bindParam(':email', $email);
+            $stmt->execute();
+        }
     }
 }
