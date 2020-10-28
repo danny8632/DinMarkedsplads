@@ -32,13 +32,12 @@ class Get extends Api {
         }
         else
         {
-            $stmt = $this->conn->prepare("SELECT userId, title, description, address, price, status, created FROM products WHERE status = 'A'");
+            $stmt = $this->conn->prepare("SELECT id, userId, title, description, address, price, status, created FROM products WHERE status = 'A'");
             $stmt->execute();
         }
 
         $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
-
-        echo json_encode($stmt->fetchAll());
+        $this->formatResponse(true, $result);
 
     }
 
