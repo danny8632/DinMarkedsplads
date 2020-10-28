@@ -23,9 +23,10 @@ class Products extends Api {
             if(isset($req['id'])) $id = $req['id'];
         }
 
-        if (isset($post_id) && !empty($post_id)
+        if (isset($post_id) && !empty($post_id))
         {
-            $stmt = $this->conn->prepare("SELECT userId, title, description, address, price, status, created FROM products INNER JOIN productcategories ON products.id = productcategories.id INNER JOIN categories ON productcategories.categoryId = categories.id WHERE products.id = :id");
+            // Get specific product
+            $stmt = $this->conn->prepare("SELECT userId, title, description, address, price, status, created FROM products WHERE products.id = :id AND status = 'A'");
             $stmt->bindParam(":id", $post_id);
             $stmt->execute();
         }

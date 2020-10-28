@@ -33,6 +33,9 @@ class Categories extends Api {
             $stmt = $this->conn->prepare("SELECT userId, title, description, address, price, status FROM products INNER JOIN productcategories ON products.id = productcategories.id INNER JOIN categories ON productcategories.categoryId = categories.id WHERE productcategories.categoryId = :id");
             $stmt->bindParam(":id", $category_id);
             $stmt->execute();
+
+            if($stmt->rowCount() <= 0) // If no products found with in this category (?)
+                return $this->formatResponse(true, ['msg' => "no products found in this category"]);
         }
         else if(isset($product_name) && !empty($product_name))
         {
@@ -42,8 +45,8 @@ class Categories extends Api {
             $stmt->execute();
 
             
-            if($stmt->rowCount() <= 0) // If no products found with this name?
-                return $this->formatResponse(true, ['msg' => "no products found"]);
+            if($stmt->rowCount() <= 0)
+                return $this->formatResponse(true, ['msg' => "no products found with this name"]);
         }
         else
         {
