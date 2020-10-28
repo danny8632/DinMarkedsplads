@@ -6,11 +6,29 @@
     display: flex;
 }
 
+/* Categories list */
+.categoriesTitle {
+    font-size: 25px;
+    padding-bottom: 10px;
+    width: fit-content;
+    margin: auto;
+}
+.categoriesItems {
+    list-style-type: none;
+}
+.categoriesItems li {
+    font-size: 20px;
+    padding-bottom: 5px;
+    width: fit-content;
+    margin: auto;
+}
 .categories {
     width: 15%;
     padding: 10px;
     border-right: solid black 2px;
 }
+
+
 .content {
     padding-top: 10px;
     padding-left: 10px;
