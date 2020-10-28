@@ -1,11 +1,27 @@
-function api_get(end_point, cb) {
+function api_get(end_point, data, cb) {
 
     if(typeof end_point !== "string" || end_point.length <= 0) 
         return console.error("you need to specify an endpoint");
 
+    let parameters = "",
+        param_arr  = [];
+
+    if(typeof data === "function") 
+    {
+        cb = data;
+    }
+
+    if(typeof data === "object") 
+    {
+        $.each(data, (key, val) => {
+            param_arr.push(`${key}=${val}`);
+        });
+        parameters += "?" + param_arr.join("&");
+    }
+
     $.ajax({
         type: "GET",
-        url: `/api_v1/${end_point}`,
+        url: `/api_v1/${end_point}${parameters}`,
         timeout: 600000,
         success: function (data) {
 
