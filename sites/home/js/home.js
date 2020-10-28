@@ -1,23 +1,32 @@
 $(document).ready(function () {
 
-    $.ajax({
-        type: "GET",
-        url: "/api/categories",
-        timeout: 600000,
-        success: function (data) {
+    $("#products").on("click", ".item", (product) => {
 
-            var response = JSON.parse(data)
+        let id = $(product).attr("data-id");
 
-            console.log(response)
+        window.location.replace(`./product?id=${id}`);
+    })
 
-            for (var i = 0; i < response.length; ++i) {
-                var post = response[i];
 
-                var fileHtml = getPostType(post.file);
-                var imgConId = `postMedia${i + 1}`
+    api_get("categories", (resp) => {
 
-                var html = `
-                <div class="item" onclick="window.location.replace("./product?id=$post.id");">
+        if(typeof resp.success === "undefined" || resp.success === false || typeof resp.data === undefined || resp.data.length <= 0)
+        {
+            return; //  Fejl
+        }
+
+        let data = resp.data;
+
+        for (var i = 0; i < data.length; ++i) {
+            var post = data[i];
+
+            var fileHtml = getPostType(post.file);
+            var imgConId = `postMedia${i + 1}`
+
+            let productID = 1 //    Change this to dynamic value!!!!
+
+            var html = `
+                <div class="item" data-id="${productID}">
                     <div class="itemContentCon">
                         <div class="itemTitleCon">
                             <div class="itemTitle" >${post.title}</div>
@@ -32,17 +41,11 @@ $(document).ready(function () {
                         </div>
                     </div>
                 </div>
-                `
+            `;
 
-                $("#products").append(html);
-            }
-
-        },
-        error: function (e) {
-
-            console.log("ERROR : ", e);
-
+            $("#products").append(html);
         }
-    });
+
+    })
 
 });
