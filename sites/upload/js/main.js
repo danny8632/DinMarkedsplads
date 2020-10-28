@@ -32,7 +32,7 @@ class CreateProduct {
 
         this.container.on('click', '.form-wrapper .images-input-wrapper .upload-img', () => {
             this.modal.toggleClass("hidden", false);
-        })
+        });
 
         this.modal.on('change', ".modal-body .upload-wrapper input", (e) => {
             this.handle_modal_image_upload(e.currentTarget);
@@ -40,7 +40,12 @@ class CreateProduct {
 
         this.modal.on("click", ".modal-footer .close-upload", () => {
             this.modal.toggleClass("hidden", true);
-        })
+        });
+
+        this.modal.on("click", ".modal-footer .upload-images", () => {
+            this.complete_upload_modal();
+        });
+
 
         this.is_bound = true;
     }
@@ -100,6 +105,14 @@ class CreateProduct {
         this.modal.find('.modal-body .warning-text').toggleClass("hidden", !this.show_upload_warning);
     }
 
+
+    complete_upload_modal() {
+
+        this.modal.toggleClass("hidden", true);
+
+        console.log(this.images.length)
+
+    }
 
 }
 
