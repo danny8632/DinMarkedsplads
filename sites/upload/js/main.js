@@ -147,8 +147,6 @@ class CreateProduct {
 
             let val = $(elm).val();
 
-            //this.data[$(elm).attr("name")] = val;
-
             this.data.append($(elm).attr("name"), val);
 
             if(val === "") { $(elm).toggleClass("invalid", true); }
