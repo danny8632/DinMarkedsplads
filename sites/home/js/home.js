@@ -7,8 +7,15 @@ $(document).ready(function () {
         window.location.replace(`./product?id=${id}`);
     })
 
+    $("#products").on("click", ".item", (product) => {
 
-    api_get("categories", (resp) => {
+        let id = $(product).attr("data-id");
+
+        window.location.replace(`./product?id=${id}`);
+    })
+
+
+    api_get("pruduct/get", (resp) => {
 
         if(typeof resp.success === "undefined" || resp.success === false || typeof resp.data === undefined || resp.data.length <= 0)
         {
@@ -18,9 +25,9 @@ $(document).ready(function () {
         let data = resp.data;
 
         for (var i = 0; i < data.length; ++i) {
-            var post = data[i];
+            var product = data[i];
 
-            var fileHtml = getPostType(post.file);
+            var fileHtml = getPostType(product.file);
             var imgConId = `postMedia${i + 1}`
 
             let productID = 1 //    Change this to dynamic value!!!!
@@ -29,15 +36,15 @@ $(document).ready(function () {
                 <div class="item" data-id="${productID}">
                     <div class="itemContentCon">
                         <div class="itemTitleCon">
-                            <div class="itemTitle" >${post.title}</div>
+                            <div class="itemTitle" >${product.title}</div>
                         </div>
 
                         <div class="itemImgCon">
-                            <img src="${post.location}">
+                            <img src="${product.location}">
                         </div>
 
                         <div class="itemInfoCon">
-                            <p class="itemPrice">Pris: ${post.price}kr</p>
+                            <p class="itemPrice">Pris: ${product.price}kr</p>
                         </div>
                     </div>
                 </div>
@@ -49,3 +56,45 @@ $(document).ready(function () {
     })
 
 });
+
+function getProductFromCategori()
+{
+    api_get("pruduct/get", (resp) => {
+
+        if(typeof resp.success === "undefined" || resp.success === false || typeof resp.data === undefined || resp.data.length <= 0)
+        {
+            return; //  Fejl
+        }
+    
+        let data = resp.data;
+    
+        for (var i = 0; i < data.length; ++i) {
+            var product = data[i];
+    
+            var fileHtml = getPostType(product.file);
+            var imgConId = `postMedia${i + 1}`
+    
+            let productID = 1 //    Change this to dynamic value!!!!
+    
+            var html = `
+                <div class="item" data-id="${productID}">
+                    <div class="itemContentCon">
+                        <div class="itemTitleCon">
+                            <div class="itemTitle" >${product.title}</div>
+                        </div>
+    
+                        <div class="itemImgCon">
+                            <img src="${product.location}">
+                        </div>
+    
+                        <div class="itemInfoCon">
+                            <p class="itemPrice">Pris: ${product.price}kr</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+    
+            $("#products").append(html);
+        }
+    })
+}
