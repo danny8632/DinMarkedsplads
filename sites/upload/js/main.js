@@ -170,7 +170,7 @@ class CreateProduct {
             this.data.append("files[]", this.images[i]);
         }
 
-        api_ajax("products/create", this.data, (resp) => {
+        api_form("products/create", this.data, (resp) => {
 
             if(resp.success === false || typeof resp.data.id === "undefined")
             {
