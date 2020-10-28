@@ -34,6 +34,18 @@ class CreateProduct {
             this.modal.toggleClass("hidden", false);
         });
 
+        this.container.on("change", "input, textarea", (e) => {
+
+            let value = e.currentTarget.value;
+
+            if(value != "")
+            {
+                $(e.currentTarget).toggleClass("invalid", false);
+            }
+        });
+
+
+
         this.modal.on('change', ".modal-body .upload-wrapper input", (e) => {
             this.handle_modal_image_upload(e.currentTarget);
         });
@@ -110,10 +122,42 @@ class CreateProduct {
 
         this.modal.toggleClass("hidden", true);
 
-        console.log(this.images.length)
+        this.container.find('.images-input-wrapper .images-wrapper .images').html("");
+
+        for (let i = 0, length = this.images_html.length; i < length; i++) {
+            const elm = this.images_html[i];
+            this.container.find('.images-input-wrapper .images-wrapper .images').append(elm)
+        }
+
+        this.container.find('.footer .create-product').toggleClass('disabled', this.images_html.length <= 0); 
 
     }
 
+
+    validate_input_feilds() {
+
+        let form = this.container.find('.form-wrapper');
+
+        form.each("input, textarea", (i, elm) => {
+
+            let val = $(elm).val();
+
+            if(val === "") { $(elm).toggleClass("invalid", true); }
+        })
+
+    }
+
+
+    create_product() {
+
+        this.validate_input_feilds();
+
+        if(this.container.find('input.invalid, textare.invalid').length > 0) return false;
+
+        if(this.images.length <= 0) return false;
+
+        
+    }
 }
 
 
