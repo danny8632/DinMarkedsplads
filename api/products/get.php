@@ -14,12 +14,23 @@ class Products extends Api {
 
     function _GET() 
     {
+        $req = $this->getRequest();
+        
         $this->conn = $this->getDbConn();
-        $stmt = $this->conn->prepare("SELECT * FROM posts");
-        $stmt->execute();
+        
+        if (isset($req[1]) && !empty($req))
+        {
+            if(isset($req['id'])) $id = $req['id'];
+        }
+
+        if (isset($post_id) && !empty($post_id)
+        {
+            $stmt = $this->conn->prepare("SELECT userId, title, description, address, price, status, created FROM products INNER JOIN productcategories ON products.id = productcategories.id INNER JOIN categories ON productcategories.categoryId = categories.id WHERE products.id = :id");
+            $stmt->bindParam(":id", $post_id);
+            $stmt->execute();
+        }
 
         $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
-
 
         echo json_encode($stmt->fetchAll());
 
@@ -28,8 +39,10 @@ class Products extends Api {
 
     function orderProductsBy()
     {
-        $this->conn = $this->getDbConn();
+        $req = $this->getRequest();
 
+        $this->conn = $this->getDbConn();
+        
         if(empty($req)) return $this->formatResponse(false, ['msg' => "No data was parsed"]);
         
         $order_type = $this->getRequestValues(['order_by', 'order-by', 'orderBy'], $req); // order by created/price - should this be handled client side??
@@ -53,4 +66,4 @@ class Products extends Api {
             
     }
 
-}
+}   
