@@ -32,7 +32,6 @@ class Categories extends Api {
                                           ON productcategories.categoryId = categories.id WHERE productcategories.categoryId = :category_id");
 
             $stmt->bindParam(":category_id", $category_id);
-            $stmt->bindParam(":product_id", $product_id);
             $stmt->execute();
 
 
@@ -47,7 +46,11 @@ class Categories extends Api {
         
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
-        echo json_encode($result);
+        if($stmt->rowCount() > 0)
+            return $this->formatResponse(true, $result); 
+        else
+            return $this->formatResponse(false, ['msg' => "No data found"]);
+            
     }
     
 }

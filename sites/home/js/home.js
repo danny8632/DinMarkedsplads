@@ -1,9 +1,9 @@
 $(document).ready(function () {
 
-    $("#categori").on("click", ".categori", (product) => {
+    $("#categories").on("click", ".categori", (categori) => {
 
-        let id = $(product).attr("data-id");
-
+        let id = $(categori.currentTarget).attr("data-id");
+        $("#products").find(".item").remove();
         getProductFromCategori(id);
     })
 
@@ -14,7 +14,7 @@ $(document).ready(function () {
         window.location.replace(`./product?id=${id}`);
     })
 
-    api_get("categories/get", (resp) => {
+    api_get("categories", (resp) => {
 
         if(typeof resp.success === "undefined" || resp === false || typeof resp.data === undefined || resp.data.length <= 0)
         {
@@ -78,22 +78,21 @@ $(document).ready(function () {
 
 });
 
-function getProductFromCategori()
+function getProductFromCategori(categoriID)
 {
-    api_get("products/get", (resp) => {
-
+    console.log("hey");
+    api_get("categories", {"categoryId": categoriID},  (resp) => {
+        console.log("hey");
         if(typeof resp.success === "undefined" || resp.success === false || typeof resp.data === undefined || resp.data.length <= 0)
         {
             return; //  Fejl
         }
-    
+        
+        console.log(resp.data);
         let data = resp.data;
     
         for (var i = 0; i < data.length; ++i) {
             var product = data[i];
-    
-            var fileHtml = getPostType(product.file);
-            var imgConId = `postMedia${i + 1}`
     
             let productID = 1 //    Change this to dynamic value!!!!
     
