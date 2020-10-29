@@ -2,7 +2,7 @@
 
 require __DIR__."/../api.php";
 
-class Products extends Api {
+class Get extends Api {
 
     private $conn;
 
@@ -17,23 +17,24 @@ class Products extends Api {
         $req = $this->getRequest();
         
         $this->conn = $this->getDbConn();
-        
-        if (isset($req[1]) && !empty($req))
-        {
-            if(isset($req['id'])) $id = $req['id'];
-        }
+        $post_id = $this->getRequestValues(['id', 'post-id', 'post_id'], $req);
 
         if (isset($post_id) && !empty($post_id))
         {
             // Get specific product
-            $stmt = $this->conn->prepare("SELECT userId, title, description, address, price, status, created FROM products WHERE products.id = :id AND status = 'A'");
+            $stmt = $this->conn->prepare("SELECT id, userId, title, description, address, price, status, created FROM products WHERE products.id = :id AND status = 'A'");
             $stmt->bindParam(":id", $post_id);
             $stmt->execute();
         }
+        else
+        {
+            // SELECT products.id, products.userId, products.title, products.description, products.address, products.price, products.status, products.created FROM products INNER JOIN productassets ON products.id = productassets.productId WHERE products.status = 'A'
+            $stmt = $this->conn->prepare("SELECT id, userId, title, description, address, price, status, created FROM products WHERE status = 'A'");
+            $stmt->execute();
+        }
 
-        $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
-
-        echo json_encode($stmt->fetchAll());
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $this->formatResponse(true, $result);
 
     }
 

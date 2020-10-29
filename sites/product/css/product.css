@@ -32,6 +32,13 @@
 .infoCon {
     display: flex;
 }
+.price {
+    font-size: 25px;
+    width: fit-content;
+    margin-right: 0%;
+    margin-left: auto;
+    padding: 7px;
+}
 .descriptionCon {
     width: 45%;
     margin: auto;
@@ -41,7 +48,8 @@
 }
 .descriptionTitle {
     font-size: 25px;
-    margin-bottom: 10px;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 .description {
     padding: 15px;
