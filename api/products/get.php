@@ -26,7 +26,7 @@ class Get extends Api {
         if (isset($post_id) && !empty($post_id))
         {
             // Get specific product
-            $stmt = $this->conn->prepare("SELECT userId, title, description, address, price, status, created FROM products WHERE products.id = :id AND status = 'A'");
+            $stmt = $this->conn->prepare("SELECT id, userId, title, description, address, price, status, created FROM products WHERE products.id = :id AND status = 'A'");
             $stmt->bindParam(":id", $post_id);
             $stmt->execute();
         }
