@@ -1,11 +1,11 @@
 $(document).ready(function () {
 
-    /*$("#products").on("click", ".item", (product) => {
+    $("#categori").on("click", ".categori", (product) => {
 
         let id = $(product).attr("data-id");
 
-        window.location.replace(`./product?id=${id}`);
-    })*/
+        getProductFromCategori(id);
+    })
 
     $("#products").on("click", ".item", (product) => {
 
@@ -14,6 +14,29 @@ $(document).ready(function () {
         window.location.replace(`./product?id=${id}`);
     })
 
+    api_get("categories/get", (resp) => {
+
+        if(typeof resp.success === "undefined" || resp === false || typeof resp.data === undefined || resp.data.length <= 0)
+        {
+            return; //  Fejl
+        }
+
+		console.log(resp.data);
+        let data = resp.data;
+
+        for (var i = 0; i < data.length; ++i) {
+            var categori = data[i];
+
+            let categoriID = categori.id 
+
+            var html = `
+                <li class="categori" id="categori" data-id="${categoriID}">${categori.name}</li>
+            `;
+
+            $("#categories").append(html);
+        }
+
+    })
 
     api_get("products/get", (resp) => {
 
@@ -28,7 +51,7 @@ $(document).ready(function () {
         for (var i = 0; i < data.length; ++i) {
             var product = data[i];
 
-            let productID = product.id //    Change this to dynamic value!!!!
+            let productID = product.id 
 
             var html = `
                 <div class="item" data-id="${productID}">
