@@ -17,11 +17,7 @@ class Get extends Api {
         $req = $this->getRequest();
         
         $this->conn = $this->getDbConn();
-        
-        if (isset($req[1]) && !empty($req))
-        {
-            if(isset($req['id'])) $id = $req['id'];
-        }
+        $post_id = $this->getRequestValues(['id', 'post-id', 'post_id'], $req);
 
         if (isset($post_id) && !empty($post_id))
         {
