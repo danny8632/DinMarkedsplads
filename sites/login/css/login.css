@@ -4,10 +4,11 @@
 
 .content {
     background-color: #fff;
-    width: 600px;
+    max-width: 600px;
     margin: auto;
     position: relative;
     border-radius: 6px;
+    width: 100%;
 }
 
 .content .title-wrapper {
@@ -80,4 +81,11 @@
 .content .signupCon .signupButton {
     margin-left: auto;
     margin-right: auto;
+}
+
+@media only screen and (max-width: 420px) {
+    
+    .content .form-wrapper {
+        padding: 0px 10px;
+    }
 }

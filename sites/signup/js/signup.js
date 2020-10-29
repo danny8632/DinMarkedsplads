@@ -31,7 +31,7 @@ $( document ).ready(function() {
 
             $(".content").find(".error-text").remove();
 
-            if(resp.success === false)
+            if(typeof resp.success == "undefined" || resp.success === false)
             {
                 $(`<p class="error-text">${resp.data.msg}</p>`).insertAfter(".content .title-wrapper");
                 return;

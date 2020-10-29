@@ -5,7 +5,7 @@ $( document ).ready(function() {
     })
 
     $(".content").on('click', 'form.loginForm #submit', (e) => {
-        e.preventDefault()
+        e.preventDefault();
 
         let form_data = $(e.currentTarget).parents('form.loginForm').serializeArray(),
             data      = { "method": "login" };
@@ -20,7 +20,7 @@ $( document ).ready(function() {
 
         api_ajax("user", data, (resp) => {
 
-            if(resp.success === false)
+            if(typeof resp.success == "undefined" || resp.success === false)
             {
                 $(`<p class="error-text">${resp.data.msg}</p>`).insertAfter(".content .title-wrapper");
                 return;
