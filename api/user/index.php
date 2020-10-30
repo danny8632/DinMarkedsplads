@@ -40,7 +40,7 @@ class User extends Api {
         if($stmt->rowCount() > 0) return $this->formatResponse(false, ['msg' => "email, password, username is not set"]);
 
 
-        $stmt = $this->conn->prepare("INSERT INTO `Users`(`email`, `password`, `username`, `isVerified`, `verifyKey`) VALUES (:email, :password, :username, :isVerified, :key);");
+        $stmt = $this->conn->prepare("INSERT INTO `users`(`email`, `password`, `username`, `isVerified`, `verifyKey`) VALUES (:email, :password, :username, :isVerified, :key);");
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':password', $password);
         $stmt->bindParam(':username', $username);
