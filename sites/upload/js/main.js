@@ -220,7 +220,7 @@ class CreateProduct {
                 return false;
             }
 
-            window.location.replace(`./product?id=${resp.data.id}`);
+            window.location.href = `./product?id=${resp.data.id}`;
 
         })
     }

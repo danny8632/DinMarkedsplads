@@ -11,7 +11,7 @@ $(document).ready(function () {
 
         let id = $(product.currentTarget).attr("data-id");
 
-        window.location.replace(`./product?id=${id}`);
+        window.location.href = `./product?id=${id}`;
     })
 
     api_get("categories", (resp) => {
