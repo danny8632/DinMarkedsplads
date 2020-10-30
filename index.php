@@ -6,6 +6,8 @@ error_reporting(E_ALL);
 
 $redirect = explode('?',$_SERVER['REQUEST_URI']); // You can also use $_SERVER['REDIRECT_URL'];
 
+var_dump($_SERVER['HTTP_HOST']);
+
 $redirect_exploded = explode("/", $redirect[0]);
 
 $uri_length = count($redirect_exploded);
