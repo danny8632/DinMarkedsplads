@@ -19,19 +19,22 @@ class Create extends Api {
         $req = $this->getRequest();
 
         //  Fetch variables
-        $title = $this->getRequestValues(['title', 'header', 'Title'], $req);
-        $pice = $this->getRequestValues(['price', 'beløb', 'amount'], $req);
+        $title       = $this->getRequestValues(['title', 'header', 'Title'], $req);
+        $pice        = $this->getRequestValues(['price', 'beløb', 'amount'], $req);
         $description = $this->getRequestValues(['description', 'beskrivelse', 'Description'], $req);
-        $address = $this->getRequestValues(['address', 'addresse', 'adresse', 'location'], $req);
-        $zipcode = $this->getRequestValues(['zipcode', 'postnr', 'post_nr'], $req);
-        $region = $this->getRequestValues(['region', 'Region', 'område'], $req);
-        $files = $this->getRequestValues(['files', 'images', 'file', "files[]"], $_FILES);
-        $status = "A";
+        $address     = $this->getRequestValues(['address', 'addresse', 'adresse', 'location'], $req);
+        $zipcode     = $this->getRequestValues(['zipcode', 'postnr', 'post_nr'], $req);
+        $region      = $this->getRequestValues(['region', 'Region', 'område'], $req);
+        $category    = $this->getRequestValues(['category'], $req);
+        $files       = $this->getRequestValues(['files', 'images', 'file', "files[]"], $_FILES);
+        $status      = "A";
 
         $files_path = [];
 
         if($title == false || $pice == false || $description == false || $address == false || $zipcode == false || $region == false || $files == false || !isset($_SESSION["user_id"]))
             return $this->formatResponse(false, "something is not being parsed");
+
+        if(is_string($category)) $category = [$category];
 
 
         for ($i=0; $i < count($files['name']); $i++) {
@@ -64,6 +67,15 @@ class Create extends Api {
             $stmt->bindParam(':location', $files_path[$i]);
             $stmt->bindParam(':status', $status);
             $stmt->execute();
+        }
+
+        for ($i=0; $i < count($category); $i++) { 
+            
+            $stmt = $this->conn->prepare("INSERT INTO `productcategories`(`productId`, `categoryId`) VALUES (:prodid, :catid);");
+            $stmt->bindParam(':prodid', $id);
+            $stmt->bindParam(':catid', $category[$i]);
+            $stmt->execute();
+
         }
 
         $this->formatResponse(true, ['msg' => "product is now created", "id" => $id]);
