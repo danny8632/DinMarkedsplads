@@ -145,13 +145,23 @@ class CreateProduct {
 
         form.find('input, textarea').each((i, elm) => {
 
-            let val = $(elm).val();
+            let input = $(elm),
+                val   = input.val();
 
-            this.data.append($(elm).attr("name"), val);
+            this.data.append(input.attr("name"), val);
 
-            if(val === "") { $(elm).toggleClass("invalid", true); }
+            input.toggleClass("invalid", val === "" || (input.hasClass("number") && !this.validate_number_input(val)))
+                
         })
 
+    }
+
+
+    validate_number_input(value) {
+
+        if(value === "" || value.length === 0) return false;
+
+        return parseFloat(value).toString() === value.toString();
     }
 
 
@@ -170,7 +180,7 @@ class CreateProduct {
             this.data.append("files[]", this.images[i]);
         }
 
-        api_ajax("products/create", this.data, (resp) => {
+        api_form("products/create", this.data, (resp) => {
 
             if(resp.success === false || typeof resp.data.id === "undefined")
             {

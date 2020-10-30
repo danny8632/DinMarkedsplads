@@ -32,7 +32,7 @@ class User extends Api {
 
 
         $this->conn = $this->getDbConn();
-        $stmt = $this->conn->prepare("SELECT * FROM `Users` WHERE `username` = :username OR `email` = :email;");
+        $stmt = $this->conn->prepare("SELECT * FROM `users` WHERE `username` = :username OR `email` = :email;");
         $stmt->bindParam(':username', $username);
         $stmt->bindParam(':email', $email);
         $stmt->execute();
@@ -40,7 +40,7 @@ class User extends Api {
         if($stmt->rowCount() > 0) return $this->formatResponse(false, ['msg' => "email, password, username is not set"]);
 
 
-        $stmt = $this->conn->prepare("INSERT INTO `Users`(`email`, `password`, `username`, `isVerified`, `verifyKey`) VALUES (:email, :password, :username, :isVerified, :key);");
+        $stmt = $this->conn->prepare("INSERT INTO `users`(`email`, `password`, `username`, `isVerified`, `verifyKey`) VALUES (:email, :password, :username, :isVerified, :key);");
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':password', $password);
         $stmt->bindParam(':username', $username);
@@ -66,7 +66,7 @@ class User extends Api {
 
             
         $this->conn = $this->getDbConn();
-        $stmt = $this->conn->prepare("SELECT `id`, `email`, `password`, `username`, `isVerified` FROM `Users` WHERE `username` = :username LIMIT 1");
+        $stmt = $this->conn->prepare("SELECT `id`, `email`, `password`, `username`, `isVerified` FROM `users` WHERE `username` = :username LIMIT 1");
         $stmt->bindParam(':username', $username);
         $stmt->execute();
 
@@ -107,7 +107,7 @@ class User extends Api {
         if($userid == false) return $this->formatResponse(false, ['msg' => "userid is not set"]);
 
         $this->conn = $this->getDbConn();
-        $stmt = $this->conn->prepare("SELECT `fname`, `lname`, `phone`, `address`, `zipcode`, `region` FROM `UserDetails` WHERE `userId` = :userid;");
+        $stmt = $this->conn->prepare("SELECT `fname`, `lname`, `phone`, `address`, `zipcode`, `region` FROM `userdetails` WHERE `userId` = :userid;");
         $stmt->bindParam(':userid', $userid);
         $stmt->execute();
         

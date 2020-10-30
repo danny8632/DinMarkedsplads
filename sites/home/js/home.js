@@ -1,94 +1,120 @@
 $(document).ready(function () {
 
-    $.ajax({
-        type: "GET",
-        url: "/api_v1/post",
-        timeout: 600000,
-        success: function (data) {
+    $("#categories").on("click", ".categori", (categori) => {
 
-            var response = JSON.parse(data)
+        let id = $(categori.currentTarget).attr("data-id");
+        $("#products").find(".item").remove();
+        getProductFromCategori(id);
+    })
 
-            console.log(response)
+    $("#products").on("click", ".item", (product) => {
 
-            for (var i = 0; i < response.length; ++i) {
-                var post = response[i];
-                var timeSincePost = getTimeSince(post.created);
+        let id = $(product.currentTarget).attr("data-id");
 
-                var fileHtml = getPostType(post.file);
-                var imgConId = `postMedia${i + 1}`
+        window.location.replace(`./product?id=${id}`);
+    })
 
-                var html = `
-                    <div class="postCon">
-                        <div class="titleCon">
-                            <div class="titleTextCon">
-                                <a class="titleText" href="/post?id=${post.id}">${post.title}</p>
-                            </div>
-        
-                            <div class="opCon">
-                                <p class="opText">Posted by: <a href="/user?id=${post.userID}">${post.username}</a></p>
-                                <p class="timePosted">${timeSincePost}</p>
-                            </div>
+    api_get("categories", (resp) => {
+
+        if(typeof resp.success === "undefined" || resp === false || typeof resp.data === undefined || resp.data.length <= 0)
+        {
+            return; //  Fejl
+        }
+
+		console.log(resp.data);
+        let data = resp.data;
+
+        for (var i = 0; i < data.length; ++i) {
+            var categori = data[i];
+
+            let categoriID = categori.id 
+
+            var html = `
+                <li class="categori" id="categori" data-id="${categoriID}">${categori.name}</li>
+            `;
+
+            $("#categories").append(html);
+        }
+
+    })
+
+    api_get("products/get", (resp) => {
+
+        if(typeof resp.success === "undefined" || resp === false || typeof resp.data === undefined || resp.data.length <= 0)
+        {
+            return; //  Fejl
+        }
+
+		console.log(resp.data);
+        let data = resp.data;
+
+        for (var i = 0; i < data.length; ++i) {
+            var product = data[i];
+
+            let productID = product.id 
+
+            var html = `
+                <div class="item" data-id="${productID}">
+                    <div class="itemContentCon">
+                        <div class="itemTitleCon">
+                            <div class="itemTitle" >${product.title}</div>
                         </div>
-        
-                        <div class="imgCon" id="${imgConId}">
-                            
+
+                        <div class="itemImgCon">
+                            <img src="${product.location}">
                         </div>
-        
-                        <div class="descriptionCon">
-                            <p class="description">${post.description}</p>
-                        </div>
-        
-                        <div class="toolbarCon">
-                            <div class="voteCon">   
-                                <div class="voteCon2">
-                                <div class="upvote votebtn ${(post.your_vote != null && post.your_vote == "Upvote") ? "upduttet" : ''}" data-post_id="${post.id}" data-vote="Upvote">▲</div>
-                                <div class="totalVotes">${post.TotalVotes == null ? '0' : post.TotalVotes}</div>
-                                <div class="downvote votebtn ${(post.your_vote != null && post.your_vote == "Downvote") ? "downduttet" : ''}" data-post_id="${post.id}" data-vote="Downvote">▼</div>
-                                </div>
-                            </div>
-        
-                            <div class="commentButtonCon">
-                                <a class="commentButton" href="/post?id=${post.id}">Comments</a>
-                            </div>
-        
-                            <div class="shareButtonCon">
-                                <a class="shareButton" href="/post?id=${post.id}">Share</a>
-                            </div>
+
+                        <div class="itemInfoCon">
+                            <p class="itemPrice">Pris: ${product.price}kr</p>
                         </div>
                     </div>
-                `
+                </div>
+            `;
 
-                $("#posts").append(html);
-
-                $(".imgCon#" + imgConId).append(fileHtml);
-            }
-
-            $('#posts').find('.votebtn').on('click', (e) => {
-
-                vote($(e.target).data(), (req_data) => {
-
-                    $(e.target).parent().children(":not(.votebtn)").html(req_data[0].TotalVotes == null ? '0' : req_data[0].TotalVotes)
-
-                    $(e.target).removeClass('upduttet downduttet').siblings('.votebtn').removeClass('upduttet downduttet');
-
-                    if (req_data[0].your_vote == "Downvote") {
-                        $(e.target).parent().children(".downvote").toggleClass("downduttet", true)
-                    }
-                    else if (req_data[0].your_vote == "Upvote") {
-                        $(e.target).parent().children(".upvote").toggleClass("upduttet", true)
-                    }
-                });
-            });
-
-
-            //$('#posts').find('.votebtn').on('click', (e) => vote($(e.target).data()))
-
-        },
-        error: function (e) {
-
-            console.log("ERROR : ", e);
-
+            $("#products").append(html);
         }
-    });
+
+    })
 
 });
+
+function getProductFromCategori(categoriID)
+{
+    console.log("hey");
+    api_get("categories", {"categoryId": categoriID},  (resp) => {
+        console.log("hey");
+        if(typeof resp.success === "undefined" || resp.success === false || typeof resp.data === undefined || resp.data.length <= 0)
+        {
+            return; //  Fejl
+        }
+        
+        console.log(resp.data);
+        let data = resp.data;
+    
+        for (var i = 0; i < data.length; ++i) {
+            var product = data[i];
+    
+            let productID = 1 //    Change this to dynamic value!!!!
+    
+            var html = `
+                <div class="item" data-id="${productID}">
+                    <div class="itemContentCon">
+                        <div class="itemTitleCon">
+                            <div class="itemTitle" >${product.title}</div>
+                        </div>
+    
+                        <div class="itemImgCon">
+                            <img src="${product.location}">
+                        </div>
+    
+                        <div class="itemInfoCon">
+                            <p class="itemPrice">Pris: ${product.price}kr</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+    
+            $("#products").append(html);
+        }
+    })
+}

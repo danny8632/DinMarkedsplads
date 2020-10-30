@@ -24,7 +24,7 @@ p {
     color: black;
 }
 body {
-    height: 100vh;
+    /* height: 100vh; */
     background-color:#e9ebee;
 }
 
@@ -35,6 +35,7 @@ body {
     background-color: #437FC7;
     margin-bottom: 15px;
     border-bottom: solid 2px #262626;
+    width: 100%;
 }
 
 #navbar .nav-btn-wrapper {
@@ -56,7 +57,7 @@ body {
 #navbar .search {
     float: left;
     display: block;
-    padding: 14px 16px;
+    padding: 8px 16px;
 }
 
 #navbar .search input {
@@ -103,7 +104,7 @@ body {
 #navbar .logo {
     padding: 0;
     margin-left: 14px;
-    width: 60px;
+    width: 110px;
 }
 
 #navbar .dropdown .dropbtn:hover {
