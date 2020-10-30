@@ -127,7 +127,7 @@ class User extends Api {
 
         $token = $this->getToken($email);
         $subject = "Verificer DinMarkedsplads bruger";
-        $message = "Du har registreret dig på DinMarkedsplads.dk - for at kunne tilgå din bruger, skal du følge nedenstående link: http://localhost/api_v1/user?method=verifyUser&id=" . $token;
+        $message = "Du har registreret dig på DinMarkedsplads.dk - for at kunne tilgå din bruger, skal du følge nedenstående link: http://".$_SERVER['HTTP_HOST']."/api_v1/user?method=verifyUser&id=" . $token;
         $headers = "From: dinmarkedspladsnoreply";
 
         mail($email,$subject,$message,[$headers]);
@@ -137,7 +137,7 @@ class User extends Api {
 
     function getToken($email) {
         $this->conn = $this->getDbConn();
-        $stmt = $this->conn->prepare("SELECT `verifyKey` FROM `Users` WHERE `email` = :email LIMIT 1");
+        $stmt = $this->conn->prepare("SELECT `verifyKey` FROM `users` WHERE `email` = :email LIMIT 1");
         $stmt->bindParam(':email', $email);
         $stmt->execute();
 

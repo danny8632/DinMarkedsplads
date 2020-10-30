@@ -24,7 +24,9 @@ class CreateProduct {
 
         this.data = new FormData();
 
-        this.bind_event_handlers();
+        this.fetch_category(() => {
+            this.bind_event_handlers();
+        });
     }
 
 
@@ -65,6 +67,36 @@ class CreateProduct {
 
 
         this.is_bound = true;
+    }
+
+
+    fetch_category(cb) {
+
+
+        api_get("categories", (resp) => {
+
+            let select = this.container.find(`.category-select`);
+
+            if(typeof resp.success == "undefined" || resp.success === false || typeof resp.data == "undefined" || resp.data.length <= 0)
+            {
+                select.addClass("disable");
+            }
+            else
+            {
+                for (let i = 0, length = resp.data.length; i < length; i++) {
+                    const category = resp.data[i];
+                    
+                    let option = document.createElement("option");
+                    
+                    option.value = category.id;
+                    option.innerHTML = category.name;
+
+                    select.append(option)
+                }
+            }
+
+            if(typeof cb == "function") cb();
+        })
     }
 
 
@@ -143,14 +175,14 @@ class CreateProduct {
 
         let form = this.container.find('.form-wrapper');
 
-        form.find('input, textarea').each((i, elm) => {
+        form.find('input, textarea, select').each((i, elm) => {
 
             let input = $(elm),
                 val   = input.val();
 
             this.data.append(input.attr("name"), val);
 
-            input.toggleClass("invalid", val === "" || (input.hasClass("number") && !this.validate_number_input(val)))
+            input.toggleClass("invalid", val === "" || val <= 0 || (input.hasClass("number") && !this.validate_number_input(val)))
                 
         })
 
@@ -169,7 +201,7 @@ class CreateProduct {
 
         this.validate_input_feilds();
 
-        if(this.container.find('input.invalid, textare.invalid').length > 0) return false;
+        if(this.container.find('input.invalid, textare.invalid, select.invalid').length > 0) return false;
 
         if(this.images.length <= 0) return false;
 
