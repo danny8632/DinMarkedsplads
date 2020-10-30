@@ -19,14 +19,16 @@ $(document).ready(function () {
 
             let productID = product.id //    Change this to dynamic value!!!!
 
+            let imgs = product.location.split(",");
+
             var html = `
             <div class="titleCon">
                 <p class="title">${product.title}</p>
             </div>
 
             <div class="pictureCon">
-                <div class="pictures">
-                    ${product.location}
+                <div class="pictures" style="text-align: center;">
+                    ${imgs.map(x => `<img style="height: 80%;" src="${x}">`).join("")}
                 </div>
             </div>
 

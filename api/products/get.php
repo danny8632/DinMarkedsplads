@@ -22,14 +22,14 @@ class Get extends Api {
         if (isset($post_id) && !empty($post_id))
         {
             // Get specific product
-            $stmt = $this->conn->prepare("SELECT id, userId, title, description, address, price, status, created FROM products WHERE products.id = :id AND status = 'A'");
+            $stmt = $this->conn->prepare("SELECT product.id, product.userId, product.title, product.description, product.address, product.price, product.status, product.created, CONCAT_WS(',',assets.location) AS location FROM products AS product INNER JOIN productassets AS assets ON product.id = assets.productId WHERE product.id = :id AND product.status = 'A'");
             $stmt->bindParam(":id", $post_id);
             $stmt->execute();
         }
         else
         {
             // SELECT products.id, products.userId, products.title, products.description, products.address, products.price, products.status, products.created FROM products INNER JOIN productassets ON products.id = productassets.productId WHERE products.status = 'A'
-            $stmt = $this->conn->prepare("SELECT id, userId, title, description, address, price, status, created FROM products WHERE status = 'A'");
+            $stmt = $this->conn->prepare("SELECT product.id, product.userId, product.title, product.description, product.address, product.price, product.status, product.created, CONCAT_WS(',',assets.location) AS location FROM products AS product INNER JOIN productassets AS assets ON product.id = assets.productId WHERE product.status = 'A';");
             $stmt->execute();
         }
 
