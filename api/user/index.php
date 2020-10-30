@@ -137,7 +137,7 @@ class User extends Api {
 
     function getToken($email) {
         $this->conn = $this->getDbConn();
-        $stmt = $this->conn->prepare("SELECT `verifyKey` FROM `Users` WHERE `email` = :email LIMIT 1");
+        $stmt = $this->conn->prepare("SELECT `verifyKey` FROM `users` WHERE `email` = :email LIMIT 1");
         $stmt->bindParam(':email', $email);
         $stmt->execute();
 
