@@ -75,7 +75,13 @@
     background-color: #93BAE8;
     margin: 10px;
     cursor: pointer;
+    box-sizing: border-box;
 }
+
+.item * {
+    box-sizing: border-box;
+}
+
 .itemTitleCon {
     padding-bottom: 8px;
 }
