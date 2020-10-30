@@ -73,6 +73,8 @@
     max-width: 400px;
     border: black solid 2px;
     background-color: #93BAE8;
+    margin: 10px;
+    cursor: pointer;
 }
 .itemTitleCon {
     padding-bottom: 8px;
@@ -83,6 +85,9 @@
     font-weight: bold;
     text-decoration: none;
     color: black;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 .itemPrice {
     font-size: 20px;
