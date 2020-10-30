@@ -43,7 +43,7 @@ class Create extends Api {
 
         $this->conn = $this->getDbConn();
 
-        $stmt = $this->conn->prepare("INSERT INTO `Products`(`userId`, `title`, `description`, `price`, `status`, `address`, `zipcode`, `region`) VALUES (:userid, :title, :description, :price, :status, :address, :zipcode, :region);");
+        $stmt = $this->conn->prepare("INSERT INTO `products`(`userId`, `title`, `description`, `price`, `status`, `address`, `zipcode`, `region`) VALUES (:userid, :title, :description, :price, :status, :address, :zipcode, :region);");
         $stmt->bindParam(':userid', $_SESSION["user_id"]);
         $stmt->bindParam(':title', $title);
         $stmt->bindParam(':description', $description);
@@ -59,7 +59,7 @@ class Create extends Api {
 
         for ($i=0; $i < count($files_path); $i++) { 
             
-            $stmt = $this->conn->prepare("INSERT INTO `ProductAssets`(`productId`, `location`, `status`) VALUES (:pid, :location, :status);");
+            $stmt = $this->conn->prepare("INSERT INTO `productassets`(`productId`, `location`, `status`) VALUES (:pid, :location, :status);");
             $stmt->bindParam(':pid', $id);
             $stmt->bindParam(':location', $files_path[$i]);
             $stmt->bindParam(':status', $status);
