@@ -1,9 +1,42 @@
 $(document).ready(function () {
 
+    let content =  $("#content");
+
     let params = new URLSearchParams(location.search);
     var id = params.get('id');
 
-    console.log(id);
+    let slideindex = 1;
+
+    content.on("click", ".pictureCon .pictures .btn", (e) => {
+
+        let btn = e.currentTarget,
+            pic_wrapper = $(btn).siblings('.images-wrapper')[0],
+            value = slideindex + (btn.classList.contains("forward-btn") ? 1 : -1),
+            pic_length = pic_wrapper.children.length;
+
+        if(pic_length < value) 
+            slideindex = 1;
+        else if(value < 1) 
+            slideindex = pic_length;
+        else
+            slideindex = value;
+
+        show_image(slideindex);
+    });
+
+
+    function show_image(number) {
+
+        number = number -1;
+
+        $.each(content.find('.pictureCon .pictures .images-wrapper img'), (i, elm) => {
+
+            $(elm).toggleClass("shown", i == number)
+
+        })
+    }
+
+    
     api_get("products/get", {"id": id}, (resp) => {
 
         if(typeof resp.success === "undefined" || resp === false || typeof resp.data === undefined || resp.data.length <= 0)
@@ -11,7 +44,6 @@ $(document).ready(function () {
             return; //  Fejl
         }
 
-        console.log(resp.data);
         let data = resp.data;
 
         for (var i = 0; i < data.length; ++i) {
@@ -27,8 +59,16 @@ $(document).ready(function () {
             </div>
 
             <div class="pictureCon">
-                <div class="pictures" style="text-align: center;">
-                    ${imgs.map(x => `<img style="height: 80%;" src="${x}">`).join("")}
+                <div class="pictures">
+                    ${imgs.length > 1 ? `
+
+                        <div class="btn back-btn">Tilbage</div>
+                        <div class="btn forward-btn">Frem</div>
+
+                    ` : ''}
+                    <div class="images-wrapper">
+                        ${imgs.map(x => `<img src="${x}">`).join("")}
+                    </div>
                 </div>
             </div>
 
@@ -89,8 +129,10 @@ $(document).ready(function () {
             </div>
             `;
 
-            $("#content").append(html);
+            content.append(html);
         }
+
+        show_image(slideindex);
 
     })
 

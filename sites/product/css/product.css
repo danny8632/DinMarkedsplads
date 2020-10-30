@@ -17,10 +17,47 @@
     margin-bottom: 7px;
 }
 .pictures {
-    width: 700px;
-    height: 450px;
+    width: 900px;
+    height: 500px;
     margin: auto;
+    display: block;
+    position: relative;
 }
+
+.pictures .btn.back-btn {
+    position: absolute;
+    top: 260px;
+    left: 0px;
+    z-index: 1;
+}
+
+.pictures .btn.forward-btn {
+    position: absolute;
+    top: 260px;
+    right: 0px;
+    z-index: 1;
+}
+
+.pictures .images-wrapper {
+    width: 90%;
+    height: 500px;
+    margin: auto;
+    position: relative;
+}
+
+.pictures .images-wrapper img {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 500px;
+    object-fit: contain;
+    transition: opacity 0.3s;
+}
+
+.pictures .images-wrapper img.shown {
+    opacity: 1;
+}
+
 
 .buttonsCon {
     width: fit-content;
