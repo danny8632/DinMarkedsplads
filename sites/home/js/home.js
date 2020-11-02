@@ -82,9 +82,8 @@ $(document).ready(function () {
 
 function getProductFromCategori(categoriID)
 {
-    console.log("hey");
+
     api_get("categories", {"categoryId": categoriID},  (resp) => {
-        console.log("hey");
         if(typeof resp.success === "undefined" || resp.success === false || typeof resp.data === undefined || resp.data.length <= 0)
         {
             return; //  Fejl
@@ -96,7 +95,7 @@ function getProductFromCategori(categoriID)
         for (var i = 0; i < data.length; ++i) {
             var product = data[i];
     
-            let productID = 1 //    Change this to dynamic value!!!!
+            let productID = product.id //    Change this to dynamic value!!!!
     
             var html = `
                 <div class="item" data-id="${productID}">

@@ -46,7 +46,7 @@ class Create extends Api {
 
         for ($i=0; $i < count($files['name']); $i++) {
 
-            $file_name = date("Y-m-d_H:i:s") . "_" . basename($files["name"][$i]);
+            $file_name = date("Y-m-d_H_i_s") . "_" . basename($files["name"][$i]);
 
             $file_path = $path . $file_name;
 
