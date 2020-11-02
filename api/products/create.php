@@ -41,7 +41,9 @@ class Create extends Api {
 
             $path = "assets/fileupload/" . date("Y-m-d_H:i:s") . "_" . basename($files["name"][$i]);
 
-            if(move_uploaded_file($files["tmp_name"][$i], $path)) array_push($files_path, $path);   
+            //exit(var_dump($path));
+
+            if(move_uploaded_file($files["tmp_name"][$i], __DIR__."/../../".$path)) array_push($files_path, $path);   
         }
 
         $this->conn = $this->getDbConn();
