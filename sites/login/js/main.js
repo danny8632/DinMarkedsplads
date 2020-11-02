@@ -27,7 +27,7 @@ $( document ).ready(function() {
             }
             else
             {
-                window.location.replace("./");
+                window.location.href = "./";
             }
         });
 

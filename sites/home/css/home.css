@@ -70,10 +70,19 @@
 .item {
     float: left;
     padding: 8px;
-    max-width: 400px;
+    width: 400px;
+    height: 500px;
     border: black solid 2px;
     background-color: #93BAE8;
+    margin: 10px;
+    cursor: pointer;
+    box-sizing: border-box;
 }
+
+.item * {
+    box-sizing: border-box;
+}
+
 .itemTitleCon {
     padding-bottom: 8px;
 }
@@ -83,6 +92,9 @@
     font-weight: bold;
     text-decoration: none;
     color: black;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 .itemPrice {
     font-size: 20px;
@@ -94,7 +106,9 @@
     display: flex;
 }
 .itemImgCon img, .itemImgCon {
-    max-width: 390px;
+    width: 100%;
+    height: 390px;
+    object-fit: cover;
 }
 .itemImgCon img {
     transition: transform .2s;

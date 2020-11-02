@@ -44,7 +44,7 @@
             }
         ?>
 
-        <title>GemmeGag</title>
+        <title>DinMarkedsplads</title>
     </head>
 
     <body>
@@ -57,22 +57,21 @@
                     <input placeholder="Search..." type="text">
                 </form>
             </div>
-            <a href="/home">Home</a>
-            <a href="/categories">Categories</a>
+            <a href="/home">Hjem</a>
 
             <?php
 
                 if(isset($_SESSION['user_id']))
                 {
                     ?>
-                        <a href="/upload">Make Post</a>
+                        <a href="/upload">Sælg vare</a>
                         <div class="dropdown">
                             <button class="dropbtn">
                                 <?=$_SESSION['username']?><i class="fa fa-caret-down"></i>
                             </button>
                             <div class="dropdown-content">
-                            <a href="/user?id=<?=$_SESSION['user_id']?>">My Page</a>
-                            <a href="/usersettings">Settings</a>
+                            <!-- <a href="/user?id=<?=$_SESSION['user_id']?>">My Page</a>
+                            <a href="/usersettings">Settings</a> -->
                             <a href="/api_v1/user?method=logout">Logout</a>
                             </div>
                         </div> 

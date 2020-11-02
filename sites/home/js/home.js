@@ -11,7 +11,7 @@ $(document).ready(function () {
 
         let id = $(product.currentTarget).attr("data-id");
 
-        window.location.replace(`./product?id=${id}`);
+        window.location.href = `./product?id=${id}`;
     })
 
     api_get("categories", (resp) => {
@@ -51,7 +51,9 @@ $(document).ready(function () {
         for (var i = 0; i < data.length; ++i) {
             var product = data[i];
 
-            let productID = product.id 
+            let productID = product.id;
+
+            let imgs = product.location.split(",");
 
             var html = `
                 <div class="item" data-id="${productID}">
@@ -61,7 +63,7 @@ $(document).ready(function () {
                         </div>
 
                         <div class="itemImgCon">
-                            <img src="${product.location}">
+                            <img src="${imgs[0]}">
                         </div>
 
                         <div class="itemInfoCon">
