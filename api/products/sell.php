@@ -52,7 +52,7 @@ class Example extends Api {
         if($email == false || $product_id == false)
             return $this->formatResponse(false, ['msg' => "email or product-id not set"]);
 
-        $token = $this->getToken($email);
+        $token = $this->getToken($product_id);
         $subject = "Verificer dit køb på DinMarkedsplads";
         $message = "Du har købt produktet: http://".$_SERVER['HTTP_HOST']."/product/id=" . $product_id . "<br>
                     Når du har modtaget produktet korrekt bedes du følge nedenstående link: http://".$_SERVER['HTTP_HOST']."/api_v1/user?method=verifyOrderCompletion&id=" . $token;
