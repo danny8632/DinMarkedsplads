@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 28, 2020 at 01:14 PM
+-- Generation Time: Nov 02, 2020 at 01:36 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.2.34
 
@@ -110,6 +110,7 @@ CREATE TABLE `products` (
   `address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `zipcode` int(4) NOT NULL,
   `region` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `verifyKey` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created` timestamp NOT NULL DEFAULT current_timestamp(),
   `modified` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
