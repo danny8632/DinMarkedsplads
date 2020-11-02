@@ -94,7 +94,7 @@ function getProductFromCategori(categoriID)
     
         for (var i = 0; i < data.length; ++i) {
             var product = data[i];
-    
+            let imgs = product.location.split(",");
             let productID = product.id //    Change this to dynamic value!!!!
     
             var html = `
@@ -105,7 +105,7 @@ function getProductFromCategori(categoriID)
                         </div>
     
                         <div class="itemImgCon">
-                            <img src="${product.location}">
+                            <img src="${imgs[0]}">
                         </div>
     
                         <div class="itemInfoCon">
