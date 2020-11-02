@@ -40,4 +40,27 @@ class Comments extends Api {
             
     }
 
+
+    function _POST()
+    {
+        $req = $this->getRequest();
+
+        $user_id = $this->getRequestValues('user_id', 'user-id', 'userId', $req);
+        $product_id = $this->getRequestValues(['product_id', 'product-id', 'productId'], $req);
+        $comment = $this->getRequestValues(['comment', 'txt', 'text', 'message'], $req);
+
+        if ($product_id == false || $user_id == false || $comment == false)
+            return $this->formatResponse(false, "product-id, user-id or comment is missing");
+
+        $this->conn = $this->getDbConn();
+
+        $stmt = $this->conn->prepare("INSERT INTO `comments`(`userId`, `productId`, `comment`) VALUES (:userid, :productId, :comment)");
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->bindParam(':product_id', $user_id);
+        $stmt->bindParam(':comment', $comment);
+
+        $stmt->execute();
+        $id = $this->conn->lastInsertId();
+    }
+
 }
