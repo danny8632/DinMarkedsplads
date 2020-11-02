@@ -1,0 +1,37 @@
+.hidden {
+    display: none;
+}
+
+.container {
+    width: 90%;
+    margin: 40px auto;
+}
+
+.container * {
+    box-sizing: border-box;
+}
+
+.container table {
+    width: 100%;
+    border-collapse: collapse;
+
+}
+
+.container table tr.images {
+    max-width: 150px;
+}
+
+.container table tr img {
+    max-width: 150px;
+    object-fit: cover;
+}
+
+.container table tr td.info {
+    padding: 0px;
+}
+
+.container table tr td.info div {
+    float: left;
+    width: 100%;
+    margin: 0px;
+}
