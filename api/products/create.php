@@ -36,17 +36,17 @@ class Create extends Api {
 
         if(is_string($category)) $category = [$category];
 
+        $path = __DIR__.DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR."assets".DIRECTORY_SEPARATOR."fileupload".DIRECTORY_SEPARATOR;
+
+        if(is_dir($path) === false)
+        {
+            mkdir($path, 0777, true);
+        }
+        chmod($path, 0777);
 
         for ($i=0; $i < count($files['name']); $i++) {
 
             $file_name = date("Y-m-d_H:i:s") . "_" . basename($files["name"][$i]);
-
-            $path = __DIR__.DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR."assets".DIRECTORY_SEPARATOR."fileupload".DIRECTORY_SEPARATOR;
-
-            if(is_dir($path) === false)
-            {
-                mkdir($path, 0777, true);
-            }
 
             $file_path = $path . $file_name;
 
