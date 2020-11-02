@@ -39,9 +39,20 @@ class Create extends Api {
 
         for ($i=0; $i < count($files['name']); $i++) {
 
-            $path = "assets".DIRECTORY_SEPARATOR."fileupload". DIRECTORY_SEPARATOR . date("Y-m-d_H:i:s") . "_" . basename($files["name"][$i]);
+            $file_name = date("Y-m-d_H:i:s") . "_" . basename($files["name"][$i]);
 
-            if(move_uploaded_file($files["tmp_name"][$i], $path)) array_push($files_path, $path);   
+            $path = __DIR__.DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR."assets".DIRECTORY_SEPARATOR."fileupload".DIRECTORY_SEPARATOR;
+
+            if(is_dir($path) === false)
+            {
+                mkdir($path, 0777, true);
+            }
+
+            $file_path = $path . $file_name;
+
+            $db_file_path = implode(DIRECTORY_SEPARATOR, ["assets", "fileupload", $file_name]);
+
+            if(move_uploaded_file($files["tmp_name"][$i], $file_path)) array_push($files_path, $db_file_path);
         }
 
         $this->conn = $this->getDbConn();
