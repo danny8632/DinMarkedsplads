@@ -28,7 +28,7 @@ class Create extends Api {
         $category    = $this->getRequestValues(['category'], $req);
         $files       = $this->getRequestValues(['files', 'images', 'file', "files[]"], $_FILES);
         $status      = "A";
-        $token = bin2hex(openssl_random_pseudo_bytes(16));
+        $token       = bin2hex(openssl_random_pseudo_bytes(16));
 
         $files_path = [];
 
