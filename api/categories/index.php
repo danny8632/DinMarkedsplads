@@ -30,7 +30,7 @@ class Categories extends Api {
             INNER JOIN productcategories ON products.id = productcategories.id
             INNER JOIN categories ON productcategories.categoryId = categories.id
             INNER JOIN productassets AS assets ON products.id = assets.productId
-            WHERE productcategories.categoryId = 2 AND products.status = 'A' GROUP BY products.id");
+            WHERE productcategories.categoryId = :category_id AND products.status = 'A' GROUP BY products.id");
 
             $stmt->bindParam(":category_id", $category_id);
             $stmt->execute();
