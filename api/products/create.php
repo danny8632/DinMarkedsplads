@@ -39,9 +39,9 @@ class Create extends Api {
 
         for ($i=0; $i < count($files['name']); $i++) {
 
-            $path = "assets/fileupload/" . date("Y-m-d_H:i:s") . "_" . basename($files["name"][$i]);
+            $path = "assets".DIRECTORY_SEPARATOR."fileupload". DIRECTORY_SEPARATOR . date("Y-m-d_H:i:s") . "_" . basename($files["name"][$i]);
 
-            if(move_uploaded_file($files["tmp_name"][$i], __DIR__."/../../".$path)) array_push($files_path, $path);   
+            if(move_uploaded_file($files["tmp_name"][$i], $path)) array_push($files_path, $path);   
         }
 
         $this->conn = $this->getDbConn();
