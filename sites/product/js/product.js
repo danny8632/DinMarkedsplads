@@ -60,7 +60,7 @@ $(document).ready(function () {
 
             <div class="pictureCon">
                 <div class="pictures">
-                    ${imgs.length > 1 ? `
+                    ${imgs.length > 0 ? `
 
                         <div class="btn back-btn"><i class="fas fa-arrow-left"></i></div>
                         <div class="btn forward-btn"><i class="fas fa-arrow-right"></i></div>
