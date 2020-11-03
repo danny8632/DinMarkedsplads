@@ -15,166 +15,48 @@ class Message extends Api {
     }
 
     // Get message(s). Should get message based on productId(buyer) or userId & productId (seller) 
-    function _GET() 
+    function _GET()
     {
-        /* $product_id;
-        $user_id; */
-        
         $req = $this->getRequest();
-
-        if (empty($req)) {
-            echo json_encode(array(
-                "success" => false,
-                "message" => "U need to specify ether user_id or product_id",
-                "req" => json_encode($req)
-            ));
-            return true;
-        }
-
+        
         $this->conn = $this->getDbConn();
 
-        
-        if(isset($req) && !empty($req))
-        {
+        $user_id = $_SESSION["user_id"];
 
-        }
-
-        /*
-        $post_id;
-        $user_id;
-        $comment_id;
-        
-        $req = $this->getRequest();
-
-        if(isset($req[1]))
-            $req = $req[1];
-        else
-        {
-            echo json_encode(array(
-                "success" => false,
-                "message" => "U need to specify ether user_id or post_id",
-                "req" => json_encode($req)
-            ));
-            return true;
-        }
-
-        $this->conn = $this->getDbConn();
+        if ($user_id = false)
+            return $this->formatResponse(false, $user_id);
 
         if(isset($req) && !empty($req))
         {
-            if(isset($req['id'])) $comment_id = $req['id'];
-            if(isset($req['comment_id'])) $comment_id = $req['comment_id'];
-            if(isset($req['commentID'])) $comment_id = $req['commentID'];
-            if(isset($req['post_id'])) $post_id = $req['post_id'];
-            if(isset($req['user_id'])) $user_id = $req['user_id'];
-        }
-
-        if(!empty($comment_id))
-        {
-            $stmt = $this->conn->prepare("SELECT `comments`.*, `users`.`username`, `users`.`name`, `users`.`id` AS 'user_id', SUM(commentvotes.vote = 'Upvote' AND commentvotes.vote IS NOT NULL) AS 'UpVotes', SUM(commentvotes.vote = 'Downvote' AND commentvotes.vote IS NOT NULL) AS 'DownVotes', SUM(CASE WHEN `commentvotes`.`vote` IS NOT NULL THEN IF(`commentvotes`.`vote` = 'Upvote', 1, -1) END) AS `TotalVotes` FROM `comments` INNER JOIN `users` ON `comments`.`userID` = `users`.`id` LEFT JOIN commentvotes on comments.id = commentvotes.commentID WHERE `comments`.`id` = :id GROUP BY comments.id, commentvotes.commentID ORDER BY comments.created DESC");
-            $stmt->bindParam(":id", $comment_id);
+            // Get messages by userId
+            $stmt = $this->conn->prepare("SELECT directmessages.id, directmessages.userId, directmessages.productId, directmessages.reciverId, directmessages.title, directmessages.message, directmessages.created FROM directmessages
+            INNER JOIN users ON directmessages.userId = users.id
+            WHERE directmessages.reciverId = :id");
+            $stmt->bindParam(':id', $user_id);
             $stmt->execute();
         }
-        else if(!empty($post_id))
-        {
-            $stmt = $this->conn->prepare("SELECT `comments`.*, `users`.`username`, `users`.`name`, `users`.`id` AS 'user_id', SUM(commentvotes.vote = 'Upvote' AND commentvotes.vote IS NOT NULL) AS 'UpVotes', SUM(commentvotes.vote = 'Downvote' AND commentvotes.vote IS NOT NULL) AS 'DownVotes', SUM(CASE WHEN `commentvotes`.`vote` IS NOT NULL THEN IF(`commentvotes`.`vote` = 'Upvote', 1, -1) END) AS `TotalVotes` FROM `comments` INNER JOIN `users` ON `comments`.`userID` = `users`.`id` LEFT JOIN commentvotes on comments.id = commentvotes.commentID WHERE `postID` = :id GROUP BY comments.id, commentvotes.commentID ORDER BY comments.created DESC");
-            $stmt->bindParam(":id", $post_id);
-            $stmt->execute();
-        }
-        else if(!empty($user_id))
-        {
-            $stmt = $this->conn->prepare("SELECT `comments`.*, `posts`.`title` AS 'post_title' FROM `comments` LEFT JOIN `posts` ON `comments`.`postID` = `posts`.`id` WHERE `comments`.`userID` = :id");
-            $stmt->bindParam(":id", $user_id);
-            $stmt->execute();
-        }
-        else
-        {
-            echo json_encode(array(
-                "success" => false,
-                "message" => "U need to specify ether user or post ID"
-            ));
-            return true;
-        }
-
-        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-
-        $data = array();
-
-        foreach ($result as $comment) 
-        {
-            $updut = array();
-            if(isset($_SESSION["user_id"]))
-            {
-                $stmt = $this->conn->prepare("SELECT * FROM `commentvotes` WHERE `userID` = :id AND `commentID` = :commentid ");
-                $stmt->bindParam(":id", $_SESSION["user_id"]);
-                $stmt->bindParam(":commentid", $comment['id']);
-                $stmt->execute();
-                $updut = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-            }
-
-            if($updut == null || empty($updut) || !isset($updut) || !isset($_SESSION["user_id"]))
-            {
-                $comment['your_vote'] = null;
-            }
-            else
-            {
-                $comment['your_vote'] = $updut[0]['vote'];
-            }
-
-            $data[] = $comment;
-        }
-
-        echo json_encode($data);
-        */
     }
 
-    // Post comment. Much of the code can stay intact
     function _POST()
     {
-        $post_id;
-        $text;
-        $req;
-
-        if(isset($this->getRequest()[1]))
-            $req = $this->getRequest()[1];
-        else
-        {
-            echo json_encode(array(
-                "success" => false,
-                "message" => "U need to specify  post_id"
-            ));
-            return true;
-        }
-
-        $this->conn = $this->getDbConn();
-
-        if(isset($req) && !empty($req))
-        {
-            if(isset($req['id'])) $post_id = $req['id'];
-            if(isset($req['post_id'])) $post_id = $req['post_id'];
-            if(isset($req['text'])) $text = trim($req['text']);
-            if(isset($req['comment'])) $text = trim($req['comment']);
-        }
-
-        if(empty($post_id) || !isset($_SESSION["user_id"]) || empty($_SESSION["user_id"]) || empty($text))
-        {
-            echo json_encode(array(
-                "success" => false,
-                "message" => "Post or userid or text wasen't specified"
-            ));
-            return true;
-        }
-
-        $stmt = $this->conn->prepare("INSERT INTO `comments`(`text`, `postID`, `userID`) VALUES (:text, :postID, :userID)");
-        $stmt->bindParam(':text', $text, PDO::PARAM_STR);
-        $stmt->bindParam(':postID', $post_id, PDO::PARAM_INT);
-        $stmt->bindParam(':userID', $_SESSION["user_id"], PDO::PARAM_INT);
+        $req = $this->getRequest();
         
-        if ($stmt->execute()) {
-            echo "Comment was created";
-        } else {
-            echo "WONG";
-        }
+        $user_id = $_SESSION["user_id"];
+        $product_id  = $this->getRequestValues(['product_id', 'product-id', 'productId'], $req);
+        $receiver_id = $this->getRequestValues(['receiver_id', 'receiver-id', 'receiverId'], $req);
+        $text        = $this->getRequestValues(['txt', 'text', 'message', 'msg'], $req);
+
+        if ($user_id == false || $receiver_id == false || $text == false)
+            return $this->formatResponse(false, [$user_id, $receiver_id, $text]);
+
+        $stmt = $this->conn->prepare("");
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->bindParam(':product_id', $product_id);
+        $stmt->bindParam(':receiver_id', $receiver_id);
+        $stmt->bindParam(':text', $text);
+        
+
+        $stmt->execute();
     }
 
 
@@ -233,7 +115,6 @@ class Message extends Api {
 
     }
 
-    // Delete comment. Much of the code can stay intact. 
     function deleteComment() {
 
         $comment_id;

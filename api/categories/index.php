@@ -1,5 +1,5 @@
 <?php
-// TODO: Get post/product by price or product name. Should this be under post/index.php or here? (categories/index.php)
+
 require __DIR__."/../api.php";
 
 session_start();
