@@ -49,7 +49,7 @@ class Comments extends Api {
         $product_id = $this->getRequestValues(['product_id', 'product-id', 'productId'], $req);
         $comment = $this->getRequestValues(['comment', 'txt', 'text', 'message'], $req);
 
-        if ($product_id == false || $user_id == false || $comment == false)
+        if ($product_id == false || !isset($user_id) || $comment == false)
             return $this->formatResponse(false, "product-id, user-id or comment is missing");
 
         $this->conn = $this->getDbConn();
