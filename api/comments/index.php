@@ -25,7 +25,8 @@ class Comments extends Api {
     
         if (isset($product_id) && !empty($product_id))
         {
-            $stmt = $this->conn->prepare("SELECT id, productId, userId, comment, created FROM comments WHERE productId = :id");
+            $stmt = $this->conn->prepare("SELECT comments.id, comments.productId, comments.userId, comments.comment, comments.created, users.username FROM comments
+            INNER JOIN users ON comments.userId = users.id WHERE productId = :id");
 
             $stmt->bindParam(":id", $product_id);
             $stmt->execute();
