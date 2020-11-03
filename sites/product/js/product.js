@@ -165,9 +165,9 @@ $(document).ready(function (e) {
 
 function postComment (text, id)
 {   
-    var data = {"method": "_POST", "product_id": id, "text": text}
+    var data = {"product_id": id, "text": text}
     console.log(data)
-    api_ajax("comments", data, (resp) => {
+    api_post("comments", data, (resp) => {
         console.log(resp);
     })
 }
