@@ -16,8 +16,9 @@
 }
 
 .container table {
-    width: 100%;
+    /* width: 100%; */
     border-collapse: collapse;
+    margin: auto;
 
 }
 
@@ -29,16 +30,16 @@
 .container table tr img {
     max-width: 150px;
     max-height: 150px;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .container table tr td {
-    padding: 6px 8px;
+    padding: 6px 12px;
     vertical-align: top;
 }
 
 .container table tr td.info {
-    width: 40%;
+    /* width: 40%; */
 }
 
 
@@ -138,15 +139,56 @@
 
 
 
-#edit-modal .input-wrapper.image-wrapper .img-viewer {
+#edit-modal .input-wrapper .images-wrapper {
     width: 100%;
     border: 1px dashed black;
-    height: 130px;
+    height: 155px;
     overflow-x: auto;
     text-align: center;
     margin-bottom: 10px;
+    display: inline-flex;
 }
 
-#edit-modal .input-wrapper.images-input-wrapper .upload-img {
+#edit-modal .input-wrapper .images-wrapper .image-wrapper {
     width: 130px;
+    height: 130px;
+    border: 1px solid #000;
+    margin: 5px;
+    padding: 5px;
+    position: relative;
+}
+
+#edit-modal .input-wrapper .images-wrapper .image-wrapper .delete-image-btn {
+    position: absolute;
+    right: -8px;
+    top: -6px;
+}
+
+#edit-modal .input-wrapper .images-wrapper .image-wrapper .delete-image-btn:hover {
+    color: red;
+}
+
+#edit-modal .input-wrapper .images-wrapper .image-wrapper img {
+    width: 130px;
+    height: 130px;
+    object-fit: contain;
+}
+
+#edit-modal .images-input-wrapper .upload-wrapper {
+    width: 180px;
+    position: relative;
+}
+
+#edit-modal .images-input-wrapper .upload-wrapper label {
+    background-color: #2567B8;
+    font-weight: bold;
+    color: #fff;
+    border-radius: 2px;
+    border: none;
+    padding: 6px 8px;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: center;
+    box-sizing: border-box;
+    float: left;
 }

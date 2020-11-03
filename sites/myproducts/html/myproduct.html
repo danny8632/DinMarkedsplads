@@ -4,10 +4,10 @@
         <tr>
             <th>Billeder</th>
             <th>Info</th>
-            <th>Stats</th>
+            <!-- <th>Stats</th> -->
             <th>Actions</th>
         </tr>
-        <tr class="no-products"><td colspan="4"><h2>Du har ingen produkter til salg</h2></td></tr>
+        <tr class="no-products"><td colspan="3"><h2>Du har ingen produkter til salg</h2></td></tr>
     </table>
 
 </div>
@@ -96,7 +96,8 @@
                     </div>
 
                     <div class="upload-wrapper">
-                        <input type="file" name="images" multiple> 
+                        <input type="file" name="images" id="file-upload-btn" multiple hidden>
+                        <label for="file-upload-btn">Tilføj filer</label>
                     </div>
         
                 </div>

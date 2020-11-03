@@ -32,12 +32,9 @@ class Myproducts extends Api {
             product.created,
             product.zipcode,
             product.region,
-            GROUP_CONCAT(assets.location) AS location,
             GROUP_CONCAT(categories.categoryId) AS categories
         FROM 
             products AS product 
-        INNER JOIN 
-            productassets AS assets ON product.id = assets.productId
         INNER JOIN 
             productcategories AS categories ON product.id = categories.productId 
         WHERE 
@@ -57,12 +54,69 @@ class Myproducts extends Api {
         for ($i=0; $i < count($result); $i++) { 
             $product = $result[$i];
             $product['categories'] = array_map('intval', explode(",", $product['categories']));
+
+            $product['assets'] = $this->get_assets($product['id']);
+
             array_push($data, $product);
         }
 
         return $this->formatResponse(true, $data);
     }
 
+
+    function get_assets($id) {
+
+        $this->conn = $this->getDbConn();
+
+        $stmt = $this->conn->prepare("SELECT * FROM `productassets` WHERE `productId` = :id AND `status` = 'A';");
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+
+    function delete_assets($id) {
+
+        $this->conn = $this->getDbConn();
+
+        $stmt = $this->conn->prepare("UPDATE `productassets` SET `status`='D' WHERE `id` = :id;");
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+    }
+
+
+    function upload_assets($id, $files) {
+
+        $this->conn = $this->getDbConn();
+        $stmt = $this->conn->prepare("INSERT INTO `productassets`(`productId`, `location`, `status`) VALUES (:id, :location, :status);");
+
+        $status = "A";
+        $path = __DIR__.DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR."assets".DIRECTORY_SEPARATOR."fileupload".DIRECTORY_SEPARATOR;
+
+        if(is_dir($path) === false)
+        {
+            mkdir($path, 0777, true);
+        }
+        chmod($path, 0777);
+
+        for ($i=0; $i < count($files['name']); $i++) {
+
+            $file_name = date("Y-m-d_H_i_s") . "_" . basename($files["name"][$i]);
+
+            $file_path = $path . $file_name;
+
+            $db_file_path = implode(DIRECTORY_SEPARATOR, ["assets", "fileupload", $file_name]);
+
+            if(move_uploaded_file($files["tmp_name"][$i], $file_path))
+            {
+                $stmt->bindParam(':id', $id);
+                $stmt->bindParam(':location', $db_file_path);
+                $stmt->bindParam(':status', $status);
+                $stmt->execute();
+            }
+        }
+    }
 
     function _UPDATE() {
 
@@ -83,7 +137,13 @@ class Myproducts extends Api {
             'status'      => $this->getRequestValues(['status'], $req)
         ];
 
+        $category           = $this->getRequestValues(['category'], $req);
+        $delete_assets_arr  = $this->getRequestValues(['delete_assets'], $req);
+        $files              = $this->getRequestValues(['files', 'images', 'file', "files[]"], $_FILES);
+
         $prep_data = [];
+
+        $update_stmt = [];
 
         foreach ($data as $key => $value) {
 
@@ -95,12 +155,12 @@ class Myproducts extends Api {
                 continue;
             }
 
-            $sql .= "$key=:$key ";
+            array_push($update_stmt, "$key=:$key");
 
             $prep_data[":$key"] = $value;
         }
 
-        $sql .= "WHERE `id` = :id;";
+        $sql .= implode(", ", $update_stmt) . " WHERE `id` = :id;";
 
         if(!empty($prep_data) && count($prep_data) > 1)
         {
@@ -109,11 +169,9 @@ class Myproducts extends Api {
             foreach ($prep_data as $key => &$value) {
                 $stmt->bindParam($key, $value);
             }
-    
+
             $stmt->execute();
         }
-
-        $category = $this->getRequestValues(['category'], $req);
 
         if($category !== false)
         {
@@ -123,6 +181,19 @@ class Myproducts extends Api {
             $stmt->execute();
         }
 
+        if($delete_assets_arr !== false)
+        {
+            $delete_assets_arr = explode(",", $delete_assets_arr);            
+
+            for ($i=0; $i < count($delete_assets_arr); $i++) { 
+                $this->delete_assets($delete_assets_arr[$i]);
+            }
+        }
+
+        if($files !== false)
+        {
+            $this->upload_assets($data['id'], $files);
+        }
 
         $stmt = $this->conn->prepare("SELECT 
                 product.id, 
@@ -155,6 +226,7 @@ class Myproducts extends Api {
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC)[0];
 
         $result['categories'] = array_map('intval', explode(",", $result['categories']));
+        $result['assets'] = $this->get_assets($data['id']);
 
         return $this->formatResponse(true, $result);
     }

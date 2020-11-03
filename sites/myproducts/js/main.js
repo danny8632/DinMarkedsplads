@@ -104,8 +104,6 @@ class MyProducts {
 
         if(typeof id == "object") { data = id; id = 0};
 
-        console.log(data)
-
         if(id === 0)
         {
             if(typeof data.id == "undefined") return console.error("update_tr_data needs product id");
@@ -113,10 +111,10 @@ class MyProducts {
         }
 
         let prod_data = this.products.find(x => x.id == id);
-        
-        console.log(id, data, prod_data)
 
         Object.assign(prod_data, data);
+
+        prod_data.assets = data.assets;
 
         this.container.find(`table tr[data-id="${id}"]`).html(this.render_tr_data(prod_data)).addClass("blink");
 
@@ -128,10 +126,9 @@ class MyProducts {
 
     render_tr_data(prod) {
 
-        const img = prod.location.split(",");
         const created = this.formdate(prod.created);
 
-        return `<td class="images"><img src="${img[0]}"></td>
+        return `<td class="images"><img src="${prod.assets[0].location}"></td>
             <td class="info">
                 <div class="title"><b>titel:</b> ${prod.title}</div>
                 <div class="description"><b>Beskrivelse:</b> ${prod.description}</div>
@@ -142,7 +139,6 @@ class MyProducts {
                 <div class="region"><b>Region:</b> ${prod.region}</div>
                 <div class="created"><b>Oprettet:</b> ${created}</div>
             </td>
-            <td class="stats">Next itteration</td>
             <td class="actions">
                 <div class="btn sell-product">Sælg vare</div>
                 <div class="btn edit-product">Rediger vare</div>
@@ -175,7 +171,6 @@ class MyProducts {
             table.append(tr);
         }
     }
-
 }
 
 
