@@ -1,5 +1,5 @@
 <?php
-// TODO: Comments api - specification of user_id is no longer needed. Sum of upvotes/downvotes are also no longer required.
+
 require __DIR__."/../api.php";
 
 session_start();
@@ -14,7 +14,7 @@ class Message extends Api {
 
     }
 
-    // Get message(s). Should get message based on productId(buyer) or userId & productId (seller) 
+
     function _GET()
     {
         $req = $this->getRequest();
@@ -37,6 +37,7 @@ class Message extends Api {
         }
     }
 
+    // Post direct message. Might need a function to get receiver_id somewhere
     function _POST()
     {
         $req = $this->getRequest();
