@@ -10,6 +10,106 @@
         <tr class="no-products"><td colspan="4"><h2>Du har ingen produkter til salg</h2></td></tr>
     </table>
 
-    
-    
+</div>
+
+<div class="modal hidden" id="sell-modal">
+
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Sælg til</h2>
+        </div>
+        <div class="modal-body">
+            
+            <div class="description">For at kunne markere dit produkt som solgt, skal du specifere hvem du har solgt produktet til.</div>
+
+            <div class="input-wrapper">
+                <input type="text" name="username">
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <div class="btn-wrapper">
+                <div class="btn sell-product">Sælg</div>
+                <div class="btn close">Close</div>
+            </div>
+        </div>
+    </div>
+  
+</div>
+
+<div class="modal hidden" id="edit-modal">
+
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Sælg til</h2>
+        </div>
+        <div class="modal-body">
+            
+            <div class="description">Her kan du redigere dit produkt.</div>
+
+
+            <div class="form-wrapper">
+
+                <div class="title-wrapper input-wrapper">
+                    <label for="title">Titel:</label>
+                    <input placeholder="Titel" name="title" minlength="1" required>
+                </div>
+        
+                <div class="price-wrapper input-wrapper">
+                    <label for="price">Beløb:</label>
+                    <input class="number" placeholder="Beløb" name="price" minlength="1" required>
+                </div>
+        
+                <div class="description-wrapper input-wrapper">
+                    <label for="description">Beskrivelse:</label>
+                    <textarea placeholder="Beskrivelse" name="description" minlength="1" required></textarea>
+                </div>
+        
+        
+                <div class="category-wrapper input-wrapper">
+                    <label for="category">Kategori:</label>
+                    <select class="category-select" name="category" required>
+                        <option value="">Vælg en Kategori</option>
+                    </select>
+                </div>
+                
+        
+                <div class="address-wrapper input-wrapper">
+                    <label for="address">Addresse:</label>
+                    <input placeholder="Addresse" name="address" minlength="1" required>
+                </div>
+        
+                <div class="zipcode-wrapper input-wrapper">
+                    <label for="zipcode">Post nr:</label>
+                    <input class="number" placeholder="Post nr" name="zipcode" minlength="4" required>
+                </div>
+        
+                <div class="region-wrapper input-wrapper">
+                    <label for="region">Område:</label>
+                    <input placeholder="område" name="region" minlength="1" required>
+                </div>
+        
+                <div class="images-input-wrapper input-wrapper">
+        
+                    <div class="images-wrapper">
+                        <div class="images">Ingen billeder uploaded</div>
+                    </div>
+
+                    <div class="upload-wrapper">
+                        <input type="file" name="images" multiple> 
+                    </div>
+        
+                </div>
+        
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <div class="btn-wrapper">
+                <div class="btn sell-product">Sælg</div>
+                <div class="btn close">Close</div>
+            </div>
+        </div>
+    </div>
+  
 </div>

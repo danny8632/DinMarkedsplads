@@ -9,7 +9,8 @@ class Myproducts Extends Sites {
             "/sites/myproducts/css/style.css"
         ),
         "js" => array(
-            "/sites/myproducts/js/main.js"
+            "/sites/myproducts/js/main.js",
+            "/sites/myproducts/js/edit_modal.js"
         ),
         "html" => array(
             "myproducts/html/myproduct.html"
@@ -20,5 +21,4 @@ class Myproducts Extends Sites {
 
         parent::__construct($this->includeFiles);
     }
-
 }

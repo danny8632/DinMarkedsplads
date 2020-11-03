@@ -32,21 +32,40 @@ class Myproducts extends Api {
             product.created,
             product.zipcode,
             product.region,
-            GROUP_CONCAT(assets.location) AS location 
+            GROUP_CONCAT(assets.location) AS location,
+            GROUP_CONCAT(categories.categoryId) AS categories
         FROM 
             products AS product 
         INNER JOIN 
-            productassets AS assets ON product.id = assets.productId 
+            productassets AS assets ON product.id = assets.productId
+        INNER JOIN 
+            productcategories AS categories ON product.id = categories.productId 
         WHERE 
             product.userId = :userid
-            GROUP BY product.id;");
+        GROUP BY 
+            product.id;
+        ");
         
         $stmt->bindParam(':userid', $_SESSION["user_id"]);
         $stmt->execute();
         
         
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-        return $this->formatResponse(true, $result);
+
+        $data = [];
+
+        for ($i=0; $i < count($result); $i++) { 
+            $product = $result[$i];
+
+
+            $product['categories'] = array_map('intval', explode(",", $product['categories']));
+
+            array_push($data, $product);
+        }
+
+
+
+        return $this->formatResponse(true, $data);
     }
 
 

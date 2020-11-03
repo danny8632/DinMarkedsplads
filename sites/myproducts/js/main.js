@@ -1,8 +1,12 @@
-class CreateProduct {
+class MyProducts {
 
     constructor() {
 
         this.container = $(`.container`);
+
+        this.modal = {
+            'sell' : $(`#sell-modal`)
+        }
 
         this.products = [];
 
@@ -11,6 +15,8 @@ class CreateProduct {
             'S' : "Sold",
             'D' : "Deleted"
         }
+
+        this.categories = [];
     }
 
 
@@ -18,10 +24,28 @@ class CreateProduct {
 
         this.fetch_my_products(() => {
 
-            this.render();
+            this.fetch_category(() => {
+                
+                this.render();
+    
+                this.bind_event_handlers();
 
-            this.bind_event_handlers();
+            })
         })
+    }
+
+
+    fetch_category(cb) {
+
+        api_get("categories", (resp) => {
+
+            if(typeof resp.data == "undefined") return typeof cb == "function" ? cb() : true;
+
+            this.categories = resp.data;
+
+            if(typeof cb == "function") cb();
+        })
+        
     }
 
 
@@ -35,8 +59,6 @@ class CreateProduct {
 
             if(typeof cb == "function") cb();
         })
-
-
     }
 
 
@@ -44,7 +66,22 @@ class CreateProduct {
 
         if(this.is_bound) return;
 
+        this.container.on("click", "td.actions div.sell-product", (e) => {
+
+            this.modal.sell.toggleClass("hidden", false);
+
+        });
+
+        this.container.on("click", "td.actions div.edit-product", (e) => {
+            let id = e.currentTarget.parentNode.parentNode.dataset.id
+
+            EditProduct.display_edit(this.products.find(x => x.id == id), this.categories);
+        })
         
+
+        this.modal.sell.on("click", ".modal-footer .close", () => {
+            this.modal.sell.toggleClass("hidden", true);
+        })
 
         this.is_bound = true;
     }
@@ -73,30 +110,38 @@ class CreateProduct {
             const img = prod.location.split(",");
             const created = this.formdate(prod.created);
 
+            if(i > 0)
+            {
+                tr[i-1].css("border-bottom", "1px solid #000");
+            }
 
-            tr.push(`
+            tr.push($(`
                 <tr data-id="${prod.id}">
                     <td class="images"><img src="${img[0]}"></td>
                     <td class="info">
-                        <div class="title">${prod.title}</div>
-                        <div class="description">${prod.description}</div>
-                        <div class="price">${prod.price}</div>
-                        <div class="status">${this.status[prod.status]}</div>
-                        <div class="adress">${prod.address}</div>
-                        <div class="zipcode">${prod.zipcode}</div>
-                        <div class="region">${prod.region}</div>
-                        <div class="created">${created}</div>
+                        <div class="title"><b>titel:</b> ${prod.title}</div>
+                        <div class="description"><b>Beskrivelse:</b> ${prod.description}</div>
+                        <div class="price"><b>Pris:</b> ${prod.price}</div>
+                        <div class="status"><b>Status:</b> ${this.status[prod.status]}</div>
+                        <div class="adress"><b>Addresse:</b> ${prod.address}</div>
+                        <div class="zipcode"><b>Post nr:</b> ${prod.zipcode}</div>
+                        <div class="region"><b>Region:</b> ${prod.region}</div>
+                        <div class="created"><b>Oprettet:</b> ${created}</div>
                     </td>
                     <td class="stats">Next itteration</td>
-                    <td class="actions">TODO Create some actions</td>
+                    <td class="actions">
+                        <div class="btn sell-product">Sælg vare</div>
+                        <div class="btn edit-product">Rediger vare</div>
+                        <div class="btn delete-product">Slet vare</div>
+                    </td>
                 </tr>
-            `);
+            `));
         }
 
         if(tr.length > 0)
         {
             no_prod.remove();
-            table.append(tr.join(""));
+            table.append(tr);
         }
     }
 
@@ -106,13 +151,14 @@ class CreateProduct {
 
 $( document ).ready(function() {
 
-    if(window.File && window.FileList && window.FileReader)
+    if(typeof window.myProducts == "undefined")
     {
-        let cp = new CreateProduct;
-        cp.init();
+        window.myProducts = new MyProducts;
     }
-    else
-    {
-        alert("Din browser er desværre for gammel");
-    }
+
+    window.myProducts.init();
+
+    /* let cp = new MyProducts;
+    cp.init(); */
+
 });
