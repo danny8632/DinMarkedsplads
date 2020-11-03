@@ -133,7 +133,7 @@ $(document).ready(function (e) {
 
     
     
-    api_get("products/get", {"id": id}, (resp) => { 
+    api_get("comments", {"id": id}, (resp) => { 
 
         if(typeof resp.success === "undefined" || resp === false || typeof resp.data === undefined || resp.data.length <= 0)
         {
