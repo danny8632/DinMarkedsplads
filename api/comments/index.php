@@ -54,7 +54,7 @@ class Comments extends Api {
 
         $this->conn = $this->getDbConn();
 
-        $stmt = $this->conn->prepare("INSERT INTO `comments`(`userId`, `productId`, `comment`) VALUES (:userid, :product_id, :comment)");
+        $stmt = $this->conn->prepare("INSERT INTO `comments`(`userId`, `productId`, `comment`) VALUES (:user_id, :product_id, :comment)");
         $stmt->bindParam(':user_id', $user_id);
         $stmt->bindParam(':product_id', $product_id);
         $stmt->bindParam(':comment', $comment);
