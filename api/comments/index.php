@@ -63,4 +63,57 @@ class Comments extends Api {
         $stmt->execute();
     }
 
+
+    function updateComment()
+    {
+        $req = $this->getRequest();
+
+        $user_id = $_SESSION["user_id"];
+        $comment_id = $this->getRequestValues(['comment_id', 'comment-id', 'commentId'], $req);
+        $product_id = $this->getRequestValues(['product_id', 'product-id', 'productId'], $req);
+        $text = $this->getRequestValues(['text', 'txt', 'message', 'msg'], $req);
+
+        if ($user_id == false || $comment_id == false || $product_id == false || $text == false)
+            return $this->formatResponse(false, [$user_id, $comment_id, $product_id, $text]);
+
+        $this->conn = $this->getDbConn();
+
+        $stmt = $this->conn->prepare("UPDATE comments
+                                    SET comments.comment = :text
+                                    WHERE comments.id = :comment_id
+                                    AND comments.userId = userId
+                                    AND comments.productId = :productId");
+
+        $stmt->bindParam(':text', $text); 
+        $stmt->bindParam(':comment_id', $comment_id);
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->bindParam(':product_id', $product_id);
+
+        $stmt->execute();
+    }
+
+
+    function deleteComment()
+    {
+        $req = $this->getRequest();
+
+        $user_id = $_SESSION["user_id"];
+        $comment_id = $this->getRequestValues(['comment_id', 'comment-id', 'commentId'], $req);
+        $product_id = $this->getRequestValues(['product_id', 'product-id', 'productId'], $req);
+
+        if ($user_id == false || $comment_id == false || $product_id == false || $text == false)
+            return $this->formatResponse(false, [$user_id, $comment_id, $product_id, $text]);
+        
+        $this->conn = $this->getDbConn();
+
+        $stmt = $this->conn->prepare("DELETE FROM comments
+                                    WHERE comments.id = :comment_id
+                                    AND comments.userId = :user_id");
+
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->bindParam(':comment_id', $comment_id);
+        $stmt->execute();
+
+    }
+
 }
