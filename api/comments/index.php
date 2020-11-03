@@ -21,13 +21,13 @@ class Comments extends Api {
         $this->conn = $this->getDbConn();
 
         //$comment_id = $this->getRequestValues(['comment_id', 'comment-id', 'commentId'], $req);
-        $product_id = $this->getRequestValues(['product_id', 'product-id', 'productId'], $req);
+        $product_id = $this->getRequestValues(['product_id', 'product-id', 'productId', 'id'], $req);
     
         if (isset($product_id) && !empty($product_id))
         {
-            $stmt = $this->conn->prepare("");
+            $stmt = $this->conn->prepare("SELECT id, productId, userId, comment, created FROM comments WHERE productId = :id");
 
-            $stmt->bindParam(":comment_id", $comment_id);
+            $stmt->bindParam(":id", $product_id);
             $stmt->execute();
         }
         
