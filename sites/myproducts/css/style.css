@@ -7,6 +7,10 @@
     margin: 40px auto;
 }
 
+.invalid {
+    color : red;
+}
+
 .container * {
     box-sizing: border-box;
 }
@@ -50,6 +54,33 @@
     margin-bottom: 10px;
 }
 
+.container .blink {
+    -webkit-animation: flash linear .5s 2 forwards;
+    animation: flash linear .5s 2 forwards;
+}
+
+@-webkit-keyframes flash {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: .1;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+@keyframes flash {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: .1;
+    }
+    100% {
+        opacity: 1;
+    }
+}
 
 
 

@@ -118,7 +118,7 @@ CREATE TABLE `products` (
 -- Triggers `products`
 --
 DELIMITER $$
-CREATE TRIGGER `Product_Assets_status_update` AFTER UPDATE ON `products` FOR EACH ROW UPDATE ProductAssets SET ProductAssets.status = NEW.status WHERE ProductAssets.productId = NEW.id
+CREATE TRIGGER `Product_Assets_status_update` AFTER UPDATE ON `products` FOR EACH ROW UPDATE productassets SET productassets.status = NEW.status WHERE productassets.productId = NEW.id
 $$
 DELIMITER ;
 

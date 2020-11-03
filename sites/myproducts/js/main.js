@@ -99,6 +99,59 @@ class MyProducts {
         return `${day}. ${month} ${year}`;
     }
 
+
+    update_tr_data(id, data) {
+
+        if(typeof id == "object") { data = id; id = 0};
+
+        console.log(data)
+
+        if(id === 0)
+        {
+            if(typeof data.id == "undefined") return console.error("update_tr_data needs product id");
+            id = data.id;
+        }
+
+        let prod_data = this.products.find(x => x.id == id);
+        
+        console.log(id, data, prod_data)
+
+        Object.assign(prod_data, data);
+
+        this.container.find(`table tr[data-id="${id}"]`).html(this.render_tr_data(prod_data)).addClass("blink");
+
+        setTimeout(() => {
+            this.container.find(`table tr[data-id="${id}"]`).removeClass("blink")
+        }, 1000)
+    }
+
+
+    render_tr_data(prod) {
+
+        const img = prod.location.split(",");
+        const created = this.formdate(prod.created);
+
+        return `<td class="images"><img src="${img[0]}"></td>
+            <td class="info">
+                <div class="title"><b>titel:</b> ${prod.title}</div>
+                <div class="description"><b>Beskrivelse:</b> ${prod.description}</div>
+                <div class="price"><b>Pris:</b> ${prod.price}</div>
+                <div class="status"><b>Status:</b> ${this.status[prod.status]}</div>
+                <div class="adress"><b>Addresse:</b> ${prod.address}</div>
+                <div class="zipcode"><b>Post nr:</b> ${prod.zipcode}</div>
+                <div class="region"><b>Region:</b> ${prod.region}</div>
+                <div class="created"><b>Oprettet:</b> ${created}</div>
+            </td>
+            <td class="stats">Next itteration</td>
+            <td class="actions">
+                <div class="btn sell-product">Sælg vare</div>
+                <div class="btn edit-product">Rediger vare</div>
+                <div class="btn delete-product">Slet vare</div>
+            </td>
+        `;
+    }
+
+
     render() {
 
         let table   = this.container.children("table"),
@@ -107,35 +160,13 @@ class MyProducts {
 
         for (let i = 0, length = this.products.length; i < length; i++) {
             const prod = this.products[i];
-            const img = prod.location.split(",");
-            const created = this.formdate(prod.created);
 
             if(i > 0)
             {
                 tr[i-1].css("border-bottom", "1px solid #000");
             }
 
-            tr.push($(`
-                <tr data-id="${prod.id}">
-                    <td class="images"><img src="${img[0]}"></td>
-                    <td class="info">
-                        <div class="title"><b>titel:</b> ${prod.title}</div>
-                        <div class="description"><b>Beskrivelse:</b> ${prod.description}</div>
-                        <div class="price"><b>Pris:</b> ${prod.price}</div>
-                        <div class="status"><b>Status:</b> ${this.status[prod.status]}</div>
-                        <div class="adress"><b>Addresse:</b> ${prod.address}</div>
-                        <div class="zipcode"><b>Post nr:</b> ${prod.zipcode}</div>
-                        <div class="region"><b>Region:</b> ${prod.region}</div>
-                        <div class="created"><b>Oprettet:</b> ${created}</div>
-                    </td>
-                    <td class="stats">Next itteration</td>
-                    <td class="actions">
-                        <div class="btn sell-product">Sælg vare</div>
-                        <div class="btn edit-product">Rediger vare</div>
-                        <div class="btn delete-product">Slet vare</div>
-                    </td>
-                </tr>
-            `));
+            tr.push($(`<tr data-id="${prod.id}">${this.render_tr_data(prod)}</tr>`));
         }
 
         if(tr.length > 0)
