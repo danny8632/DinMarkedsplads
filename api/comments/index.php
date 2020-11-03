@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 require __DIR__."/../api.php";
 
 class Comments extends Api {
@@ -45,12 +45,12 @@ class Comments extends Api {
     {
         $req = $this->getRequest();
 
-        $user_id = $this->getRequestValues('user_id', 'user-id', 'userId', $req);
+        $user_id = $_SESSION["user_id"];
         $product_id = $this->getRequestValues(['product_id', 'product-id', 'productId'], $req);
         $comment = $this->getRequestValues(['comment', 'txt', 'text', 'message'], $req);
 
         if ($product_id == false || $user_id == false || $comment == false)
-            return $this->formatResponse(false, "product-id, user-id or comment is missing");
+            return $this->formatResponse(false, [$user_id, $product_id, $comment]);
 
         $this->conn = $this->getDbConn();
 
