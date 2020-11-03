@@ -51,7 +51,6 @@ function api_post(end_point, data, cb) {
 
     $.ajax({
         type: "POST",
-        enctype: 'multipart/form-data',
         url: `/api_v1/${end_point}`,
         processData: false,
         data : data,

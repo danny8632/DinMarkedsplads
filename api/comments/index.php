@@ -60,7 +60,6 @@ class Comments extends Api {
         $stmt->bindParam(':comment', $comment);
 
         $stmt->execute();
-        $id = $this->conn->lastInsertId();
     }
 
 }
