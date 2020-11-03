@@ -26,10 +26,11 @@ class Categories extends Api {
     
         if (isset($category_id) && !empty($category_id))
         {
-            $stmt = $this->conn->prepare("SELECT userId, title, description, address, price, status
-                                          FROM products INNER JOIN productcategories
-                                          ON products.id = productcategories.id INNER JOIN categories
-                                          ON productcategories.categoryId = categories.id WHERE productcategories.categoryId = :category_id");
+            $stmt = $this->conn->prepare("SELECT products.id, products.userId, products.title, products.description, products.address, products.price, products.status, products.created, GROUP_CONCAT(assets.location) AS location FROM products
+            INNER JOIN productcategories ON products.id = productcategories.id
+            INNER JOIN categories ON productcategories.categoryId = categories.id
+            INNER JOIN productassets AS assets ON products.id = assets.productId
+            WHERE productcategories.categoryId = :category_id AND products.status = 'A' GROUP BY products.id");
 
             $stmt->bindParam(":category_id", $category_id);
             $stmt->execute();

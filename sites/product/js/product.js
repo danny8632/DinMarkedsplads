@@ -1,4 +1,11 @@
-$(document).ready(function () {
+$(document).ready(function (e) {
+
+    $("body").on("click", "#createComment", () => {
+        let commentText = $(".commentFormText").val();
+        console.log(commentText)
+        console.log(id)
+        postComment(commentText, id);
+    })
 
     let content =  $("#content");
 
@@ -6,6 +13,8 @@ $(document).ready(function () {
     var id = params.get('id');
 
     let slideindex = 1;
+
+    
 
     content.on("click", ".pictureCon .pictures .btn", (e) => {
 
@@ -60,7 +69,7 @@ $(document).ready(function () {
 
             <div class="pictureCon">
                 <div class="pictures">
-                    ${imgs.length > 1 ? `
+                    ${imgs.length > 0 ? `
 
                         <div class="btn back-btn"><i class="fas fa-arrow-left"></i></div>
                         <div class="btn forward-btn"><i class="fas fa-arrow-right"></i></div>
@@ -99,31 +108,17 @@ $(document).ready(function () {
                         <div class="commentsTitle">
                             Kommentarer:
                         </div>
-                        <div class="buttonsCon">
-                            <button class="btn">Kontakt sælger</button>
-                            <button class="btn">Opret kommentar</button>
-                        </div>
+                        
                     </div>
-                    <div class="comments">
-                        <div class="commentBox">
-                            <div class="commentName">
-                                Felix
-                            </div>
-
-                            <div class="commentText">
-                                Lorem ipsum lol nice hvad koster den
-                            </div>
-                        </div>
-
-                        <div class="commentBox">
-                            <div class="commentName">
-                                Felix
-                            </div>
-
-                            <div class="commentText">
-                                Lorem ipsum heag ke awlrpa eheuawje ekawue eawueujaaiwe wearuawiloeui euaiopleu  waeualwue reuarewlweuawl  eualæ
-                            </div>
-                        </div>
+                    <div class="comments" id="commentBox">
+                        
+                    </div>
+                    <div class="commentForm">
+                        <textarea class="commentFormText" name="commentText" placeholder="Skriv kommentar her..." required></textarea>
+                    </div>
+                    <div class="buttonsCon" id="buttons">
+                        <button class="btn">Kontakt sælger</button>
+                        <button class="btn" id="createComment">Opret kommentar</button>
                     </div>
                 </div>
             </div>
@@ -136,4 +131,43 @@ $(document).ready(function () {
 
     })
 
+    
+    
+    api_get("comments", {"id": id}, (resp) => { 
+
+        if(typeof resp.success === "undefined" || resp === false || typeof resp.data === undefined || resp.data.length <= 0)
+        {
+            return; //  Fejl
+        }
+
+        let data = resp.data;
+
+        for (var i = 0; i < data.length; ++i) {
+            var comment = data[i];
+
+            var html = `
+                <div class="commentBox">
+                    <div class="commentName">
+                        ${comment.username}
+                    </div>
+
+                    <div class="commentText">
+                        ${comment.comment}
+                    </div>
+                </div>
+            `;
+            $("#commentBox").append(html);
+        }
+    })
+
+   
 })
+
+function postComment (text, id)
+{   
+    var data = {"product_id": id, "text": text}
+    console.log(data)
+    api_post("comments", data, (resp) => {
+        console.log(resp);
+    })
+}
