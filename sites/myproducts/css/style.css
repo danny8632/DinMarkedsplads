@@ -142,7 +142,7 @@
 #edit-modal .input-wrapper .images-wrapper {
     width: 100%;
     border: 1px dashed black;
-    height: 155px;
+    height: 160px;
     overflow-x: auto;
     text-align: center;
     margin-bottom: 10px;
@@ -191,4 +191,10 @@
     text-align: center;
     box-sizing: border-box;
     float: left;
+}
+
+
+
+#sell-modal .input-wrapper {
+    margin: 16px 0px;
 }

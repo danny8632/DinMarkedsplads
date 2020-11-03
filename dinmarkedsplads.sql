@@ -114,13 +114,6 @@ CREATE TABLE `products` (
   `modified` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Triggers `products`
---
-DELIMITER $$
-CREATE TRIGGER `Product_Assets_status_update` AFTER UPDATE ON `products` FOR EACH ROW UPDATE productassets SET productassets.status = NEW.status WHERE productassets.productId = NEW.id
-$$
-DELIMITER ;
 
 -- --------------------------------------------------------
 

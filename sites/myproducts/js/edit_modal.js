@@ -247,8 +247,6 @@ class EditProduct {
         }
 
         input.value = "";
-
-        //  TODO: Show warning
     }
 
 }
