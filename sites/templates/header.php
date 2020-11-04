@@ -65,13 +65,13 @@
                 {
                     ?>
                         <a href="/upload">Sælg vare</a>
+                        <input type="hidden" id="userid" value="<?=$_SESSION['user_id']?>">
                         <div class="dropdown">
                             <button class="dropbtn">
                                 <?=$_SESSION['username']?><i class="fa fa-caret-down"></i>
                             </button>
                             <div class="dropdown-content">
-                            <!-- <a href="/user?id=<?=$_SESSION['user_id']?>">My Page</a>
-                            <a href="/usersettings">Settings</a> -->
+                            <a href="/myproducts">Mine produkter</a>
                             <a href="/api_v1/user?method=logout">Logout</a>
                             </div>
                         </div> 

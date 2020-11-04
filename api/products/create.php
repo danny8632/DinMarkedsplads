@@ -28,6 +28,7 @@ class Create extends Api {
         $category    = $this->getRequestValues(['category'], $req);
         $files       = $this->getRequestValues(['files', 'images', 'file', "files[]"], $_FILES);
         $status      = "A";
+        $token       = bin2hex(openssl_random_pseudo_bytes(16));
 
         $files_path = [];
 
@@ -42,7 +43,6 @@ class Create extends Api {
         {
             mkdir($path, 0777, true);
         }
-        chmod($path, 0777);
 
         for ($i=0; $i < count($files['name']); $i++) {
 
@@ -57,7 +57,7 @@ class Create extends Api {
 
         $this->conn = $this->getDbConn();
 
-        $stmt = $this->conn->prepare("INSERT INTO `products`(`userId`, `title`, `description`, `price`, `status`, `address`, `zipcode`, `region`) VALUES (:userid, :title, :description, :price, :status, :address, :zipcode, :region);");
+        $stmt = $this->conn->prepare("INSERT INTO `products`(`userId`, `title`, `description`, `price`, `status`, `address`, `zipcode`, `region`, `verifyKey`) VALUES (:userid, :title, :description, :price, :status, :address, :zipcode, :region, :verifyKey);");
         $stmt->bindParam(':userid', $_SESSION["user_id"]);
         $stmt->bindParam(':title', $title);
         $stmt->bindParam(':description', $description);
@@ -66,6 +66,8 @@ class Create extends Api {
         $stmt->bindParam(':address', $address);
         $stmt->bindParam(':zipcode', $zipcode);
         $stmt->bindParam(':region', $region);
+        $stmt->bindParam(':verifyKey', $token);
+
         $stmt->execute();
         $id = $this->conn->lastInsertId();
 

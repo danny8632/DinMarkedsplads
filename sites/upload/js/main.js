@@ -110,7 +110,7 @@ class CreateProduct {
         image_wrapper.html("");
 
         if(files.length === 0)
-        {resp.data.id
+        {
             this.modal.find('.modal-body .warning-text').toggleClass("hidden", false);
             return;
         }

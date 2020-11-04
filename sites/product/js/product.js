@@ -2,11 +2,58 @@ $(document).ready(function (e) {
 
     $("body").on("click", "#createComment", () => {
         let commentText = $(".commentFormText").val();
-        console.log(commentText)
-        console.log(id)
+
         postComment(commentText, id);
     })
 
+    $("body").on("click", ".edit", (element) => {
+        let commentid = $(element.currentTarget).parent().parent().attr("data-id");
+        var newElement = "#"+commentid;
+        let text = $(newElement).text().trim();
+
+        $("#commentInputField").text(text);
+
+        $("#createComment").hide();
+        $("#dmBtn").hide();
+        $("#saveEdit").show();
+        $("#cancelEdit").show();
+
+        $("#saveEdit").attr("data-id", commentid);
+        //change comment field to input
+    })
+
+    $("body").on("click", "#saveEdit", (element) => {
+        let commentId = $(element.currentTarget).attr("data-id");
+        let commentText = $("#commentInputField").val();
+
+        editComment(commentText, id, commentId);
+
+        $("#createComment").show();
+        $("#dmBtn").show();
+        $("#saveEdit").hide();
+        $("#cancelEdit").hide();
+
+        $("#commentInputField").val("");
+    })
+
+    $("body").on("click", "#cancelEdit", () => {
+        $("#createComment").show();
+        $("#dmBtn").show();
+        $("#saveEdit").hide();
+        $("#cancelEdit").hide();
+
+        $("#commentInputField").val("");
+    })
+
+    $("body").on("click", "#removeComment", (element) => {
+        let commentid = $(element.currentTarget).parent().parent().attr("data-id");
+
+        deleteComment(id, commentid);
+    })
+
+    let userid = $("#userid").val();
+
+    console.log(userid);
     let content =  $("#content");
 
     let params = new URLSearchParams(location.search);
@@ -114,11 +161,13 @@ $(document).ready(function (e) {
                         
                     </div>
                     <div class="commentForm">
-                        <textarea class="commentFormText" name="commentText" placeholder="Skriv kommentar her..." required></textarea>
+                        <textarea id="commentInputField" class="commentFormText" name="commentText" placeholder="Skriv kommentar her..." required></textarea>
                     </div>
                     <div class="buttonsCon" id="buttons">
-                        <button class="btn">Kontakt sælger</button>
                         <button class="btn" id="createComment">Opret kommentar</button>
+                        <button class="btn" id="saveEdit" data-id="" style="display: none;">Gem</button>
+                        <button class="btn" id="cancelEdit" style="display: none;">Annuller</button>
+                        <button class="btn" id="dmBtn">Kontakt sælger</button>
                     </div>
                 </div>
             </div>
@@ -141,21 +190,46 @@ $(document).ready(function (e) {
         }
 
         let data = resp.data;
+        
 
         for (var i = 0; i < data.length; ++i) {
             var comment = data[i];
+            var html = "";
 
-            var html = `
+            //Convert first letter of username to uppercase
+            let username = comment.username
+            username = username.charAt(0).toUpperCase() + username.slice(1);
+
+            if(comment.userId == userid)
+            {
+                html = `
+                <div class="commentBoxCon" data-id="${comment.id}">
+                    <div class="commentBox">
+                        <div class="commentName">
+                            ${username}
+                        </div>
+                        <div class="commentText" id="${comment.id}">
+                            ${comment.comment}
+                        </div>
+                    </div>
+                    <div class="buttonsCon2">
+                        <div class="btn edit">Rediger kommentar</div>
+                        <div class="btn" id="removeComment">Slet kommentar</div>
+                    </div>
+                </div>
+            `;
+            }else {
+                html = `
                 <div class="commentBox">
                     <div class="commentName">
-                        ${comment.username}
+                        ${username}
                     </div>
-
-                    <div class="commentText">
+                    <div class="commentText" id="${comment.id}">
                         ${comment.comment}
                     </div>
                 </div>
             `;
+            } 
             $("#commentBox").append(html);
         }
     })
@@ -166,8 +240,27 @@ $(document).ready(function (e) {
 function postComment (text, id)
 {   
     var data = {"product_id": id, "text": text}
-    console.log(data)
-    api_post("comments", data, (resp) => {
-        console.log(resp);
-    })
+    
+    api_post("comments", data, (resp) => {})
+}
+
+function editComment (text, id, commentId) 
+{
+    var data = {
+        "method" : "updateComment",
+        "product_id": id,
+        "comment_id": commentId,
+        "text": text
+    }
+    api_ajax("comments", data, (resp) => {})
+}
+
+function deleteComment (id, commentId)
+{
+    var data = {
+        "method" : "deleteComment",
+        "product_id": id,
+        "comment_id": commentId
+    }
+    api_ajax("comments", data, (resp) => {})
 }
