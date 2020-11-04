@@ -105,8 +105,6 @@ class EditProduct {
 
         id = Number(id);
 
-        console.log(id)
-
         if(id >= 1000)
         {
             this.files_to_upload.splice((id-1001), 1);

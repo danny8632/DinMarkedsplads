@@ -231,6 +231,29 @@ class Myproducts extends Api {
         return $this->formatResponse(true, $result);
     }
 
+    function deleteproduct() {
+
+        $req = $this->getRequest();
+        $this->conn = $this->getDbConn();
+        $id = $this->getRequestValues(['id', 'product_id', 'pid'], $req);
+
+        if(!isset($_SESSION['user_id'])) return $this->formatResponse(false, ['msg' => "You cannot delete a post that is not yours"]);
+
+        $stmt = $this->conn->prepare("SELECT id, userId FROM products WHERE id = :id LIMIT 1;");
+        $stmt->bindParam(":id", $id);
+        $stmt->execute();
+
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC)[0];
+
+        if($result['userId'] != $_SESSION['user_id']) return $this->formatResponse(false, ['msg' => "You cannot delete a post that is not yours"]);
+
+        $stmt = $this->conn->prepare("DELETE FROM `products` WHERE id = :id");
+        $stmt->bindParam(":id", $id);
+        $stmt->execute();
+
+        return $this->formatResponse(true, ['id' => $id]);
+    }
+
 
 }
 

@@ -5,7 +5,8 @@ class MyProducts {
         this.container = $(`.container`);
 
         this.modal = {
-            'sell' : $(`#sell-modal`)
+            'sell' : $(`#sell-modal`),
+            'delete' : $(`#delete-modal`)
         }
 
         this.products = [];
@@ -73,17 +74,51 @@ class MyProducts {
         });
 
         this.container.on("click", "td.actions div.edit-product", (e) => {
-            let id = e.currentTarget.parentNode.parentNode.dataset.id
+            let id = e.currentTarget.parentNode.parentNode.dataset.id;
 
             EditProduct.display_edit(this.products.find(x => x.id == id), this.categories);
         })
+
+
+        this.container.on('click', "td.actions div.delete-product", (e) => {
+            let id = Number(e.currentTarget.parentNode.parentNode.dataset.id);
+            this.modal.delete.attr('data-id', id).toggleClass("hidden", false);
+        })
         
+
+        this.modal.delete.on("click", ".modal-footer .close", () => {
+            this.modal.delete.removeAttr('data-id').toggleClass("hidden", true);
+        });
+
+        this.modal.delete.on("click", ".modal-footer .delete-product", () => {
+            this.delete_product();
+        });
+
 
         this.modal.sell.on("click", ".modal-footer .close", () => {
             this.modal.sell.toggleClass("hidden", true);
         })
 
         this.is_bound = true;
+    }
+
+
+    delete_product() {
+
+        let id = Number(this.modal.delete.data('id'));
+
+        let data = {
+            'id' : id,
+            'method' : 'deleteproduct'
+        }
+
+        api_post("products/myproducts", data, (resp) => {
+
+            console.log(resp)
+            
+            this.modal.delete.removeAttr('data-id').toggleClass("hidden", true);
+        });
+
     }
 
 
