@@ -59,8 +59,6 @@ $(document).ready(function () {
                         )
                     });
 
-                    console.log(wrapper)
-
                     $("#categories").find('.wrapper').append(wrapper)
         
                 },

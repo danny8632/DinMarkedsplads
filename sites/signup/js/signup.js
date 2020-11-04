@@ -42,17 +42,11 @@ $( document ).ready(function() {
                 $(".content").find('.confirm-email').toggleClass("hidden", false);
 
                 data      = { "method": "sendVerifyMail", "email": data['email'] };
-                console.log(data);
                 api_ajax("user", data, (resp) => {
                     if(resp.success === false)
                     {
                         $(`<p class="error-text">${resp.data.msg}</p>`).insertAfter(".content .title-wrapper");
                         return;
-                    }
-                    else
-                    {
-                        console.log('success?');
-                        console.log(resp);
                     }
                 });
             }

@@ -74,8 +74,6 @@ class MyProducts {
 
         api_get("products/myproducts", (resp) => {
 
-            console.log(resp)
-
             this.products = resp.data;
 
             if(typeof cb == "function") cb();
@@ -162,6 +160,8 @@ class MyProducts {
         data.productId = this.modal.sell.data('id');
 
         api_ajax("products/sell", data, (resp) => {
+            console.log(resp)
+
             if(resp.success == true) alert("En email er nu sendt til brugeren");
         });
     }
@@ -176,8 +176,6 @@ class MyProducts {
         if(this.search_user.length === 0 || word == "") return;
 
         let list = this.search_user.filter(x => x.username.includes(word));
-
-        console.log(list)
 
         for (let i = 0, length = list.length; i < length; i++) {
             const user = list[i];

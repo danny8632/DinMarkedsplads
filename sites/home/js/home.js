@@ -21,7 +21,6 @@ $(document).ready(function () {
             return; //  Fejl
         }
 
-		console.log(resp.data);
         let data = resp.data;
 
         for (var i = 0; i < data.length; ++i) {
@@ -45,7 +44,6 @@ $(document).ready(function () {
             return; //  Fejl
         }
 
-		console.log(resp.data);
         let data = resp.data;
 
         for (var i = 0; i < data.length; ++i) {
@@ -89,7 +87,6 @@ function getProductFromCategori(categoriID)
             return; //  Fejl
         }
         
-        console.log(resp.data);
         let data = resp.data;
     
         for (var i = 0; i < data.length; ++i) {

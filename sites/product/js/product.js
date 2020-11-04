@@ -53,7 +53,6 @@ $(document).ready(function (e) {
 
     let userid = $("#userid").val();
 
-    console.log(userid);
     let content =  $("#content");
 
     let params = new URLSearchParams(location.search);
