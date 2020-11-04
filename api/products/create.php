@@ -43,7 +43,6 @@ class Create extends Api {
         {
             mkdir($path, 0777, true);
         }
-        chmod($path, 0777);
 
         for ($i=0; $i < count($files['name']); $i++) {
 
