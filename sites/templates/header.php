@@ -65,6 +65,7 @@
                 {
                     ?>
                         <a href="/upload">Sælg vare</a>
+                        <input type="hidden" id="userid" value="<?=$_SESSION['user_id']?>">
                         <div class="dropdown">
                             <button class="dropbtn">
                                 <?=$_SESSION['username']?><i class="fa fa-caret-down"></i>
