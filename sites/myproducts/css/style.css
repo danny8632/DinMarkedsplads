@@ -197,4 +197,30 @@
 
 #sell-modal .input-wrapper {
     margin: 16px 0px;
+    width: 200px;
+    display: inline-flex;
+}
+
+#sell-modal .seach-wrapper {
+    display: inline-flex;
+    margin-left: 20px;
+    list-style-type: none;
+    text-decoration: none;
+}
+
+#sell-modal .seach-wrapper ul {
+    text-decoration: none;
+    list-style-type: none;
+    width: 100%;
+}
+
+#sell-modal .seach-wrapper ul li {
+    padding: 6px;
+    margin-bottom: 6px;
+    cursor: pointer;
+}
+
+#sell-modal .seach-wrapper ul li:hover {
+    background-color: #6599D7;
+    color: #fff;
 }

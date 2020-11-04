@@ -117,14 +117,18 @@ class MyProducts {
 
 
 
-        this.modal.sell.on("keyup, change", ".input-wrapper input", (e) => {
-
+        this.modal.sell.on("keyup", ".input-wrapper input", (e) => {
             let val = e.currentTarget.value;
-
             this.fetch_users(val, () => {
                 this.handle_seach(val);
             })
+        })
 
+        this.modal.sell.on("change", ".input-wrapper input", (e) => {
+            let val = e.currentTarget.value;
+            this.fetch_users(val, () => {
+                this.handle_seach(val);
+            })
         })
 
         this.modal.sell.on("click", ".seach-wrapper ul li", (e) => {
