@@ -37,6 +37,7 @@ class Example extends Api {
 
     function verifyOrderCompletion()
     {
+        $req = $this->getRequest();
         $token = $this->getRequestValues(['id', 'key', 'token'], $req);
         $stmt = $this->conn->prepare("UPDATE products SET status = 'S' WHERE products.verifyKey = :key AND");
         $stmt->bindParam(':key', $token);
@@ -45,6 +46,7 @@ class Example extends Api {
 
     function sendOrderCompletion() {
         $req = $this->getRequest();
+        
         $email = $this->getRequestValues(['email', 'e_mail', 'mail'], $req);
         $product_id = $this->getRequestValues(['product-id', 'product_id', 'productId'], $req);
 
