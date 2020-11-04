@@ -18,6 +18,10 @@ class MyProducts {
         }
 
         this.categories = [];
+
+        this.search_user = [];
+
+        this.timeout;
     }
 
 
@@ -32,6 +36,22 @@ class MyProducts {
                 this.bind_event_handlers();
 
             })
+        })
+    }
+
+    fetch_users(search_str ,cb) {
+
+        let ids = this.search_user.length > 0 ? this.search_user.map(x => x.id) : "";
+
+        let data = {'uname' : search_str};
+
+        if(ids.length > 0) data['ids'] = ids;
+
+        api_get("products/sell", data, (resp) => {
+
+            this.search_user = this.search_user.concat(resp.data);
+
+            if(typeof cb == "function") cb();
         })
     }
 
@@ -68,8 +88,9 @@ class MyProducts {
         if(this.is_bound) return;
 
         this.container.on("click", "td.actions div.sell-product", (e) => {
+            let id = Number(e.currentTarget.parentNode.parentNode.dataset.id);
 
-            this.modal.sell.toggleClass("hidden", false);
+            this.modal.sell.attr('data-id', id).toggleClass("hidden", false);
 
         });
 
@@ -95,11 +116,74 @@ class MyProducts {
         });
 
 
-        this.modal.sell.on("click", ".modal-footer .close", () => {
-            this.modal.sell.toggleClass("hidden", true);
+
+        this.modal.sell.on("keyup, change", ".input-wrapper input", (e) => {
+
+            let val = e.currentTarget.value;
+
+            this.fetch_users(val, () => {
+                this.handle_seach(val);
+            })
+
         })
 
+        this.modal.sell.on("click", ".seach-wrapper ul li", (e) => {
+
+            let val = e.currentTarget.innerHTML;
+
+            this.modal.sell.find('.input-wrapper input').val(val)
+        })
+
+
+        this.modal.sell.on("click", ".modal-footer .close", () => {
+            this.modal.sell.removeAttr("data-id").toggleClass("hidden", true);
+        })
+
+        this.modal.sell.on("click", ".modal-footer .sell-product", (e) => {
+            this.sell_product(this.modal.sell.find('.input-wrapper input').val())
+        })
+
+
         this.is_bound = true;
+    }
+
+
+    sell_product(word) {
+
+        let data = this.search_user.find(x => x.username === word);
+
+        if(typeof data == "undefined") return alert("Denne bruger eksistere ikke i vores system");
+
+        data.method = "sendOrderCompletion";
+        data.productId = this.modal.sell.data('id');
+
+        api_ajax("products/sell", data, (resp) => {
+            if(resp.success == true) alert("En email er nu sendt til brugeren");
+        });
+    }
+
+
+    handle_seach(word) {
+
+        let ul = this.modal.sell.find(".seach-wrapper ul");
+
+        ul.html("");
+
+        if(this.search_user.length === 0 || word == "") return;
+
+        let list = this.search_user.filter(x => x.username.includes(word));
+
+        console.log(list)
+
+        for (let i = 0, length = list.length; i < length; i++) {
+            const user = list[i];
+            
+            let li = document.createElement("li");
+            li.dataset.id = user.id;
+            li.innerHTML = user.username;
+            ul.append(li);
+        }
+
     }
 
 
@@ -112,9 +196,15 @@ class MyProducts {
             'method' : 'deleteproduct'
         }
 
-        api_post("products/myproducts", data, (resp) => {
+        api_ajax("products/myproducts", data, (resp) => {
 
-            console.log(resp)
+            if(resp.success === false) return console.error("something went wrong in the api-request", resp);
+
+            let index = this.products.findIndex(x => x.id == resp.id);
+
+            this.products.splice(index, 1);
+
+            this.container.find(`table tr[data-id="${id}"]`).remove();
             
             this.modal.delete.removeAttr('data-id').toggleClass("hidden", true);
         });

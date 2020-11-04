@@ -38,7 +38,7 @@ class Myproducts extends Api {
         INNER JOIN 
             productcategories AS categories ON product.id = categories.productId 
         WHERE 
-            product.userId = :userid
+            product.userId = :userid AND product.status = 'A'
         GROUP BY 
             product.id;
         ");
@@ -215,7 +215,7 @@ class Myproducts extends Api {
             INNER JOIN 
                 productcategories AS categories ON product.id = categories.productId 
             WHERE 
-                product.id = :id
+                product.id = :id AND product.status = 'A'
             GROUP BY 
             product.id
             LIMIT 1;
@@ -247,8 +247,11 @@ class Myproducts extends Api {
 
         if($result['userId'] != $_SESSION['user_id']) return $this->formatResponse(false, ['msg' => "You cannot delete a post that is not yours"]);
 
-        $stmt = $this->conn->prepare("DELETE FROM `products` WHERE id = :id");
+        $status = "D";
+
+        $stmt = $this->conn->prepare("UPDATE `products` SET `status`=:status WHERE id = :id");
         $stmt->bindParam(":id", $id);
+        $stmt->bindParam(":status", $status);
         $stmt->execute();
 
         return $this->formatResponse(true, ['id' => $id]);
