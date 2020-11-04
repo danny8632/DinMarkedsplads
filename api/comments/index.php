@@ -81,13 +81,13 @@ class Comments extends Api {
         $stmt = $this->conn->prepare("UPDATE comments
                                     SET comments.comment = :text
                                     WHERE comments.id = :comment_id
-                                    AND comments.userId = userId
+                                    AND comments.userId = :userId
                                     AND comments.productId = :productId");
 
         $stmt->bindParam(':text', $text); 
         $stmt->bindParam(':comment_id', $comment_id);
-        $stmt->bindParam(':user_id', $user_id);
-        $stmt->bindParam(':product_id', $product_id);
+        $stmt->bindParam(':userId', $user_id);
+        $stmt->bindParam(':productId', $product_id);
 
         $stmt->execute();
     }
@@ -101,7 +101,7 @@ class Comments extends Api {
         $comment_id = $this->getRequestValues(['comment_id', 'comment-id', 'commentId'], $req);
         $product_id = $this->getRequestValues(['product_id', 'product-id', 'productId'], $req);
 
-        if ($user_id == false || $comment_id == false || $product_id == false || $text == false)
+        if ($user_id == false || $comment_id == false || $product_id == false)
             return $this->formatResponse(false, [$user_id, $comment_id, $product_id, $text]);
         
         $this->conn = $this->getDbConn();
