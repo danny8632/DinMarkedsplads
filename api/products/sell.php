@@ -94,7 +94,7 @@ class Sell extends Api {
         $token = $this->getToken($product_id);
         $subject = "Verificer dit køb på DinMarkedsplads";
         $message = "Du har købt produktet: http://".$_SERVER['HTTP_HOST']."/product?id=" . $product_id . " <br>
-                    Når du har modtaget produktet korrekt bedes du følge nedenstående link: http://".$_SERVER['HTTP_HOST']."/api_v1/products/sell?method=verifyOrderCompletion&id=" . $token;
+                    Når du har modtaget produktet korrekt bedes du følge nedenstående link:" . nl2br("\nhttp://".$_SERVER['HTTP_HOST']."/api_v1/products/sell?method=verifyOrderCompletion&id=" . $token);
         $headers = "From: dinmarkedspladsnoreply";
 
         mail($email,$subject,$message,[$headers]);
