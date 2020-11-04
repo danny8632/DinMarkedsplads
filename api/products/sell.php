@@ -72,6 +72,8 @@ class Sell extends Api {
 
     function verifyOrderCompletion()
     {
+        $this->conn = $this->getDbConn();
+        
         $req = $this->getRequest();
         $token = $this->getRequestValues(['id', 'key', 'token'], $req);
         $stmt = $this->conn->prepare("UPDATE products SET status = 'S' WHERE products.verifyKey = :key");
