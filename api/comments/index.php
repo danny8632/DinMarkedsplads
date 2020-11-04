@@ -59,8 +59,18 @@ class Comments extends Api {
         $stmt->bindParam(':user_id', $user_id);
         $stmt->bindParam(':product_id', $product_id);
         $stmt->bindParam(':comment', $comment);
-
         $stmt->execute();
+        $id = $this->conn->lastInsertId();
+
+        $stmt = $this->conn->prepare("SELECT comments.*,users.username FROM comments INNER JOIN users ON comments.userId = users.id WHERE comments.id = :id LIMIT 1;");
+        $stmt->bindParam(":id", $id);
+        $stmt->execute();
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        if($stmt->rowCount() > 0)
+            return $this->formatResponse(true, $result[0]); 
+        else
+            return $this->formatResponse(false, ['msg' => "No data found"]);
     }
 
 
@@ -90,6 +100,8 @@ class Comments extends Api {
         $stmt->bindParam(':productId', $product_id);
 
         $stmt->execute();
+
+        return $this->formatResponse(true);
     }
 
 
@@ -114,6 +126,7 @@ class Comments extends Api {
         $stmt->bindParam(':comment_id', $comment_id);
         $stmt->execute();
 
+        return $this->formatResponse(true);
     }
 
 }
