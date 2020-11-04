@@ -130,7 +130,7 @@ class User extends Api {
         $message = "Du har registreret dig på DinMarkedsplads.dk - for at kunne tilgå din bruger, skal du følge nedenstående link: <br> " . "http://".$_SERVER['HTTP_HOST']."/api_v1/user?method=verifyUser&id=" . $token;
         $headers = "From: dinmarkedspladsnoreply";
 
-        mail($email,$subject,$message,[$headers]);
+        mail($email,$subject,$message,$headers);
 
         return $this->formatResponse(true);
     }

@@ -97,7 +97,7 @@ class Sell extends Api {
                     Når du har modtaget produktet korrekt bedes du følge nedenstående link: http://".$_SERVER['HTTP_HOST']."/api_v1/products/sell?method=verifyOrderCompletion&id=" . $token;
         $headers = "From: dinmarkedspladsnoreply";
 
-        mail($email,$subject,$message,[$headers]);
+        mail($email,$subject,$message,$headers);
 
         return $this->formatResponse(true);
     }
