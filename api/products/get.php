@@ -22,14 +22,14 @@ class Get extends Api {
         if (isset($post_id) && !empty($post_id))
         {
             // Get specific product
-            $stmt = $this->conn->prepare("SELECT product.id, product.userId, product.title, product.description, product.address, product.price, product.status, product.created, GROUP_CONCAT(assets.location) AS location FROM products AS product INNER JOIN productassets AS assets ON product.id = assets.productId WHERE product.id = :id AND product.status = 'A' GROUP BY product.id");
+            $stmt = $this->conn->prepare("SELECT product.id, product.userId, product.title, product.description, product.address, product.price, product.status, product.created, GROUP_CONCAT(assets.location) AS location FROM products AS product INNER JOIN productassets AS assets ON product.id = assets.productId AND assets.status = 'A' WHERE product.id = :id AND product.status = 'A' GROUP BY product.id");
             $stmt->bindParam(":id", $post_id);
             $stmt->execute();
         }
         else
         {
             // SELECT products.id, products.userId, products.title, products.description, products.address, products.price, products.status, products.created FROM products INNER JOIN productassets ON products.id = productassets.productId WHERE products.status = 'A'
-            $stmt = $this->conn->prepare("SELECT product.id, product.userId, product.title, product.description, product.address, product.price, product.status, product.created, GROUP_CONCAT(assets.location) AS location FROM products AS product INNER JOIN productassets AS assets ON product.id = assets.productId WHERE product.status = 'A' GROUP BY product.id;");
+            $stmt = $this->conn->prepare("SELECT product.id, product.userId, product.title, product.description, product.address, product.price, product.status, product.created, GROUP_CONCAT(assets.location) AS location FROM products AS product INNER JOIN productassets AS assets ON product.id = assets.productId AND assets.status = 'A' WHERE product.status = 'A' GROUP BY product.id;");
             $stmt->execute();
         }
 
